@@ -1,7 +1,7 @@
 const { workerData, parentPort } = require("worker_threads")
 const fs = require('fs');
 const { VM, VMScript, NodeVM } = require('vm2');
-
+const path = require('path');
 const profiler = require('./profiler');
 
 var globalState = { test: '123' };
@@ -24,11 +24,14 @@ var globals = {
 };
 
 const vm = new NodeVM({
-    console: false,
-    wasm: false,
+    // console: false,
+    // wasm: false,
+    // eval: true,
+    // fixAsync: false,
+    // timeout: 500,
     eval: true,
-    fixAsync: true,
-    timeout: 500,
+    nesting : true,
+    require: true,
     sandbox: { globals },
 });
 
@@ -50,7 +53,10 @@ class FSGWorker {
         this.stateHistory = [];
 
         // this.bundlePath = './game-server/index.js';
-        this.bundlePath = './fivesecondgames/builds/server/server.bundle.js';
+
+        this.bundlePath = path.join(__dirname, '../../builds/server/server.bundle.js');
+        // this.bundlePath = __dirname + '/../builds/server/bundle.js';
+        this.bundleFile =this.bundlePath;// __dirname + '/../builds/server/bundle.js.map';
         this.gameScript = null;
 
         this.start();
@@ -75,11 +81,16 @@ class FSGWorker {
     }
 
     async reloadServerBundle(filepath) {
+        
+        profiler.Start('Reload Bundle');
         filepath = filepath || this.bundlePath;
         var data = fs.readFileSync(filepath, 'utf8');
         let filename = filepath.split('/');
         filename = filename[filename.length - 1];
+
+        
         this.gameScript = new VMScript(data, filepath);
+        profiler.End('Reload Bundle');
         return this.gameScript;
     }
 

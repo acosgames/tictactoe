@@ -73,7 +73,7 @@ function createWorker(index) {
 
 
 app.get('/client.bundle.js', function (req, res) {
-    res.sendFile(path.join(__dirname, '../builds/client/client.bundle.js'));
+    res.sendFile(path.join(__dirname, '../../builds/client/client.bundle.js'));
 });
 
 app.get('/', function (req, res) {

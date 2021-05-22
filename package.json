@@ -1,7 +1,6 @@
 {
   "name": "tictactoe",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "express": "^4.17.1",
     "flatstore": "^1.0.2",
@@ -12,10 +11,10 @@
     "vm2": "^3.9.3"
   },
   "scripts": {
-    "start": "concurrently npm:client-dev npm:server-dev npm:simulator npm:simulator-sync",
+    "start": "./node_modules/.bin/concurrently npm:client-dev npm:server-dev npm:simulator npm:simulator-sync",
     "client-dev": "./node_modules/.bin/webpack --watch ./game-client --config fivesecondgames/webpack/client/dev.config.js",
-    "server-dev": "./node_modules/.bin/webpack --watch ./game-server --config fivesecondgames/webpack/server/dev.config.js",
-    "simulator": "nodemon --inspect --watch fivesecondgames/simulator/*.js fivesecondgames/simulator/server.js",
+    "server-dev": "./node_modules/.bin/webpack --config fivesecondgames/webpack/server/dev.config.js --watch ./game-server",
+    "simulator": "nodemon --inspect --enable-source-maps --watch fivesecondgames/simulator/*.js fivesecondgames/simulator/server.js",
     "simulator-sync": "./node_modules/.bin/wait-on http://localhost:3000/ && browser-sync start --no-ghost-mode --ws --port 8080 --proxy localhost:3000 --files=./fivesecondgames/builds/client/client.bundle.js --files ./fivesecondgames/simulator/*.html  --ignore=node_modules"
   },
   "devDependencies": {
