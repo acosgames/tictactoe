@@ -1,0 +1,80 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+        'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.gamescreen {
+    width: 600px;
+    height: 600px;
+    margin: 0 auto;
+    background-color: none;
+    color: #333;
+    border: 0px solid #2c3e50;
+    border-radius: 0px;
+
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+}
+
+.gamescreen div {
+    border: 6px solid #2c3e50;
+    border-radius: 0px;
+    font-family: Helvetica;
+    font-weight: bold;
+    font-size: 10em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+}
+
+.gamescreen div:hover {
+    background-color: #ccc;
+}
+
+.gamescreen div.ttt-0 {
+    border-top: 0;
+    border-left: 0;
+}
+
+.gamescreen div.ttt-1 {
+    border-top: 0;
+}
+
+.gamescreen div.ttt-2 {
+    border-top: 0;
+    border-right: 0;
+}
+
+.gamescreen div.ttt-3 {
+    border-left: 0;
+}
+
+.gamescreen div.ttt-4 {
+}
+
+.gamescreen div.ttt-5 {
+    border-right: 0;
+}
+
+.gamescreen div.ttt-6 {
+    border-left: 0;
+    border-bottom: 0;
+}
+
+.gamescreen div.ttt-7 {
+    border-bottom: 0;
+}
+
+.gamescreen div.ttt-8 {
+    border-right: 0;
+    border-bottom: 0;
+}
