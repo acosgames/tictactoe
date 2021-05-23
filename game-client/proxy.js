@@ -1,5 +1,7 @@
+import React, { useEffect } from 'react';
 import fs from 'flatstore';
 
+fs.set('local', {});
 fs.set('state', {});
 fs.set('players', {});
 fs.set('rules', {});
@@ -8,12 +10,22 @@ fs.set('next', {});
 fs.set('events', {});
 
 export function GameLoader(props) {
-    attachMessageEvent()
+
+    useEffect(() => {
+        attachMessageEvent()
+        send('__ready', {});
+      });
+
+    
     let Comp = props.component;
     return (<Comp></Comp>)
 }
 
+var hasMessageEvent = false;
 export async function attachMessageEvent() {
+    if( hasMessageEvent )
+        return;
+    hasMessageEvent = true;
     window.addEventListener('message', (evt) => {
         let message = evt.data;
         let origin = evt.origin;
@@ -22,6 +34,9 @@ export async function attachMessageEvent() {
         if (!message)
             return;
 
+        if (message.local) {
+            fs.set('local', message.local);
+        }
         if (message.state) {
             fs.set('state', message.state);
         }

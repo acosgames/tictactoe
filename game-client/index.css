@@ -1,13 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
         'Droid Sans', 'Helvetica Neue', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Roboto';
+    /* -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; */
 }
 
+span.nextTag {
+    font-size:1.2em;
+    color:gold;
+    font-weight:bold;
+    display:inline-block;
+    width:30px;
+    text-align:center;
+}
+
+span.ttt-type {
+    font-size:1.2em;
+}
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace; */
 }
 
 .gamescreen {

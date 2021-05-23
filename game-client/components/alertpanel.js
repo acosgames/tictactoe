@@ -18,8 +18,14 @@ class AlertPanel extends Component {
                 break;
             }
             case 'winner': {
+                let strip = fs.get('prev-strip');
+                if( strip === 'forfeit' )
+                    return player.name + ' wins by forfeit!';
                 return player.name + ' won the game!'
                 break;
+            }
+            case 'tie': {
+                return "No one wins. It's a tie!"
             }
         }
     }

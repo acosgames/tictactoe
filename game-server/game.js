@@ -25,6 +25,8 @@ class Tictactoe {
         if (!action.userid)
             return;
 
+        if( fsg.players(action.userid).type ) 
+            return;
         //if player count reached required limit, start the game
         let maxPlayers = fsg.rules('maxPlayers') || 2;
         let playerCount = fsg.playerCount();
@@ -34,7 +36,19 @@ class Tictactoe {
     }
 
     onLeave() {
+        let players = fsg.players();
+        let action = fsg.action();
 
+        let otherPlayerId = null;
+        if( players[action.userid] ) {
+            otherPlayerId = this.selectNextPlayer(action.userid);
+            delete players[action.userid];
+        }
+
+        if( otherPlayerId ) {
+            let otherPlayer = players[otherPlayerId];
+            this.setWinner(otherPlayer.type, 'forfeit')
+        }
     }
 
     onPick() {
@@ -49,7 +63,7 @@ class Tictactoe {
         // block picking cells with markings, and send error
         if (cell.length > 0) {
             fsg.next({
-                who: action.userid,
+                userid: action.userid,
                 action: 'pick',
                 error: 'NOT_EMPTY'
             })
@@ -86,13 +100,9 @@ class Tictactoe {
 
         //set the starting player, and set type for other player
         let players = fsg.players();
+        for (var id in players) 
+            players[id].type = 'o';
         players[this.startPlayer].type = 'x';
-        for (var id in players) {
-            if (id == this.startPlayer)
-                continue;
-            let player = players[id];
-            player.type = 'o';
-        }
     }
 
     selectNextPlayer(userid) {
@@ -102,7 +112,7 @@ class Tictactoe {
         //only 2 players so just filter the current player
         let remaining = players.filter(x => x != action.userid);
         fsg.next({
-            who: remaining[0],
+            userid: remaining[0],
             action: 'pick'
         });
         return remaining[0];
@@ -124,7 +134,18 @@ class Tictactoe {
         if (this.check([2, 5, 8])) return true;
         if (this.check([0, 4, 8])) return true;
         if (this.check([6, 4, 2])) return true;
+        if (this.checkNoneEmpty()) return true;
         return false;
+    }
+
+    checkNoneEmpty() {
+        let cells = fsg.state().cells;
+        let filtered = cells.filter(v => v == '');
+
+        if( filtered.length == 0 ) {
+            this.setTie();
+        }
+        return filtered.length == 0;
     }
 
     // checks if a strip has matching types
@@ -149,6 +170,15 @@ class Tictactoe {
                 return userid;
         }
         return null;
+    }
+
+    setTie() {
+        fsg.clearEvents();
+        fsg.event('tie')
+        fsg.next({});
+        fsg.prev({})
+        
+        fsg.killGame();
     }
     // set the winner event and data
     setWinner(type, strip) {

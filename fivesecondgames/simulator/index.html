@@ -60,6 +60,7 @@
         </style>
         <div id="wrapper">
             <div class="sidebar">
+                <h2 id="note">Status: offline</h2>
                 <form>
                     <div class="form-group">
                         <label for="username">Username</label>
@@ -72,8 +73,12 @@
                         />
                         <small id="userHelp" class="form-text text-muted">Enter a username to join the game</small>
                     </div>
+                    
                     <button id="joingame" type="button" class="btn btn-primary">Join Game</button>
+                    <button id="leavegame" type="button" class="btn btn-primary">Leave Game</button>
                     <button id="reload" type="button" class="btn btn-primary">Reload</button>
+
+                    
                 </form>
             </div>
             <div class="maincontent">
@@ -83,8 +88,21 @@
 
         <script>
             var socket = null;
+            let note = document.getElementById('note');
+            let iframe = document.getElementById('game-sandbox');
+            let nameField = document.getElementById('username');
+            nameField.value = getUsername();
+            nameField.onkeyup = (event) => {
+                let username = event.target.value;
+                updateUser(username);
+            };
+            iframe.style.display = 'none';
 
             function connect(username, onjoin) {
+
+                
+                note.textContent = 'Status: connecting...';
+
                 if (socket && !socket.disconnected) {
                     socket.disconnect();
                 }
@@ -95,11 +113,34 @@
                     query: 'username=' + username,
                 });
 
-                if (onjoin) socket.on('connect', onjoin);
+                socket.on('connect', (evt) => {
+                    if(onjoin)
+                        onjoin(evt);
+                    window.sessionStorage.setItem('connected', true);
+
+                    note.textContent = 'Status: connected';
+                    iframe.style.display = 'block';
+                });
+
+                socket.on('connected', (message) => {
+                    socket.user = message;
+                   
+                })
                 socket.on('game', (message) => {
+                    let localPlayer = message.players[socket.user.userid];
+                    if( localPlayer )
+                        note.textContent = 'Status: ingame';
                     console.log('Game: ', message);
+
+                    
+                    message.local = Object.assign({}, socket.user, localPlayer);
                     sendFrameMessage(message);
                 });
+
+                socket.on('disconnect', () => {
+                    note.textContent = 'Status: offline';
+                    window.sessionStorage.setItem('connected', false);
+                })
             }
 
             function updateUser(username) {
@@ -112,12 +153,14 @@
                 return window.sessionStorage.getItem('name') || '';
             }
 
-            let nameField = document.getElementById('username');
-            nameField.value = getUsername();
+            
 
-            nameField.onkeyup = (event) => {
-                let username = event.target.value;
-                updateUser(username);
+            document.getElementById('leavegame').onclick = (event) => {
+                if( socket ) {
+                    socket.emit('action', { type: 'leave', payload: {}});
+                }
+                iframe.style.display = 'none';
+                note.textContent = 'Status: offline';
             };
 
             document.getElementById('joingame').onclick = (event) => {
@@ -128,6 +171,7 @@
                 }
 
                 connect(displayname, () => {
+                    
                     if (socket) socket.emit('action', { type: 'join', payload: {} });
                 });
             };
@@ -135,8 +179,6 @@
             document.getElementById('reload').onclick = (event) => {
                 if (socket) socket.emit('reload', 'now!');
             };
-
-            attachToFrame();
 
             function attachToFrame() {
                 window.addEventListener('message', recvFrameMessage, false);
@@ -147,16 +189,41 @@
             }
 
             function sendFrameMessage(msg) {
-                let iframe = document.getElementById('game-sandbox');
-
                 if (iframe) iframe.contentWindow.postMessage(msg, '*');
             }
 
             function recvFrameMessage(evt) {
                 let data = evt.data;
+                if( data.type == '__ready'){
+                    return;
+                }
                 if (socket) socket.emit('action', data);
             }
-            console.log('LOADED');
+
+
+            function onLoad() { 
+                attachToFrame();
+
+                let connected = window.sessionStorage.getItem('connected');
+                if( typeof connected !== 'undefined' && connected == "true" ) {
+                    let displayname = getUsername();
+                    if (displayname.trim().length == 0) {
+                        return;
+                    }
+
+                    note.textContent = 'Status: reconnecting...';
+
+                    setTimeout(()=>{
+                        connect(displayname, () => {
+                            if (socket) 
+                                socket.emit('action', { type: 'join', payload: {} });
+                        });
+                    },2000)
+                    
+                }
+            }
+            onLoad();
+            console.log('Simulator Loaded');
         </script>
     </body>
 </html>

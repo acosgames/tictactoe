@@ -12,26 +12,28 @@ class Cell extends Component {
         super(props);
     }
 
-    clicked() {
-        let id = this.props.id;
-        console.log(id);
-
+    clicked(id) {
+        console.log('clicked cellid: ', id);
         send('pick', { cell: id })
     }
 
     render() {
-
         let id = this.props.id;
-        let cells = this.props['state-cells'];
-        let cellType = cells[id];
-        if (this.props.cells && typeof id != 'undefined') {
-            cellType = this.props.cells[id];
-        }
-
+        let cellType = this.props.celltype || '';
         return (
-            <div className={"cell ttt-" + id} onClick={() => this.clicked()}>{cellType}</div>
+            <div className={"cell ttt-" + id} onClick={() => this.clicked(id)}>{cellType}</div>
         )
     }
 }
 
-export default fs.connect(['state-cells'])(Cell);
+
+
+let onCustomWatched = ownProps => {
+    return ['state-cells-' + ownProps.id];
+};
+let onCustomProps = (key, value, store, ownProps) => {
+    return {
+        celltype: value
+    };
+};
+export default fs.connect([], onCustomWatched, onCustomProps)(Cell);

@@ -36,6 +36,7 @@ io.on('connection', (socket) => {
     socket.user = { username, userid }
     clients[socket.user.userid] = socket;
     console.log('user connected: ' + socket.user.username);
+    socket.emit('connected', socket.user);
 
     socket.on('disconnect', () => {
         console.log('user disconnected: ' + socket.user.username);
@@ -46,18 +47,32 @@ io.on('connection', (socket) => {
     socket.on('action', (msg) => {
         msg.userid = socket.user.userid;
         if (msg && msg.type) {
+
+            let lastGame = getLastGame();
+            if( lastGame && lastGame.killGame ) 
+                return;
+
             if (msg.type == 'join') {
                 msg.username = socket.user.username;
+                if( lastGame && lastGame.players && lastGame.players[msg.userid] )
+                {
+                    socket.emit('game', lastGame);
+                    return;
+                }
+            }
+            else if( msg.type == 'leave' ) {
+                socket.disconnect();
             }
             else {
-                let lastGame = getLastGame();
+                
                 if (lastGame) {
-                    if (lastGame.next.who != '*' && lastGame.next.who != msg.userid)
+                    if (lastGame.next.userid != '*' && lastGame.next.userid != msg.userid)
                         return;
                 }
             }
+            worker.postMessage(msg);
         }
-        worker.postMessage(msg);
+        
     });
 
     socket.on('reload', (msg) => {
@@ -80,6 +95,7 @@ function createWorker(index) {
                     let socket = clients[id];
                     socket.disconnect();
                 }
+                gameHistory = [];
             }, 1000);
 
             return;
