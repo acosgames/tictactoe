@@ -1,16 +1,8 @@
 import fsg from './fsg';
+import ttt from './game';
 
-try {
-    fsg.on('join', (msg) => {
-        fsg.log("JOIN: ", JSON.stringify(msg));
-    });
-    // debugger
-    fsg.on('pick', (msg) => {
-        fsg.log("PICK: " + JSON.stringify(msg));
-    });
+fsg.on('newgame', () => ttt.onNewGame());
+fsg.on('join', () => ttt.onJoin());
+fsg.on('pick', () => ttt.onPick());
 
-    fsg.finish();
-}
-catch (e) {
-    fsg.error(e);
-}
+fsg.submit();

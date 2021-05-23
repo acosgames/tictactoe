@@ -18,19 +18,36 @@ module.exports = Profiler = {
 
     Start: function (name) {
         if (!this.debug) return;
-        profiles[name] = process.hrtime();
+        profiles[name] = process.hrtime.bigint();
     },
 
-    End: function (name) {
+    End: function (name, msWarn) {
         if (!this.debug) return;
         if (!profiles[name]) return;
 
-        this.Memory(name);
+        //this.Memory(name);
 
-        let hrend = process.hrtime(profiles[name]);
-        let seconds = hrend[0];
-        let ms = hrend[1] / 1000000;
-        this.log(name + " Time: %ds %d ms", seconds, ms.toFixed(2));
+        let start = Number(profiles[name]);
+        let end = process.hrtime.bigint();
+        const number = Number(end) - start;
+        const milliseconds = number / 1000000;
+        const seconds = number / 1000000000;
+
+        if (typeof msWarn == 'undefined' || milliseconds < msWarn)
+            this.log(name + " Time: %d ms", milliseconds.toFixed(4));
+        else {
+            let msElapsed = milliseconds;
+            if (msElapsed >= 100) {
+                msElapsed = milliseconds.toFixed(0);
+            } else if (msElapsed >= 10) {
+                msElapsed = milliseconds.toFixed(2);
+            } else {
+                msElapsed = milliseconds.toFixed(4);
+            }
+            let elapsed = '!WARNING! ' + name + ' Time: ' + msElapsed + ' ms is over limit of ' + msWarn + ' ms.'
+            this.log('\x1b[33m%s\x1b[0m', elapsed);
+        }
+
     },
 
     StartLog: function (name) {

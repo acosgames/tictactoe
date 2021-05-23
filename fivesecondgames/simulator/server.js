@@ -1,5 +1,4 @@
-
-
+require('source-map-support').install()
 const path = require('path');
 const express = require('express');
 const app = express();
@@ -7,53 +6,85 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-
 const { Worker } = require("worker_threads")
-// io.set("transports", ['websocket']);
 
 const port = process.env.PORT || 3000;
 
 var userCount = 0;
 var clients = {};
-
+var gameHistory = [];
 var worker = createWorker(1);
 
+function getLastGame() {
+    if (gameHistory.length > 0)
+        return gameHistory[gameHistory.length - 1];
+    return null;
+}
+const stringHashCode = (str) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; ++i) hash = (Math.imul(31, hash) + str.charCodeAt(i)) | 0;
+    return hash;
+};
+
 io.on('connection', (socket) => {
-
     userCount++;
+    let username = socket.handshake.query.username;
+    if (!username)
+        return;
 
-    clients[userCount] = socket;
-    socket.userid = userCount;
-
-    console.log('user connected: player' + socket.userid);
+    let userid = stringHashCode(username);
+    socket.user = { username, userid }
+    clients[socket.user.userid] = socket;
+    console.log('user connected: ' + socket.user.username);
 
     socket.on('disconnect', () => {
-        console.log('user disconnected: player' + socket.userid);
-        delete clients[socket.userid];
+        console.log('user disconnected: ' + socket.user.username);
+        delete clients[socket.user.userid];
         userCount--;
     });
 
     socket.on('action', (msg) => {
-        console.log('message: ', msg);
+        msg.userid = socket.user.userid;
+        if (msg && msg.type) {
+            if (msg.type == 'join') {
+                msg.username = socket.user.username;
+            }
+            else {
+                let lastGame = getLastGame();
+                if (lastGame) {
+                    if (lastGame.next.who != '*' && lastGame.next.who != msg.userid)
+                        return;
+                }
+            }
+        }
         worker.postMessage(msg);
     });
 
     socket.on('reload', (msg) => {
-        for (var id in clients) {
-            let client = clients[id];
-            client.disconnect();
-        }
+        gameHistory = [];
+        worker.postMessage({ type: 'reset' });
     })
 });
 
 function createWorker(index) {
     const worker = new Worker('./fivesecondgames/simulator/worker.js', { workerData: { index } });
-    worker.on("message", (msg) => {
-        console.log("WorkerManager [" + index + "] received: ", msg);
-        // for (var id in clients) {
-        //     clients[id].emit('game', msg);
-        // }
-        io.emit('game', msg);
+    worker.on("message", (game) => {
+
+        console.log("Outgoing Game: ", game);
+        gameHistory.push(game);
+        io.emit('game', game);
+
+        if (game.killGame) {
+            setTimeout(() => {
+                for (var id in clients) {
+                    let socket = clients[id];
+                    socket.disconnect();
+                }
+            }, 1000);
+
+            return;
+        }
+
     });
     worker.on("online", (err) => {
 

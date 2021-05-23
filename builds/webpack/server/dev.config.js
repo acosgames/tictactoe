@@ -1,7 +1,7 @@
 const path = require('path');
 
 var ENTRY_FILE = path.resolve(__dirname, '../../../game-server/index.js');
-var OUTPUT_PATH = path.resolve(__dirname,'../../../builds/server');
+var OUTPUT_PATH = path.resolve(__dirname, '../../../builds/server');
 
 
 console.log("webpack entry: " + ENTRY_FILE);
@@ -11,10 +11,14 @@ module.exports = {
     output: {
         path: OUTPUT_PATH,
         filename: 'server.bundle.js',
+        devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]'
     },
-    devtool: "eval-source-map",
+    devtool: "source-map",
     mode: 'development',
     optimization: {
         usedExports: true,
     },
+    devServer: {
+        writeToDisk: true
+    }
 };

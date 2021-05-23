@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { GameLoader } from './proxy';
 import './index.css';
-import Gamescreen from './gamescreen';
+
+import Gamescreen from './components/gamescreen';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Gamescreen />
-  </React.StrictMode>,
+  <GameLoader component={Gamescreen} />,
   document.getElementById('root')
 );
-

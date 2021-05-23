@@ -3,109 +3,161 @@ const fs = require('fs');
 const { VM, VMScript, NodeVM } = require('vm2');
 const path = require('path');
 const profiler = require('./profiler');
+const chokidar = require('chokidar');
 
-var globalState = { test: '123' };
+var globalGame = null;
 var globalAction = {};
 var globalResult = null;
+var globalDone = null;
 
 var globals = {
     log: (msg) => { console.log(msg) },
     error: (msg) => { console.error(msg) },
-    finish: (newState) => {
+    finish: (newGame) => {
         try {
-            globalResult = cloneObj(newState);
+            globalResult = cloneObj(newGame);
         }
         catch (e) {
             console.error(e);
         }
     },
-    state: () => globalState,
-    action: () => globalAction
+    game: () => globalGame,
+    action: () => globalAction,
+    killGame: () => {
+        globalDone = true;
+    }
 };
 
-const vm = new NodeVM({
-    // console: false,
-    // wasm: false,
-    // eval: true,
-    // fixAsync: false,
-    // timeout: 500,
-    eval: true,
-    nesting : true,
-    require: true,
+const vm = new VM({
+    console: false,
+    wasm: false,
+    eval: false,
+    fixAsync: false,
+    //timeout: 100,
     sandbox: { globals },
 });
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 function cloneObj(obj) {
     if (typeof obj === 'object')
         return JSON.parse(JSON.stringify(obj));
     return obj;
 }
 
-const index = workerData.index;
-
-
 class FSGWorker {
     constructor() {
         this.action = {};
-        this.stateHistory = [];
-
-        // this.bundlePath = './game-server/index.js';
-
+        this.gameHistory = [];
         this.bundlePath = path.join(__dirname, '../../builds/server/server.bundle.js');
-        // this.bundlePath = __dirname + '/../builds/server/bundle.js';
-        this.bundleFile =this.bundlePath;// __dirname + '/../builds/server/bundle.js.map';
         this.gameScript = null;
-
         this.start();
     }
 
+    storeGame(game) {
+        this.gameHistory.push(game);
+        globalGame = JSON.parse(JSON.stringify(globalResult));
+    }
+
+    makeGame(clearPlayers) {
+        if (!globalGame)
+            globalGame = {};
+        if (globalGame.killGame) {
+            delete globalGame['killGame'];
+        }
+        globalGame.state = {};
+        globalGame.rules = {};
+        globalGame.next = {};
+        globalGame.prev = {};
+        globalGame.events = [];
+
+        if (clearPlayers) {
+            globalGame.players = {}
+        }
+        else {
+            let newPlayers = {};
+            for (var userid in globalGame.players) {
+                let player = globalGame.players[userid];
+                newPlayers[userid] = {
+                    name: player.username
+                }
+            }
+            globalGame.players = newPlayers;
+        }
+
+    }
+
     async onAction(msg) {
-        if (!msg.action) {
+        if (!msg.type) {
             console.log("Not an action: ", msg);
             return;
         }
-        globalState = cloneObj(globalState);
+
+        if (!globalGame)
+            this.makeGame();
+
+        if (msg.type == 'join') {
+            let userid = msg.userid;
+            let username = msg.username;
+            if (!userid) {
+                console.error("Invalid player: " + userid);
+                return;
+            }
+
+            if (!(userid in globalGame.players)) {
+                globalGame.players[userid] = {
+                    name: username
+                }
+            }
+            else {
+                globalGame.players[userid].name = username;
+            }
+        }
+        else if (msg.type == 'reset') {
+            this.makeGame();
+        }
+
+        globalGame = cloneObj(globalGame);
         globalAction = cloneObj(msg);
         this.run();
+        this.storeGame(globalResult);
+
+        if (typeof globalDone !== 'undefined' && globalDone) {
+            globalResult.killGame = true;
+            this.makeGame(true);
+            globalDone = false;
+        }
+
+        parentPort.postMessage(globalResult);
+
     }
 
-    async onClose() {
-
-    }
-
-    onException(err) {
-        console.error('Asynchronous error caught.', err);
-    }
 
     async reloadServerBundle(filepath) {
-        
         profiler.Start('Reload Bundle');
-        filepath = filepath || this.bundlePath;
-        var data = fs.readFileSync(filepath, 'utf8');
-        let filename = filepath.split('/');
-        filename = filename[filename.length - 1];
+        {
+            filepath = filepath || this.bundlePath;
+            var data = fs.readFileSync(filepath, 'utf8');
 
-        
-        this.gameScript = new VMScript(data, filepath);
+            this.gameScript = new VMScript(data, this.bundlePath);
+        }
         profiler.End('Reload Bundle');
+
+        let filename = filepath.split(/\/|\\/ig);
+        filename = filename[filename.length - 1];
+        console.log("Bundle Reloaded: " + filename);
+
         return this.gameScript;
     }
 
     async start() {
         try {
             this.reloadServerBundle();
-            fs.watchFile(this.bundlePath, (curr, prev) => {
+            chokidar.watch(this.bundlePath).on('change', (path) => {
                 this.reloadServerBundle();
                 console.log(`${this.bundlePath} file Changed`);
             });
 
             parentPort.on('message', this.onAction.bind(this));
-            parentPort.on('close', this.onClose.bind(this));
             parentPort.postMessage({ status: "READY" });
-            process.on('uncaughtException', this.onException.bind(this))
         }
         catch (e) {
             console.error(e);
@@ -122,17 +174,14 @@ class FSGWorker {
             profiler.Start('Game Logic');
             {
                 vm.run(this.gameScript);
-                parentPort.postMessage(globalResult);
+
             }
-            profiler.End('Game Logic');
+            profiler.End('Game Logic', 100);
         }
         catch (e) {
             console.error(e);
         }
     }
-
-
-
 }
 
 var worker = new FSGWorker();

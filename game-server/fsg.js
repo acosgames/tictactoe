@@ -2,21 +2,64 @@
 class FSG {
     constructor() {
         this.msg = JSON.parse(JSON.stringify(globals.action()));
-        this.originalState = JSON.parse(JSON.stringify(globals.state()));
-        this.nextState = JSON.parse(JSON.stringify(globals.state()));
-        if (!('players' in this.nextState)) {
-            this.nextState.players = {};
+        this.originalGame = JSON.parse(JSON.stringify(globals.game()));
+        this.nextGame = JSON.parse(JSON.stringify(globals.game()));
+        this.isNewGame = false;
+        this.markedForDelete = false;
+
+        if (!this.nextGame || Object.keys(this.nextGame.rules).length == 0) {
+            this.isNewGame = true;
+            this.error('Missing Rules');
         }
+
+        if (this.nextGame) {
+            if (!('state' in this.nextGame)) {
+                this.nextGame.state = {};
+            }
+            if (!('players' in this.nextGame)) {
+                this.nextGame.players = {};
+            }
+
+            //if (!('prev' in this.nextGame)) {
+            this.nextGame.prev = {};
+            //}
+
+            if (!('next' in this.nextGame)) {
+                this.nextGame.next = {};
+            }
+
+            if (!('rules' in this.nextGame)) {
+                this.nextGame.rules = {};
+            }
+
+            //if (!('events' in this.nextGame)) {
+            this.nextGame.events = [];
+            //}
+        }
+
+
+
     }
 
-    on(actionName, cb) {
-        if (this.msg.action != actionName)
+    on(type, cb) {
+        if (this.msg.type != type) {
+            if (type == 'newgame' && this.isNewGame) {
+                let defaultGame = cb(this.msg);
+                this.nextGame = Object.assign({}, defaultGame, { players: this.nextGame.players })
+            }
             return;
+        }
+
         cb(this.msg);
     }
 
-    finish() {
-        globals.finish(this.nextState);
+    submit() {
+        globals.finish(this.nextGame);
+    }
+
+    killGame() {
+        this.markedForDelete = true;
+        globals.killGame();
     }
 
     log(msg) {
@@ -27,35 +70,69 @@ class FSG {
     }
 
     action() {
-        return this.action;
+        return this.msg;
     }
 
     state(key, value) {
 
         if (typeof key === 'undefined')
-            return this.nextState;
+            return this.nextGame.state;
         if (typeof value === 'undefined')
-            return this.nextState[key];
+            return this.nextGame.state[key];
 
-        this.nextState[key] = value;
+        this.nextGame.state[key] = value;
+    }
+
+    playerList() {
+        return Object.keys(this.nextGame.players);
+    }
+    playerCount() {
+        return Object.keys(this.nextGame.players).length;
     }
 
     players(userid, value) {
         if (typeof userid === 'undefined')
-            return this.nextState.players;
+            return this.nextGame.players;
         if (typeof value === 'undefined')
-            return this.nextState.players[userid];
+            return this.nextGame.players[userid];
 
-        this.nextState.players[userid] = value;
+        this.nextGame.players[userid] = value;
     }
 
     rules(rule, value) {
         if (typeof rule === 'undefined')
-            return this.nextState.rules;
+            return this.nextGame.rules;
         if (typeof value === 'undefined')
-            return this.nextState.rules[rule];
+            return this.nextGame.rules[rule];
 
-        this.nextState.rules[rule] = value;
+        this.nextGame.rules[rule] = value;
+    }
+
+    prev(obj) {
+        if (typeof obj === 'object') {
+            this.nextGame.prev = obj;
+        }
+        return this.nextGame.prev;
+    }
+
+    next(obj) {
+        if (typeof obj === 'object') {
+            this.nextGame.next = obj;
+        }
+        return this.nextGame.next;
+    }
+
+    event(name) {
+        this.nextGame.events.push(name);
+    }
+
+    clearEvents() {
+        this.nextGame.events = [];
+    }
+    events(name) {
+        if (typeof name === 'undefined')
+            return this.nextGame.events;
+        this.nextGame.events.push(name);
     }
 }
 

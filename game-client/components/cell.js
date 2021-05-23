@@ -3,9 +3,9 @@
 import React, { Component } from 'react';
 
 import fs from 'flatstore';
-import { send } from './action';
+import { send } from '../proxy';
 
-fs.set('cells', ['x', 'x', 'x', 'o', 'o', 'o', 'o', 'x', 'x'])
+fs.set('state-cells', ['', '', '', '', '', '', '', '', ''])
 
 class Cell extends Component {
     constructor(props) {
@@ -22,7 +22,8 @@ class Cell extends Component {
     render() {
 
         let id = this.props.id;
-        let cellType = '';
+        let cells = this.props['state-cells'];
+        let cellType = cells[id];
         if (this.props.cells && typeof id != 'undefined') {
             cellType = this.props.cells[id];
         }
@@ -33,4 +34,4 @@ class Cell extends Component {
     }
 }
 
-export default fs.connect(['cells'])(Cell);
+export default fs.connect(['state-cells'])(Cell);

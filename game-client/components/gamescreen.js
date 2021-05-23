@@ -1,27 +1,20 @@
 
 import React, { Component } from 'react';
+import AlertPanel from './alertpanel';
 
 import Cell from './cell';
-import { attachMessageEvent } from './action';
+import PlayerList from './playerlist';
 
 class Gamescreen extends Component {
     constructor(props) {
         super(props);
-
-        attachMessageEvent(this.onMessage);
-    }
-
-    onMessage(evt) {
-        let message = evt.data;
-        let origin = evt.origin;
-        let source = evt.source;
-
-        console.log('Received from origin:' + origin, message);
     }
 
     render() {
         return (
             <div className="gamewrapper">
+                <AlertPanel></AlertPanel>
+                <PlayerList></PlayerList>
                 <div className="gamescreen">
                     <Cell id={0}></Cell>
                     <Cell id={1}></Cell>

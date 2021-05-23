@@ -1,11 +1,3 @@
-/*
- * ATTENTION: An "eval-source-map" devtool has been used.
- * This devtool is neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -16,17 +8,335 @@
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n\r\nclass FSG {\r\n    constructor() {\r\n        this.msg = JSON.parse(JSON.stringify(globals.action()));\r\n        this.originalState = JSON.parse(JSON.stringify(globals.state()));\r\n        this.nextState = JSON.parse(JSON.stringify(globals.state()));\r\n        if (!('players' in this.nextState)) {\r\n            this.nextState.players = {};\r\n        }\r\n    }\r\n\r\n    on(actionName, cb) {\r\n        if (this.msg.action != actionName)\r\n            return;\r\n        cb(this.msg);\r\n    }\r\n\r\n    finish() {\r\n        globals.finish(this.nextState);\r\n    }\r\n\r\n    log(msg) {\r\n        globals.log(msg);\r\n    }\r\n    error(msg) {\r\n        globals.error(msg);\r\n    }\r\n\r\n    action() {\r\n        return this.action;\r\n    }\r\n\r\n    state(key, value) {\r\n\r\n        if (typeof key === 'undefined')\r\n            return this.nextState;\r\n        if (typeof value === 'undefined')\r\n            return this.nextState[key];\r\n\r\n        this.nextState[key] = value;\r\n    }\r\n\r\n    players(userid, value) {\r\n        if (typeof userid === 'undefined')\r\n            return this.nextState.players;\r\n        if (typeof value === 'undefined')\r\n            return this.nextState.players[userid];\r\n\r\n        this.nextState.players[userid] = value;\r\n    }\r\n\r\n    rules(rule, value) {\r\n        if (typeof rule === 'undefined')\r\n            return this.nextState.rules;\r\n        if (typeof value === 'undefined')\r\n            return this.nextState.rules[rule];\r\n\r\n        this.nextState.rules[rule] = value;\r\n    }\r\n}\r\n\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new FSG());//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly90aWN0YWN0b2UvLi9nYW1lLXNlcnZlci9mc2cuanM/OThiMSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7O0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUVBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7O0FBRUE7QUFDQTtBQUNBOztBQUVBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUFFQTtBQUNBO0FBQ0E7O0FBRUE7O0FBRUE7QUFDQTtBQUNBO0FBQ0E7O0FBRUE7QUFDQTs7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUVBO0FBQ0E7O0FBRUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUFFQTtBQUNBO0FBQ0E7O0FBRUEsaUVBQWUsU0FBUyIsImZpbGUiOiIuL2dhbWUtc2VydmVyL2ZzZy5qcy5qcyIsInNvdXJjZXNDb250ZW50IjpbIlxyXG5jbGFzcyBGU0cge1xyXG4gICAgY29uc3RydWN0b3IoKSB7XHJcbiAgICAgICAgdGhpcy5tc2cgPSBKU09OLnBhcnNlKEpTT04uc3RyaW5naWZ5KGdsb2JhbHMuYWN0aW9uKCkpKTtcclxuICAgICAgICB0aGlzLm9yaWdpbmFsU3RhdGUgPSBKU09OLnBhcnNlKEpTT04uc3RyaW5naWZ5KGdsb2JhbHMuc3RhdGUoKSkpO1xyXG4gICAgICAgIHRoaXMubmV4dFN0YXRlID0gSlNPTi5wYXJzZShKU09OLnN0cmluZ2lmeShnbG9iYWxzLnN0YXRlKCkpKTtcclxuICAgICAgICBpZiAoISgncGxheWVycycgaW4gdGhpcy5uZXh0U3RhdGUpKSB7XHJcbiAgICAgICAgICAgIHRoaXMubmV4dFN0YXRlLnBsYXllcnMgPSB7fTtcclxuICAgICAgICB9XHJcbiAgICB9XHJcblxyXG4gICAgb24oYWN0aW9uTmFtZSwgY2IpIHtcclxuICAgICAgICBpZiAodGhpcy5tc2cuYWN0aW9uICE9IGFjdGlvbk5hbWUpXHJcbiAgICAgICAgICAgIHJldHVybjtcclxuICAgICAgICBjYih0aGlzLm1zZyk7XHJcbiAgICB9XHJcblxyXG4gICAgZmluaXNoKCkge1xyXG4gICAgICAgIGdsb2JhbHMuZmluaXNoKHRoaXMubmV4dFN0YXRlKTtcclxuICAgIH1cclxuXHJcbiAgICBsb2cobXNnKSB7XHJcbiAgICAgICAgZ2xvYmFscy5sb2cobXNnKTtcclxuICAgIH1cclxuICAgIGVycm9yKG1zZykge1xyXG4gICAgICAgIGdsb2JhbHMuZXJyb3IobXNnKTtcclxuICAgIH1cclxuXHJcbiAgICBhY3Rpb24oKSB7XHJcbiAgICAgICAgcmV0dXJuIHRoaXMuYWN0aW9uO1xyXG4gICAgfVxyXG5cclxuICAgIHN0YXRlKGtleSwgdmFsdWUpIHtcclxuXHJcbiAgICAgICAgaWYgKHR5cGVvZiBrZXkgPT09ICd1bmRlZmluZWQnKVxyXG4gICAgICAgICAgICByZXR1cm4gdGhpcy5uZXh0U3RhdGU7XHJcbiAgICAgICAgaWYgKHR5cGVvZiB2YWx1ZSA9PT0gJ3VuZGVmaW5lZCcpXHJcbiAgICAgICAgICAgIHJldHVybiB0aGlzLm5leHRTdGF0ZVtrZXldO1xyXG5cclxuICAgICAgICB0aGlzLm5leHRTdGF0ZVtrZXldID0gdmFsdWU7XHJcbiAgICB9XHJcblxyXG4gICAgcGxheWVycyh1c2VyaWQsIHZhbHVlKSB7XHJcbiAgICAgICAgaWYgKHR5cGVvZiB1c2VyaWQgPT09ICd1bmRlZmluZWQnKVxyXG4gICAgICAgICAgICByZXR1cm4gdGhpcy5uZXh0U3RhdGUucGxheWVycztcclxuICAgICAgICBpZiAodHlwZW9mIHZhbHVlID09PSAndW5kZWZpbmVkJylcclxuICAgICAgICAgICAgcmV0dXJuIHRoaXMubmV4dFN0YXRlLnBsYXllcnNbdXNlcmlkXTtcclxuXHJcbiAgICAgICAgdGhpcy5uZXh0U3RhdGUucGxheWVyc1t1c2VyaWRdID0gdmFsdWU7XHJcbiAgICB9XHJcblxyXG4gICAgcnVsZXMocnVsZSwgdmFsdWUpIHtcclxuICAgICAgICBpZiAodHlwZW9mIHJ1bGUgPT09ICd1bmRlZmluZWQnKVxyXG4gICAgICAgICAgICByZXR1cm4gdGhpcy5uZXh0U3RhdGUucnVsZXM7XHJcbiAgICAgICAgaWYgKHR5cGVvZiB2YWx1ZSA9PT0gJ3VuZGVmaW5lZCcpXHJcbiAgICAgICAgICAgIHJldHVybiB0aGlzLm5leHRTdGF0ZS5ydWxlc1tydWxlXTtcclxuXHJcbiAgICAgICAgdGhpcy5uZXh0U3RhdGUucnVsZXNbcnVsZV0gPSB2YWx1ZTtcclxuICAgIH1cclxufVxyXG5cclxuZXhwb3J0IGRlZmF1bHQgbmV3IEZTRygpOyJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./game-server/fsg.js\n");
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+
+class FSG {
+    constructor() {
+        this.msg = JSON.parse(JSON.stringify(globals.action()));
+        this.originalGame = JSON.parse(JSON.stringify(globals.game()));
+        this.nextGame = JSON.parse(JSON.stringify(globals.game()));
+        this.isNewGame = false;
+        this.markedForDelete = false;
+
+        if (!this.nextGame || Object.keys(this.nextGame.rules).length == 0) {
+            this.isNewGame = true;
+            this.error('Missing Rules');
+        }
+
+        if (this.nextGame) {
+            if (!('state' in this.nextGame)) {
+                this.nextGame.state = {};
+            }
+            if (!('players' in this.nextGame)) {
+                this.nextGame.players = {};
+            }
+
+            //if (!('prev' in this.nextGame)) {
+            this.nextGame.prev = {};
+            //}
+
+            if (!('next' in this.nextGame)) {
+                this.nextGame.next = {};
+            }
+
+            if (!('rules' in this.nextGame)) {
+                this.nextGame.rules = {};
+            }
+
+            //if (!('events' in this.nextGame)) {
+            this.nextGame.events = [];
+            //}
+        }
+
+
+
+    }
+
+    on(type, cb) {
+        if (this.msg.type != type) {
+            if (type == 'newgame' && this.isNewGame) {
+                let defaultGame = cb(this.msg);
+                this.nextGame = Object.assign({}, defaultGame, { players: this.nextGame.players })
+            }
+            return;
+        }
+
+        cb(this.msg);
+    }
+
+    submit() {
+        globals.finish(this.nextGame);
+    }
+
+    killGame() {
+        this.markedForDelete = true;
+        globals.killGame();
+    }
+
+    log(msg) {
+        globals.log(msg);
+    }
+    error(msg) {
+        globals.error(msg);
+    }
+
+    action() {
+        return this.msg;
+    }
+
+    state(key, value) {
+
+        if (typeof key === 'undefined')
+            return this.nextGame.state;
+        if (typeof value === 'undefined')
+            return this.nextGame.state[key];
+
+        this.nextGame.state[key] = value;
+    }
+
+    playerList() {
+        return Object.keys(this.nextGame.players);
+    }
+    playerCount() {
+        return Object.keys(this.nextGame.players).length;
+    }
+
+    players(userid, value) {
+        if (typeof userid === 'undefined')
+            return this.nextGame.players;
+        if (typeof value === 'undefined')
+            return this.nextGame.players[userid];
+
+        this.nextGame.players[userid] = value;
+    }
+
+    rules(rule, value) {
+        if (typeof rule === 'undefined')
+            return this.nextGame.rules;
+        if (typeof value === 'undefined')
+            return this.nextGame.rules[rule];
+
+        this.nextGame.rules[rule] = value;
+    }
+
+    prev(obj) {
+        if (typeof obj === 'object') {
+            this.nextGame.prev = obj;
+        }
+        return this.nextGame.prev;
+    }
+
+    next(obj) {
+        if (typeof obj === 'object') {
+            this.nextGame.next = obj;
+        }
+        return this.nextGame.next;
+    }
+
+    event(name) {
+        this.nextGame.events.push(name);
+    }
+
+    clearEvents() {
+        this.nextGame.events = [];
+    }
+    events(name) {
+        if (typeof name === 'undefined')
+            return this.nextGame.events;
+        this.nextGame.events.push(name);
+    }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new FSG());
 
 /***/ }),
 
-/***/ "./game-server/index.js":
-/*!******************************!*\
-  !*** ./game-server/index.js ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
+/***/ "./game-server/game.js":
+/*!*****************************!*\
+  !*** ./game-server/game.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("/* harmony import */ var _fsg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fsg */ \"./game-server/fsg.js\");\n\r\n\r\ntry {\r\n    _fsg__WEBPACK_IMPORTED_MODULE_0__.default.on('join', (msg) => {\r\n        _fsg__WEBPACK_IMPORTED_MODULE_0__.default.log(\"JOIN: \", JSON.stringify(msg));\r\n    });\r\n    // debugger\r\n    _fsg__WEBPACK_IMPORTED_MODULE_0__.default.on('pick', (msg) => {\r\n        _fsg__WEBPACK_IMPORTED_MODULE_0__.default.log(\"PICK: \" + JSON.stringify(msg));\r\n    });\r\n\r\n    _fsg__WEBPACK_IMPORTED_MODULE_0__.default.finish();\r\n}\r\ncatch (e) {\r\n    _fsg__WEBPACK_IMPORTED_MODULE_0__.default.error(e);\r\n}//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly90aWN0YWN0b2UvLi9nYW1lLXNlcnZlci9pbmRleC5qcz80Y2E5Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFBd0I7O0FBRXhCO0FBQ0EsSUFBSSw0Q0FBTTtBQUNWLFFBQVEsNkNBQU87QUFDZixLQUFLO0FBQ0w7QUFDQSxJQUFJLDRDQUFNO0FBQ1YsUUFBUSw2Q0FBTztBQUNmLEtBQUs7O0FBRUwsSUFBSSxnREFBVTtBQUNkO0FBQ0E7QUFDQSxJQUFJLCtDQUFTO0FBQ2IiLCJmaWxlIjoiLi9nYW1lLXNlcnZlci9pbmRleC5qcy5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBmc2cgZnJvbSAnLi9mc2cnO1xyXG5cclxudHJ5IHtcclxuICAgIGZzZy5vbignam9pbicsIChtc2cpID0+IHtcclxuICAgICAgICBmc2cubG9nKFwiSk9JTjogXCIsIEpTT04uc3RyaW5naWZ5KG1zZykpO1xyXG4gICAgfSk7XHJcbiAgICAvLyBkZWJ1Z2dlclxyXG4gICAgZnNnLm9uKCdwaWNrJywgKG1zZykgPT4ge1xyXG4gICAgICAgIGZzZy5sb2coXCJQSUNLOiBcIiArIEpTT04uc3RyaW5naWZ5KG1zZykpO1xyXG4gICAgfSk7XHJcblxyXG4gICAgZnNnLmZpbmlzaCgpO1xyXG59XHJcbmNhdGNoIChlKSB7XHJcbiAgICBmc2cuZXJyb3IoZSk7XHJcbn0iXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./game-server/index.js\n");
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _fsg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fsg */ "./game-server/fsg.js");
+
+
+let defaultGame = {
+    state: {
+        cells: ['', '', '', '', '', '', '', '', ''],
+        startPlayer: ''
+    },
+    players: {},
+    rules: {
+        bestOf: 5,
+        maxPlayers: 2
+    },
+    next: {},
+    events: []
+}
+
+class Tictactoe {
+
+    onNewGame() {
+        return defaultGame
+    }
+
+    onJoin() {
+        let action = _fsg__WEBPACK_IMPORTED_MODULE_0__.default.action();
+        if (!action.userid)
+            return;
+
+        //if player count reached required limit, start the game
+        let maxPlayers = _fsg__WEBPACK_IMPORTED_MODULE_0__.default.rules('maxPlayers') || 2;
+        let playerCount = _fsg__WEBPACK_IMPORTED_MODULE_0__.default.playerCount();
+        if (playerCount >= maxPlayers) {
+            this.newRound();
+        }
+    }
+
+    onLeave() {
+
+    }
+
+    onPick() {
+        let state = _fsg__WEBPACK_IMPORTED_MODULE_0__.default.state();
+        let action = _fsg__WEBPACK_IMPORTED_MODULE_0__.default.action();
+        let user = _fsg__WEBPACK_IMPORTED_MODULE_0__.default.players(action.userid);
+
+        //get the picked cell
+        let cellid = action.payload.cell;
+        let cell = state.cells[cellid];
+
+        // block picking cells with markings, and send error
+        if (cell.length > 0) {
+            _fsg__WEBPACK_IMPORTED_MODULE_0__.default.next({
+                who: action.userid,
+                action: 'pick',
+                error: 'NOT_EMPTY'
+            })
+            return;
+        }
+
+        //mark the selected cell
+        let type = user.type;
+        let userid = action.userid;
+        state.cells[cellid] = type;
+
+        _fsg__WEBPACK_IMPORTED_MODULE_0__.default.event('picked');
+        _fsg__WEBPACK_IMPORTED_MODULE_0__.default.prev({
+            cellid, userid
+        })
+
+        if (this.checkWinner()) {
+            return;
+        }
+
+        this.selectNextPlayer();
+    }
+
+    newRound() {
+        let playerList = _fsg__WEBPACK_IMPORTED_MODULE_0__.default.playerList();
+
+        //select the starting player
+        if (!this.startPlayer || this.startPlayer.length == 0) {
+            this.startPlayer = this.selectNextPlayer(playerList[Math.floor(Math.random() * playerList.length)]);
+        }
+        else {
+            this.startPlayer = this.selectNextPlayer(this.startPlayer);
+        }
+
+        //set the starting player, and set type for other player
+        let players = _fsg__WEBPACK_IMPORTED_MODULE_0__.default.players();
+        players[this.startPlayer].type = 'x';
+        for (var id in players) {
+            if (id == this.startPlayer)
+                continue;
+            let player = players[id];
+            player.type = 'o';
+        }
+    }
+
+    selectNextPlayer(userid) {
+        let action = _fsg__WEBPACK_IMPORTED_MODULE_0__.default.action();
+        let players = _fsg__WEBPACK_IMPORTED_MODULE_0__.default.playerList();
+        userid = userid || action.userid;
+        //only 2 players so just filter the current player
+        let remaining = players.filter(x => x != action.userid);
+        _fsg__WEBPACK_IMPORTED_MODULE_0__.default.next({
+            who: remaining[0],
+            action: 'pick'
+        });
+        return remaining[0];
+    }
+
+
+    // Check each strip that makes a win
+    //      0  |  1  |  2
+    //    -----------------
+    //      3  |  4  |  5
+    //    -----------------
+    //      6  |  7  |  8
+    checkWinner() {
+        if (this.check([0, 1, 2])) return true;
+        if (this.check([3, 4, 5])) return true;
+        if (this.check([6, 7, 8])) return true;
+        if (this.check([0, 3, 6])) return true;
+        if (this.check([1, 4, 7])) return true;
+        if (this.check([2, 5, 8])) return true;
+        if (this.check([0, 4, 8])) return true;
+        if (this.check([6, 4, 2])) return true;
+        return false;
+    }
+
+    // checks if a strip has matching types
+    check(strip) {
+        let cells = _fsg__WEBPACK_IMPORTED_MODULE_0__.default.state().cells;
+        let first = cells[strip[0]];
+        if (first == '')
+            return false;
+        let filtered = strip.filter(id => cells[id] == first);
+        if (filtered.length == 3 && filtered.length == strip.length) {
+            this.setWinner(first, strip);
+            return true;
+        }
+        return false;
+    }
+
+    findPlayerWithType(type) {
+        let players = _fsg__WEBPACK_IMPORTED_MODULE_0__.default.players();
+        for (var userid in players) {
+            let player = players[userid];
+            if (player.type == type)
+                return userid;
+        }
+        return null;
+    }
+    // set the winner event and data
+    setWinner(type, strip) {
+        //find user who matches the win type
+        let userid = this.findPlayerWithType(type);
+        let player = _fsg__WEBPACK_IMPORTED_MODULE_0__.default.players(userid);
+        if (!player) {
+            player.userid = 'unknown player';
+        }
+        _fsg__WEBPACK_IMPORTED_MODULE_0__.default.clearEvents();
+        _fsg__WEBPACK_IMPORTED_MODULE_0__.default.event('winner')
+        _fsg__WEBPACK_IMPORTED_MODULE_0__.default.prev({
+            pick: type,
+            strip: strip,
+            userid: userid
+        })
+        _fsg__WEBPACK_IMPORTED_MODULE_0__.default.next({});
+
+        _fsg__WEBPACK_IMPORTED_MODULE_0__.default.killGame();
+    }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new Tictactoe());
 
 /***/ })
 
@@ -75,11 +385,24 @@ eval("/* harmony import */ var _fsg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_req
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module can't be inlined because the eval-source-map devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./game-server/index.js");
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+/*!******************************!*\
+  !*** ./game-server/index.js ***!
+  \******************************/
+/* harmony import */ var _fsg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fsg */ "./game-server/fsg.js");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./game */ "./game-server/game.js");
+
+
+
+_fsg__WEBPACK_IMPORTED_MODULE_0__.default.on('newgame', () => _game__WEBPACK_IMPORTED_MODULE_1__.default.onNewGame());
+_fsg__WEBPACK_IMPORTED_MODULE_0__.default.on('join', () => _game__WEBPACK_IMPORTED_MODULE_1__.default.onJoin());
+_fsg__WEBPACK_IMPORTED_MODULE_0__.default.on('pick', () => _game__WEBPACK_IMPORTED_MODULE_1__.default.onPick());
+
+_fsg__WEBPACK_IMPORTED_MODULE_0__.default.submit();
+})();
+
 /******/ })()
 ;
+//# sourceMappingURL=server.bundle.js.map

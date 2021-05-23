@@ -34,6 +34,22 @@
                 margin: 0;
                 padding: 0;
             }
+
+            #wrapper {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            #wrapper .sidebar {
+                flex-basis: 20rem;
+                flex-grow: 1;
+            }
+
+            #wrapper .maincontent {
+                flex-basis: 0;
+                flex-grow: 999;
+            }
+
             #wrapper,
             #game-sandbox {
                 width: 100%;
@@ -43,24 +59,81 @@
             }
         </style>
         <div id="wrapper">
-            <button id="joingame" type="button" class="btn btn-primary">Join Game</button>
-            <button id="reload" type="button" class="btn btn-primary">Reload</button>
-            <iframe id="game-sandbox" sandbox="allow-scripts" src="/iframe"> </iframe>
+            <div class="sidebar">
+                <form>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="username"
+                            aria-describedby="userHelp"
+                            placeholder="Enter username"
+                        />
+                        <small id="userHelp" class="form-text text-muted">Enter a username to join the game</small>
+                    </div>
+                    <button id="joingame" type="button" class="btn btn-primary">Join Game</button>
+                    <button id="reload" type="button" class="btn btn-primary">Reload</button>
+                </form>
+            </div>
+            <div class="maincontent">
+                <iframe id="game-sandbox" sandbox="allow-scripts" src="/iframe"> </iframe>
+            </div>
         </div>
 
         <script>
-            const socket = io('ws://localhost:3000', { transports: ['websocket'], upgrade: true });
+            var socket = null;
 
-            socket.on('game', (message) => {
-                console.log('Game: ', message);
-                sendFrameMessage(message);
-            });
+            function connect(username, onjoin) {
+                if (socket && !socket.disconnected) {
+                    socket.disconnect();
+                }
+
+                socket = io('ws://localhost:3000', {
+                    transports: ['websocket'],
+                    upgrade: true,
+                    query: 'username=' + username,
+                });
+
+                if (onjoin) socket.on('connect', onjoin);
+                socket.on('game', (message) => {
+                    console.log('Game: ', message);
+                    sendFrameMessage(message);
+                });
+            }
+
+            function updateUser(username) {
+                if (!username || username.length == 0) return;
+                window.sessionStorage.setItem('name', username);
+                // window.sessionStorage.setItem(username, stringHashCode(username));
+            }
+
+            function getUsername() {
+                return window.sessionStorage.getItem('name') || '';
+            }
+
+            let nameField = document.getElementById('username');
+            nameField.value = getUsername();
+
+            nameField.onkeyup = (event) => {
+                let username = event.target.value;
+                updateUser(username);
+            };
+
             document.getElementById('joingame').onclick = (event) => {
-                socket.emit('action', { action: 'join', payload: { id: 1, displayname: 'joe' } });
+                let displayname = getUsername();
+                if (displayname.trim().length == 0) {
+                    alert('Please enter a username.');
+                    return;
+                }
+
+                connect(displayname, () => {
+                    if (socket) socket.emit('action', { type: 'join', payload: {} });
+                });
             };
 
             document.getElementById('reload').onclick = (event) => {
-                socket.emit('reload', 'now!');
+                if (socket) socket.emit('reload', 'now!');
             };
 
             attachToFrame();
@@ -75,12 +148,13 @@
 
             function sendFrameMessage(msg) {
                 let iframe = document.getElementById('game-sandbox');
+
                 if (iframe) iframe.contentWindow.postMessage(msg, '*');
             }
 
             function recvFrameMessage(evt) {
                 let data = evt.data;
-                socket.emit('action', data);
+                if (socket) socket.emit('action', data);
             }
             console.log('LOADED');
         </script>
