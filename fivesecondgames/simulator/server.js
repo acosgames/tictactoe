@@ -8,7 +8,7 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const { Worker } = require("worker_threads")
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3100;
 
 var userCount = 0;
 var clients = {};
@@ -49,22 +49,21 @@ io.on('connection', (socket) => {
         if (msg && msg.type) {
 
             let lastGame = getLastGame();
-            if( lastGame && lastGame.killGame ) 
+            if (lastGame && lastGame.killGame)
                 return;
 
             if (msg.type == 'join') {
                 msg.username = socket.user.username;
-                if( lastGame && lastGame.players && lastGame.players[msg.userid] )
-                {
+                if (lastGame && lastGame.players && lastGame.players[msg.userid]) {
                     socket.emit('game', lastGame);
                     return;
                 }
             }
-            else if( msg.type == 'leave' ) {
+            else if (msg.type == 'leave') {
                 socket.disconnect();
             }
             else {
-                
+
                 if (lastGame) {
                     if (lastGame.next.userid != '*' && lastGame.next.userid != msg.userid)
                         return;
@@ -72,7 +71,7 @@ io.on('connection', (socket) => {
             }
             worker.postMessage(msg);
         }
-        
+
     });
 
     socket.on('reload', (msg) => {

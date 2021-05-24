@@ -73,12 +73,10 @@
                         />
                         <small id="userHelp" class="form-text text-muted">Enter a username to join the game</small>
                     </div>
-                    
+
                     <button id="joingame" type="button" class="btn btn-primary">Join Game</button>
                     <button id="leavegame" type="button" class="btn btn-primary">Leave Game</button>
                     <button id="reload" type="button" class="btn btn-primary">Reload</button>
-
-                    
                 </form>
             </div>
             <div class="maincontent">
@@ -99,8 +97,6 @@
             iframe.style.display = 'none';
 
             function connect(username, onjoin) {
-
-                
                 note.textContent = 'Status: connecting...';
 
                 if (socket && !socket.disconnected) {
@@ -114,8 +110,7 @@
                 });
 
                 socket.on('connect', (evt) => {
-                    if(onjoin)
-                        onjoin(evt);
+                    if (onjoin) onjoin(evt);
                     window.sessionStorage.setItem('connected', true);
 
                     note.textContent = 'Status: connected';
@@ -124,15 +119,12 @@
 
                 socket.on('connected', (message) => {
                     socket.user = message;
-                   
-                })
+                });
                 socket.on('game', (message) => {
                     let localPlayer = message.players[socket.user.userid];
-                    if( localPlayer )
-                        note.textContent = 'Status: ingame';
+                    if (localPlayer) note.textContent = 'Status: ingame';
                     console.log('Game: ', message);
 
-                    
                     message.local = Object.assign({}, socket.user, localPlayer);
                     sendFrameMessage(message);
                 });
@@ -140,7 +132,7 @@
                 socket.on('disconnect', () => {
                     note.textContent = 'Status: offline';
                     window.sessionStorage.setItem('connected', false);
-                })
+                });
             }
 
             function updateUser(username) {
@@ -153,11 +145,9 @@
                 return window.sessionStorage.getItem('name') || '';
             }
 
-            
-
             document.getElementById('leavegame').onclick = (event) => {
-                if( socket ) {
-                    socket.emit('action', { type: 'leave', payload: {}});
+                if (socket) {
+                    socket.emit('action', { type: 'leave', payload: {} });
                 }
                 iframe.style.display = 'none';
                 note.textContent = 'Status: offline';
@@ -171,7 +161,6 @@
                 }
 
                 connect(displayname, () => {
-                    
                     if (socket) socket.emit('action', { type: 'join', payload: {} });
                 });
             };
@@ -194,18 +183,17 @@
 
             function recvFrameMessage(evt) {
                 let data = evt.data;
-                if( data.type == '__ready'){
+                if (data.type == '__ready') {
                     return;
                 }
                 if (socket) socket.emit('action', data);
             }
 
-
-            function onLoad() { 
+            function onLoad() {
                 attachToFrame();
 
                 let connected = window.sessionStorage.getItem('connected');
-                if( typeof connected !== 'undefined' && connected == "true" ) {
+                if (typeof connected !== 'undefined' && connected == 'true') {
                     let displayname = getUsername();
                     if (displayname.trim().length == 0) {
                         return;
@@ -213,13 +201,11 @@
 
                     note.textContent = 'Status: reconnecting...';
 
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         connect(displayname, () => {
-                            if (socket) 
-                                socket.emit('action', { type: 'join', payload: {} });
+                            if (socket) socket.emit('action', { type: 'join', payload: {} });
                         });
-                    },2000)
-                    
+                    }, 500);
                 }
             }
             onLoad();

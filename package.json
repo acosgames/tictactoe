@@ -2,6 +2,7 @@
   "name": "tictactoe",
   "version": "0.1.0",
   "dependencies": {
+    "axios": "^0.21.1",
     "express": "^4.17.1",
     "flatstore": "^1.0.2",
     "nodemon": "^2.0.7",
@@ -15,7 +16,10 @@
     "client-dev": "./node_modules/.bin/webpack --config builds/webpack/client/dev.config.js --watch ./game-client",
     "server-dev": "./node_modules/.bin/webpack --config builds/webpack/server/dev.config.js --watch ./game-server",
     "simulator": "nodemon --inspect --enable-source-maps --watch fivesecondgames/simulator/*.js -r source-map-support/register fivesecondgames/simulator/server.js",
-    "simulator-sync": "./node_modules/.bin/wait-on http://localhost:3000/ && browser-sync start --no-ghost-mode --ws --port 8080 --proxy localhost:3000 --files=./game-client/* --files=./builds/client/client.bundle.js --files ./fivesecondgames/simulator/*.html  --ignore=node_modules"
+    "simulator-sync": "./node_modules/.bin/wait-on http://localhost:3100/ && browser-sync start --no-ghost-mode --ws --port 3200 --proxy localhost:3100 --files=./game-client/* --files=./builds/client/client.bundle.js --files ./fivesecondgames/simulator/*.html  --ignore=node_modules",
+    "deploy": "npm run build:client && npm run build:server && node --inspect fivesecondgames/simulator/deploy.js",
+    "build:client": "./node_modules/.bin/webpack --config builds/webpack/client/prod.config.js",
+    "build:server": "./node_modules/.bin/webpack --config builds/webpack/server/prod.config.js"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
@@ -28,6 +32,7 @@
     "concurrently": "^6.1.0",
     "core-js": "^3.12.1",
     "css-loader": "^5.2.5",
+    "form-data": "^4.0.0",
     "sass": "^1.33.0",
     "sass-loader": "^11.1.1",
     "source-map-support": "^0.5.19",
@@ -35,6 +40,7 @@
     "url-loader": "^4.1.1",
     "wait-on": "^5.3.0",
     "webpack": "^5.37.1",
-    "webpack-cli": "^4.7.0"
+    "webpack-cli": "^4.7.0",
+    "yargs": "^17.0.1"
   }
 }

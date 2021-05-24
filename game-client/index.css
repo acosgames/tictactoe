@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
-
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
@@ -11,24 +10,29 @@ body {
 }
 
 span.nextTag {
-    font-size:1.2em;
-    color:gold;
-    font-weight:bold;
-    display:inline-block;
-    width:30px;
-    text-align:center;
+    font-size: 1.2em;
+    color: gold;
+    font-weight: bold;
+    display: inline-block;
+    width: 30px;
+    text-align: center;
 }
 
 span.ttt-type {
-    font-size:1.2em;
+    font-size: 1.2em;
 }
 code {
     /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace; */
 }
 
 .gamescreen {
-    width: 600px;
-    height: 600px;
+    width: 300px;
+    height: 300px;
+    position: relative;
+}
+.gamearea {
+    width: 300px;
+    height: 300px;
     margin: 0 auto;
     background-color: none;
     color: #333;
@@ -37,60 +41,114 @@ code {
 
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    z-index: 5;
 }
 
-.gamescreen div {
+.color-X {
+    color: #b77701;
+    stroke: #b77701;
+}
+
+.color-O {
+    color: #0459d2;
+    stroke: #0459d2;
+}
+.line {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.alert-panel {
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+}
+
+.alert-primary {
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+.alert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.gamewrapper {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2em;
+}
+
+#wrapper .player-panel {
+    flex-basis: 20rem;
+    flex-grow: 1;
+}
+
+#wrapper .gamescreen {
+    flex-basis: 0;
+    flex-grow: 999;
+}
+
+.gamearea div {
     border: 6px solid #2c3e50;
     border-radius: 0px;
     font-family: Helvetica;
     font-weight: bold;
-    font-size: 10em;
+    font-size: 5em;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: left;
 
     cursor: pointer;
 }
 
-.gamescreen div:hover {
+.gamearea div:hover {
     background-color: #ccc;
 }
 
-.gamescreen div.ttt-0 {
+.gamearea div.ttt-0 {
     border-top: 0;
     border-left: 0;
 }
 
-.gamescreen div.ttt-1 {
+.gamearea div.ttt-1 {
     border-top: 0;
 }
 
-.gamescreen div.ttt-2 {
+.gamearea div.ttt-2 {
     border-top: 0;
     border-right: 0;
 }
 
-.gamescreen div.ttt-3 {
+.gamearea div.ttt-3 {
     border-left: 0;
 }
 
-.gamescreen div.ttt-4 {
+.gamearea div.ttt-4 {
 }
 
-.gamescreen div.ttt-5 {
+.gamearea div.ttt-5 {
     border-right: 0;
 }
 
-.gamescreen div.ttt-6 {
+.gamearea div.ttt-6 {
     border-left: 0;
     border-bottom: 0;
 }
 
-.gamescreen div.ttt-7 {
+.gamearea div.ttt-7 {
     border-bottom: 0;
 }
 
-.gamescreen div.ttt-8 {
+.gamearea div.ttt-8 {
     border-right: 0;
     border-bottom: 0;
 }

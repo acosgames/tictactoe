@@ -25,7 +25,7 @@ class Tictactoe {
         if (!action.userid)
             return;
 
-        if( fsg.players(action.userid).type ) 
+        if (fsg.players(action.userid).type)
             return;
         //if player count reached required limit, start the game
         let maxPlayers = fsg.rules('maxPlayers') || 2;
@@ -40,12 +40,12 @@ class Tictactoe {
         let action = fsg.action();
 
         let otherPlayerId = null;
-        if( players[action.userid] ) {
+        if (players[action.userid]) {
             otherPlayerId = this.selectNextPlayer(action.userid);
             delete players[action.userid];
         }
 
-        if( otherPlayerId ) {
+        if (otherPlayerId) {
             let otherPlayer = players[otherPlayerId];
             this.setWinner(otherPlayer.type, 'forfeit')
         }
@@ -100,9 +100,9 @@ class Tictactoe {
 
         //set the starting player, and set type for other player
         let players = fsg.players();
-        for (var id in players) 
-            players[id].type = 'o';
-        players[this.startPlayer].type = 'x';
+        for (var id in players)
+            players[id].type = 'O';
+        players[this.startPlayer].type = 'X';
     }
 
     selectNextPlayer(userid) {
@@ -142,7 +142,7 @@ class Tictactoe {
         let cells = fsg.state().cells;
         let filtered = cells.filter(v => v == '');
 
-        if( filtered.length == 0 ) {
+        if (filtered.length == 0) {
             this.setTie();
         }
         return filtered.length == 0;
@@ -172,12 +172,13 @@ class Tictactoe {
         return null;
     }
 
+
     setTie() {
         fsg.clearEvents();
         fsg.event('tie')
         fsg.next({});
         fsg.prev({})
-        
+
         fsg.killGame();
     }
     // set the winner event and data
@@ -197,7 +198,7 @@ class Tictactoe {
         })
         fsg.next({});
 
-        fsg.killGame();
+        // fsg.killGame();
     }
 }
 

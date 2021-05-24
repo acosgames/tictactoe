@@ -27,20 +27,31 @@ class PlayerList extends Component {
 
         let nextTag = nextUserId == local.userid ? " > " : "";
         let type = local.type || '';
-        players.push(<li>
-            <h2><span className="nextTag">{nextTag}</span>You are <span className="ttt-type">{type.toUpperCase()}</span></h2>
+        let color = ''
+        if (type.length > 0) {
+            color = "color-" + type;
+            type = 'You are ' + type.toUpperCase();
+        }
+
+
+        players.push(<li key={local.userid}>
+            <h2 className={color}><span className="nextTag">{nextTag}</span><span className="ttt-type">{type}</span></h2>
         </li>)
 
         //draw other players
         for (var id in this.props.players) {
-            if( local.userid == id )
+            if (local.userid == id)
                 continue;
             let player = this.props.players[id];
             nextTag = nextUserId == id ? " > " : "";
             type = player.type || '';
+            let color = "color-" + type;
+            if (type.length > 0) {
+                type = 'is ' + type.toUpperCase();
+            }
             players.push(
-                <li>
-                    <h3><span className="nextTag">{nextTag}</span>{player.name} is <span className="ttt-type">{type.toUpperCase()}</span></h3>
+                <li key={id}>
+                    <h3 className={color}><span className="nextTag">{nextTag}</span>{player.name} <span className="ttt-type">{type}</span></h3>
                 </li>
             )
         }
@@ -49,10 +60,11 @@ class PlayerList extends Component {
 
     render() {
         return (
-            <ul className="playerlist">
-                {this.renderPlayers()}
-            </ul>
-
+            <div className="player-panel">
+                <ul className="playerlist">
+                    {this.renderPlayers()}
+                </ul>
+            </div>
         )
     }
 
