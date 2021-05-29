@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 
 import fs from 'flatstore';
-import { send } from '../proxy';
+import { send } from '../fsg';
 
 fs.set('state-cells', ['', '', '', '', '', '', '', '', ''])
 
@@ -20,8 +20,6 @@ class Cell extends Component {
 
     //set up defaults on page mount
     componentDidMount() {
-
-
         //add dimensions listener for window resizing
         window.addEventListener('resize', this.updatePosition.bind(this));
     }
