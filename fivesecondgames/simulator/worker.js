@@ -95,8 +95,8 @@ class FSGWorker {
             this.makeGame();
 
         if (msg.type == 'join') {
-            let userid = msg.userid;
-            let username = msg.username;
+            let userid = msg.user.id;
+            let username = msg.user.name;
             if (!userid) {
                 console.error("Invalid player: " + userid);
                 return;

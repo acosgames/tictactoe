@@ -8,7 +8,7 @@ class AlertPanel extends Component {
     }
 
     eventMessage(name) {
-        let userid = fs.get('prev-userid');
+        let userid = fs.get('prev-id');
         let players = fs.get('players');
         let player = players[userid];
 
@@ -19,7 +19,7 @@ class AlertPanel extends Component {
             }
             case 'winner': {
                 let strip = fs.get('prev-strip');
-                if( strip === 'forfeit' )
+                if (strip === 'forfeit')
                     return player.name + ' wins by forfeit!';
                 return player.name + ' won the game!'
                 break;

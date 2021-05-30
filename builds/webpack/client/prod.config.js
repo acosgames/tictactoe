@@ -6,7 +6,7 @@ var OUTPUT_PATH = '../../../builds/client';
 
 module.exports = {
     mode: 'production',
-    devtool: false,
+    devtool: 'inline-source-map',
     entry: { main: ENTRY_FILE },
     output: {
         path: path.resolve(__dirname, OUTPUT_PATH),
@@ -63,6 +63,11 @@ module.exports = {
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 1,
         }),
+        // new webpack.SourceMapDevToolPlugin({
+        //     filename: '[file].map',
+        //     append: `\n//# sourceMappingURL=client.bundle`,
+        //     fileContext: 'public'
+        // })
 
     ]
 };

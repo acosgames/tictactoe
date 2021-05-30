@@ -22,10 +22,10 @@ class Tictactoe {
 
     onJoin() {
         let action = fsg.action();
-        if (!action.userid)
+        if (!action.user.id)
             return;
 
-        if (fsg.players(action.userid).type)
+        if (fsg.players(action.user.id).type)
             return;
         //if player count reached required limit, start the game
         let maxPlayers = fsg.rules('maxPlayers') || 2;
@@ -40,9 +40,9 @@ class Tictactoe {
         let action = fsg.action();
 
         let otherPlayerId = null;
-        if (players[action.userid]) {
-            otherPlayerId = this.selectNextPlayer(action.userid);
-            delete players[action.userid];
+        if (players[action.user.id]) {
+            otherPlayerId = this.selectNextPlayer(action.user.id);
+            delete players[action.user.id];
         }
 
         if (otherPlayerId) {
@@ -54,7 +54,7 @@ class Tictactoe {
     onPick() {
         let state = fsg.state();
         let action = fsg.action();
-        let user = fsg.players(action.userid);
+        let user = fsg.players(action.user.id);
 
         //get the picked cell
         let cellid = action.payload.cell;
@@ -63,7 +63,7 @@ class Tictactoe {
         // block picking cells with markings, and send error
         if (cell.length > 0) {
             fsg.next({
-                userid: action.userid,
+                id: action.user.id,
                 action: 'pick',
                 error: 'NOT_EMPTY'
             })
@@ -72,12 +72,12 @@ class Tictactoe {
 
         //mark the selected cell
         let type = user.type;
-        let userid = action.userid;
+        let id = action.user.id;
         state.cells[cellid] = type;
 
         fsg.event('picked');
         fsg.prev({
-            cellid, userid
+            cellid, id
         })
 
         if (this.checkWinner()) {
@@ -90,29 +90,30 @@ class Tictactoe {
     newRound() {
         let playerList = fsg.playerList();
 
+        let state = fsg.state();
         //select the starting player
-        if (!this.startPlayer || this.startPlayer.length == 0) {
-            this.startPlayer = this.selectNextPlayer(playerList[Math.floor(Math.random() * playerList.length)]);
+        if (!state.startPlayer || state.startPlayer.length == 0) {
+            state.startPlayer = this.selectNextPlayer(playerList[Math.floor(Math.random() * playerList.length)]);
         }
         else {
-            this.startPlayer = this.selectNextPlayer(this.startPlayer);
+            state.startPlayer = this.selectNextPlayer(state.startPlayer);
         }
 
         //set the starting player, and set type for other player
         let players = fsg.players();
         for (var id in players)
             players[id].type = 'O';
-        players[this.startPlayer].type = 'X';
+        players[state.startPlayer].type = 'X';
     }
 
     selectNextPlayer(userid) {
         let action = fsg.action();
         let players = fsg.playerList();
-        userid = userid || action.userid;
+        userid = userid || action.user.id;
         //only 2 players so just filter the current player
-        let remaining = players.filter(x => x != action.userid);
+        let remaining = players.filter(x => x != userid);
         fsg.next({
-            userid: remaining[0],
+            id: remaining[0],
             action: 'pick'
         });
         return remaining[0];
@@ -164,10 +165,10 @@ class Tictactoe {
 
     findPlayerWithType(type) {
         let players = fsg.players();
-        for (var userid in players) {
-            let player = players[userid];
+        for (var id in players) {
+            let player = players[id];
             if (player.type == type)
-                return userid;
+                return id;
         }
         return null;
     }
@@ -187,14 +188,14 @@ class Tictactoe {
         let userid = this.findPlayerWithType(type);
         let player = fsg.players(userid);
         if (!player) {
-            player.userid = 'unknown player';
+            player.id = 'unknown player';
         }
         fsg.clearEvents();
         fsg.event('winner')
         fsg.prev({
             pick: type,
             strip: strip,
-            userid: userid
+            id: userid
         })
         fsg.next({});
 

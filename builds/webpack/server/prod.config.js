@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 
 var ENTRY_FILE = path.resolve(__dirname, '../../../game-server/index.js');
@@ -18,4 +19,12 @@ module.exports = {
     optimization: {
         usedExports: true,
     },
+    plugins: [
+        new webpack.SourceMapDevToolPlugin({
+            filename: '[file].map',
+            append: `\n//# sourceMappingURL=${OUTPUT_PATH}[url]`,
+            fileContext: 'public'
+        })
+
+    ]
 };

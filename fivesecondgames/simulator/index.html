@@ -103,7 +103,7 @@
                     socket.disconnect();
                 }
 
-                socket = io('ws://localhost:3000', {
+                socket = io('ws://localhost:3200', {
                     transports: ['websocket'],
                     upgrade: true,
                     query: 'username=' + username,
@@ -118,10 +118,11 @@
                 });
 
                 socket.on('connected', (message) => {
+                    //message should have { id, name }
                     socket.user = message;
                 });
                 socket.on('game', (message) => {
-                    let localPlayer = message.players[socket.user.userid];
+                    let localPlayer = message.players[socket.user.id];
                     if (localPlayer) note.textContent = 'Status: ingame';
                     console.log('Game: ', message);
 

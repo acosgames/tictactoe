@@ -23,24 +23,26 @@ class PlayerList extends Component {
         //draw local player name
         let local = fs.get('local');
         let players = [];
-        let nextUserId = fs.get('next-userid');
+        let nextUserId = fs.get('next-id');
 
-        let nextTag = nextUserId == local.userid ? " > " : "";
+        let nextTag = nextUserId == local.id ? " > " : "";
         let type = local.type || '';
         let color = ''
         if (type.length > 0) {
             color = "color-" + type;
             type = 'You are ' + type.toUpperCase();
+        } else {
+            type = local.name + ' (you)';
         }
 
 
-        players.push(<li key={local.userid}>
+        players.push(<li key={local.id}>
             <h2 className={color}><span className="nextTag">{nextTag}</span><span className="ttt-type">{type}</span></h2>
         </li>)
 
         //draw other players
         for (var id in this.props.players) {
-            if (local.userid == id)
+            if (local.id == id)
                 continue;
             let player = this.props.players[id];
             nextTag = nextUserId == id ? " > " : "";
@@ -70,4 +72,4 @@ class PlayerList extends Component {
 
 }
 
-export default fs.connect(['players', 'next-userid'])(PlayerList);;
+export default fs.connect(['players', 'next-id'])(PlayerList);;

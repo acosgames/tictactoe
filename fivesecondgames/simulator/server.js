@@ -28,24 +28,25 @@ const stringHashCode = (str) => {
 
 io.on('connection', (socket) => {
     userCount++;
-    let username = socket.handshake.query.username;
-    if (!username)
+    let name = socket.handshake.query.username;
+    if (!name)
         return;
 
-    let userid = stringHashCode(username);
-    socket.user = { username, userid }
-    clients[socket.user.userid] = socket;
-    console.log('user connected: ' + socket.user.username);
+    let id = stringHashCode(name);
+    socket.user = { name, id }
+    clients[socket.user.id] = socket;
+    console.log('user connected: ' + socket.user.name);
     socket.emit('connected', socket.user);
 
     socket.on('disconnect', () => {
-        console.log('user disconnected: ' + socket.user.username);
-        delete clients[socket.user.userid];
+        console.log('user disconnected: ' + socket.user.name);
+        delete clients[socket.user.id];
         userCount--;
     });
 
     socket.on('action', (msg) => {
-        msg.userid = socket.user.userid;
+        msg.user = socket.user;
+        // msg.userid = socket.user.userid;
         if (msg && msg.type) {
 
             let lastGame = getLastGame();
@@ -53,8 +54,7 @@ io.on('connection', (socket) => {
                 return;
 
             if (msg.type == 'join') {
-                msg.username = socket.user.username;
-                if (lastGame && lastGame.players && lastGame.players[msg.userid]) {
+                if (lastGame && lastGame.players && lastGame.players[msg.user.id]) {
                     socket.emit('game', lastGame);
                     return;
                 }
@@ -65,10 +65,11 @@ io.on('connection', (socket) => {
             else {
 
                 if (lastGame) {
-                    if (lastGame.next.userid != '*' && lastGame.next.userid != msg.userid)
+                    if (lastGame.next.id != '*' && lastGame.next.id != msg.user.id)
                         return;
                 }
             }
+            console.log("Incoming Action: ", msg);
             worker.postMessage(msg);
         }
 
