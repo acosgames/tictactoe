@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 
 import fs from 'flatstore';
+import Timeleft from './timeleft';
+import Skip from './skip';
 
 class PlayerList extends Component {
     constructor(props) {
@@ -53,7 +55,7 @@ class PlayerList extends Component {
             }
             players.push(
                 <li key={id}>
-                    <h3 className={color}><span className="nextTag">{nextTag}</span>{player.name} <span className="ttt-type">{type}</span></h3>
+                    <h3 className={color}><span className="nextTag">{nextTag}</span>{player.name} <span className="ttt-type">{type}</span><Skip id={id}></Skip></h3>
                 </li>
             )
         }
@@ -66,6 +68,7 @@ class PlayerList extends Component {
                 <ul className="playerlist">
                     {this.renderPlayers()}
                 </ul>
+                <Timeleft></Timeleft>
             </div>
         )
     }

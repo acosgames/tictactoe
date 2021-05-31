@@ -13,19 +13,45 @@ export function GameLoader(props) {
 
     useEffect(() => {
         attachMessageEvent()
-        send('__ready', {});
-      });
+        timerLoop();
+    });
 
-    
+
     let Comp = props.component;
     return (<Comp></Comp>)
 }
 
+async function timerLoop(cb) {
+
+    if (cb)
+        cb();
+
+    setTimeout(() => { timerLoop(cb) }, 100);
+
+    let next = fs.get('next');
+    if (!next)
+        return;
+
+    let deadline = next.deadline;
+    if (!deadline)
+        return;
+
+    let now = (new Date()).getTime();
+    let elapsed = deadline - now;
+
+    if (elapsed <= 0) {
+        elapsed = 0;
+    }
+
+    fs.set('nextTimeLeft', elapsed);
+}
+
 var hasMessageEvent = false;
 export async function attachMessageEvent() {
-    if( hasMessageEvent )
+    if (hasMessageEvent)
         return;
     hasMessageEvent = true;
+
     window.addEventListener('message', (evt) => {
         let message = evt.data;
         let origin = evt.origin;

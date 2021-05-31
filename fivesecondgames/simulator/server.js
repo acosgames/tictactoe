@@ -44,11 +44,18 @@ io.on('connection', (socket) => {
         userCount--;
     });
 
+    socket.on('time', (msg) => {
+        let clientTime = msg.payload;
+        let serverTime = (new Date()).getTime();
+        let offset = serverTime - clientTime;
+        socket.emit('time', { payload: { offset, serverTime } })
+    })
+
     socket.on('action', (msg) => {
         msg.user = socket.user;
         // msg.userid = socket.user.userid;
         if (msg && msg.type) {
-
+            console.log("Incoming Action: ", msg);
             let lastGame = getLastGame();
             if (lastGame && lastGame.killGame)
                 return;
@@ -63,37 +70,82 @@ io.on('connection', (socket) => {
                 socket.disconnect();
             }
             else {
-
-                if (lastGame) {
+                if (msg.type == 'skip') {
+                    if (lastGame) {
+                        let deadline = lastGame.next.deadline;
+                        let now = (new Date()).getTime();
+                        if (now < deadline) {
+                            return;
+                        }
+                        msg.payload = {
+                            id: lastGame.next.id,
+                            deadline, now
+                        }
+                    }
+                }
+                else if (lastGame) {
                     if (lastGame.next.id != '*' && lastGame.next.id != msg.user.id)
                         return;
                 }
             }
-            console.log("Incoming Action: ", msg);
+
             worker.postMessage(msg);
         }
 
     });
 
     socket.on('reload', (msg) => {
+        console.log("Incoming Action: ", msg);
         gameHistory = [];
         worker.postMessage({ type: 'reset' });
     })
 });
 
+function processTimelimit(next) {
+    let seconds = next.timelimit;
+    seconds = Math.min(60, Math.max(10, seconds));
+
+    let now = (new Date()).getTime();
+    let deadline = now + (seconds * 1000);
+    next.deadline = deadline;
+}
+
 function createWorker(index) {
     const worker = new Worker('./fivesecondgames/simulator/worker.js', { workerData: { index } });
     worker.on("message", (game) => {
 
+        if (game.next && typeof game.next.timelimit == 'number') {
+            processTimelimit(game.next);
+        }
+
         console.log("Outgoing Game: ", game);
-        gameHistory.push(game);
+
+
         io.emit('game', game);
+
+        //do after the game update, so they can see the result of their kick
+        if (game.kick) {
+            var kickPlayers = game.kick;
+            for (var id = 0; i < kickPlayers.length; id++) {
+                if (game.players && game.players[id])
+                    delete game.players[id];
+            }
+
+            setTimeout(() => {
+                for (var id = 0; i < kickPlayers.length; id++) {
+                    if (clients[id]) {
+                        clients[id].disconnect();
+                    }
+                }
+            }, 1000);
+        }
+
+        gameHistory.push(game);
 
         if (game.killGame) {
             setTimeout(() => {
                 for (var id in clients) {
-                    let socket = clients[id];
-                    socket.disconnect();
+                    clients[id].disconnect();
                 }
                 gameHistory = [];
             }, 1000);

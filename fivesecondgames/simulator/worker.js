@@ -74,10 +74,10 @@ class FSGWorker {
         }
         else {
             let newPlayers = {};
-            for (var userid in globalGame.players) {
-                let player = globalGame.players[userid];
-                newPlayers[userid] = {
-                    name: player.username
+            for (var id in globalGame.players) {
+                let player = globalGame.players[id];
+                newPlayers[id] = {
+                    name: player.name
                 }
             }
             globalGame.players = newPlayers;
@@ -151,7 +151,9 @@ class FSGWorker {
     async start() {
         try {
             this.reloadServerBundle();
-            chokidar.watch(this.bundlePath).on('change', (path) => {
+
+            let watchPath = this.bundlePath.substr(0, this.bundlePath.lastIndexOf('/'));
+            chokidar.watch(watchPath).on('change', (path) => {
                 this.reloadServerBundle();
                 console.log(`${this.bundlePath} file Changed`);
             });

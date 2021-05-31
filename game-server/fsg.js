@@ -6,6 +6,8 @@ class FSG {
         this.nextGame = JSON.parse(JSON.stringify(globals.game()));
         this.isNewGame = false;
         this.markedForDelete = false;
+        this.nextTimeLimit = 0;
+        this.kickedPlayers = [];
 
         if (!this.nextGame || Object.keys(this.nextGame.rules).length == 0) {
             this.isNewGame = true;
@@ -44,8 +46,9 @@ class FSG {
     on(type, cb) {
         if (this.msg.type != type) {
             if (type == 'newgame' && this.isNewGame) {
-                let defaultGame = cb(this.msg);
-                this.nextGame = Object.assign({}, defaultGame, { players: this.nextGame.players })
+                cb(this.msg);
+
+                // this.nextGame = Object.assign({}, defaultGame, { players: this.nextGame.players })
             }
             return;
         }
@@ -53,7 +56,25 @@ class FSG {
         cb(this.msg);
     }
 
+    setGame(game) {
+        for (var id in this.nextGame.players) {
+            let player = this.nextGame.players[id];
+            game.players[id] = { name: player.name }
+        }
+        //game.players = Object.assign({}, game.players, this.nextGame.players)
+        this.nextGame = game;
+    }
+
     submit() {
+        if (this.nextGame.next) {
+            this.nextGame.next.timelimit = this.nextTimeLimit;
+            if (this.markedForDelete)
+                delete this.nextGame.next['timelimit'];
+        }
+
+        if (this.kickedPlayers.length > 0)
+            this.nextGame.kick = this.kickedPlayers;
+
         globals.finish(this.nextGame);
     }
 
@@ -67,6 +88,10 @@ class FSG {
     }
     error(msg) {
         globals.error(msg);
+    }
+
+    kickPlayer(id) {
+        this.kickedPlayers.push(id);
     }
 
     action() {
@@ -120,6 +145,10 @@ class FSG {
             this.nextGame.next = obj;
         }
         return this.nextGame.next;
+    }
+
+    setTimeLimit(seconds) {
+        this.nextTimeLimit = Math.min(60, Math.max(10, seconds));
     }
 
     event(name) {

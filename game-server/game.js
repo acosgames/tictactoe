@@ -17,7 +17,19 @@ let defaultGame = {
 class Tictactoe {
 
     onNewGame() {
-        return defaultGame
+        fsg.setGame(defaultGame);
+        this.checkNewRound();
+    }
+
+    onSkip() {
+        let action = fsg.action();
+        let next = fsg.next();
+        let id = action.payload.id;
+        if (!id) {
+            id = next.id;
+        }
+
+        this.playerLeave(id);
     }
 
     onJoin() {
@@ -25,8 +37,13 @@ class Tictactoe {
         if (!action.user.id)
             return;
 
-        if (fsg.players(action.user.id).type)
-            return;
+        // if (fsg.players(action.user.id).type)
+        //     return;
+
+        this.checkNewRound();
+    }
+
+    checkNewRound() {
         //if player count reached required limit, start the game
         let maxPlayers = fsg.rules('maxPlayers') || 2;
         let playerCount = fsg.playerCount();
@@ -36,13 +53,16 @@ class Tictactoe {
     }
 
     onLeave() {
-        let players = fsg.players();
         let action = fsg.action();
+        this.playerLeave(action.user.id);
+    }
 
+    playerLeave(id) {
+        let players = fsg.players();
         let otherPlayerId = null;
-        if (players[action.user.id]) {
-            otherPlayerId = this.selectNextPlayer(action.user.id);
-            delete players[action.user.id];
+        if (players[id]) {
+            otherPlayerId = this.selectNextPlayer(id);
+            delete players[id];
         }
 
         if (otherPlayerId) {
@@ -199,7 +219,7 @@ class Tictactoe {
         })
         fsg.next({});
 
-        // fsg.killGame();
+        fsg.killGame();
     }
 }
 
