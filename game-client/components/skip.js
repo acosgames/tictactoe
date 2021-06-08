@@ -9,7 +9,7 @@ class Skip extends Component {
     }
 
     getTimeFormatted() {
-        let timeleft = fs.get('nextTimeLeft') || 0;
+        let timeleft = fs.get('timeleft') || 0;
 
         try {
             if (typeof timeleft != 'number')
@@ -38,7 +38,7 @@ class Skip extends Component {
         }
 
 
-        let timeleft = this.props.nextTimeLeft;
+        let timeleft = this.props.timeleft;
         if (timeleft <= 0) {
             return (
                 <button onClick={this.skipPlayer.bind(this)}>Kick</button>
@@ -51,4 +51,4 @@ class Skip extends Component {
 
 }
 
-export default fs.connect(['nextTimeLeft', 'next-id'])(Skip);
+export default fs.connect(['timeleft', 'next-id'])(Skip);

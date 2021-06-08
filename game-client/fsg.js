@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import fs from 'flatstore';
 
 fs.set('local', {});
+fs.set('timer', {});
 fs.set('state', {});
 fs.set('players', {});
 fs.set('rules', {});
@@ -43,7 +44,7 @@ async function timerLoop(cb) {
         elapsed = 0;
     }
 
-    fs.set('nextTimeLeft', elapsed);
+    fs.set('timeleft', elapsed);
 }
 
 var hasMessageEvent = false;

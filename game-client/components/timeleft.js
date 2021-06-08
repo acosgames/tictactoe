@@ -8,7 +8,7 @@ class Timeleft extends Component {
     }
 
     getTimeFormatted() {
-        let timeleft = fs.get('nextTimeLeft') || 0;
+        let timeleft = fs.get('timeleft') || 0;
 
         try {
             if (typeof timeleft != 'number')
@@ -35,4 +35,4 @@ class Timeleft extends Component {
 
 }
 
-export default fs.connect(['nextTimeLeft'])(Timeleft);
+export default fs.connect(['timeleft'])(Timeleft);
