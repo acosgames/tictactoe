@@ -11,14 +11,16 @@ module.exports = {
     output: {
         path: OUTPUT_PATH,
         filename: 'server.bundle.js',
-        devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]'
+        devtoolModuleFilenameTemplate: function (info) {
+            return "../../" + info.resourcePath
+        }
     },
-    devtool: "source-map",
+    devtool: "inline-source-map",
     mode: 'development',
     optimization: {
         usedExports: true,
     },
-    devServer: {
-        writeToDisk: true
-    }
+    // devServer: {
+    //     writeToDisk: true
+    // }
 };

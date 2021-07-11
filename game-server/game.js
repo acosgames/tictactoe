@@ -16,24 +16,25 @@ let defaultGame = {
 
 class Tictactoe {
 
-    onNewGame() {
+    onNewGame(action) {
         fsg.setGame(defaultGame);
         this.checkNewRound();
     }
 
-    onSkip() {
-        let action = fsg.action();
+    onSkip(action) {
         let next = fsg.next();
-        let id = action.payload.id;
-        if (!id) {
-            id = next.id;
-        }
+        if (!next || !next.id)
+            return;
+        // let id = action.payload.id;
+        // if (!next.id) {
+        //     id = next.id;
+        // }
 
-        this.playerLeave(id);
+        this.playerLeave(next.id);
     }
 
-    onJoin() {
-        let action = fsg.action();
+    onJoin(action) {
+        fsg.log(action);
         if (!action.user.id)
             return;
 
@@ -52,8 +53,7 @@ class Tictactoe {
         }
     }
 
-    onLeave() {
-        let action = fsg.action();
+    onLeave(action) {
         this.playerLeave(action.user.id);
     }
 
@@ -71,9 +71,8 @@ class Tictactoe {
         }
     }
 
-    onPick() {
+    onPick(action) {
         let state = fsg.state();
-        let action = fsg.action();
         let user = fsg.players(action.user.id);
 
         //get the picked cell
@@ -104,7 +103,8 @@ class Tictactoe {
             return;
         }
 
-        this.selectNextPlayer();
+        fsg.setTimelimit(20);
+        this.selectNextPlayer(null);
     }
 
     newRound() {

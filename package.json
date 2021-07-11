@@ -15,13 +15,14 @@
     "start": "./node_modules/.bin/concurrently npm:client-dev npm:server-dev npm:simulator npm:simulator-sync",
     "client-dev": "./node_modules/.bin/webpack --config builds/webpack/client/dev.config.js --watch ./game-client",
     "server-dev": "./node_modules/.bin/webpack --config builds/webpack/server/dev.config.js --watch ./game-server",
-    "simulator": "nodemon --inspect --enable-source-maps --watch fivesecondgames/simulator/*.js -r source-map-support/register fivesecondgames/simulator/server.js",
-    "simulator-sync": "./node_modules/.bin/wait-on http://localhost:3100/ && browser-sync start --no-ghost-mode --ws --port 3200 --proxy localhost:3100 --files=./game-client/* --files=./builds/client/client.bundle.js --files ./fivesecondgames/simulator/*.html  --ignore=node_modules",
-    "deploy": "npm run build:client && npm run build:server && node --inspect fivesecondgames/simulator/deploy.js",
+    "simulator": "nodemon --inspect --enable-source-maps --watch ../fivesecondgames/simulator/*.js -r source-map-support/register ../fivesecondgames/simulator/server.js",
+    "simulator-sync": "./node_modules/.bin/wait-on http://localhost:3100/ && browser-sync start --no-ghost-mode --ws --port 3200 --proxy localhost:3100 --files=./game-client/* --files=./builds/client/client.bundle.js --files ../fivesecondgames/simulator/*.html  --ignore=node_modules",
+    "deploy": "npm run build:client && npm run build:server && node --inspect ../fivesecondgames/simulator/deploy.js",
     "build:client": "./node_modules/.bin/webpack --config builds/webpack/client/prod.config.js",
     "build:server": "./node_modules/.bin/webpack --config builds/webpack/server/prod.config.js"
   },
   "devDependencies": {
+    "fivesecondgames": "file:../fivesecondgames",
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.2",
     "@babel/preset-react": "^7.13.13",

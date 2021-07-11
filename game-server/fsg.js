@@ -1,12 +1,26 @@
 
 class FSG {
     constructor() {
-        this.msg = JSON.parse(JSON.stringify(globals.action()));
-        this.originalGame = JSON.parse(JSON.stringify(globals.game()));
-        this.nextGame = JSON.parse(JSON.stringify(globals.game()));
+        try {
+            this.actions = JSON.parse(JSON.stringify(globals.actions()));
+        }
+        catch (e) { this.error('Failed to load actions'); return }
+        try {
+            this.originalGame = JSON.parse(JSON.stringify(globals.game()));
+        }
+        catch (e) { this.error('Failed to load originalGame'); return }
+        try {
+            this.nextGame = JSON.parse(JSON.stringify(globals.game()));
+        }
+        catch (e) { this.error('Failed to load nextGame'); return }
+
+
+        this.currentAction = null;
+
         this.isNewGame = false;
         this.markedForDelete = false;
-        this.nextTimeLimit = 0;
+        this.defaultSeconds = 15;
+        // this.nextTimeLimit = -1;
         this.kickedPlayers = [];
 
         if (!this.nextGame || Object.keys(this.nextGame.rules).length == 0) {
@@ -15,9 +29,13 @@ class FSG {
         }
 
         if (this.nextGame) {
+            if (!('timer' in this.nextGame)) {
+                this.nextGame.timer = {};
+            }
             if (!('state' in this.nextGame)) {
                 this.nextGame.state = {};
             }
+
             if (!('players' in this.nextGame)) {
                 this.nextGame.players = {};
             }
@@ -44,16 +62,27 @@ class FSG {
     }
 
     on(type, cb) {
-        if (this.msg.type != type) {
-            if (type == 'newgame' && this.isNewGame) {
-                cb(this.msg);
 
-                // this.nextGame = Object.assign({}, defaultGame, { players: this.nextGame.players })
+        if (type == 'newgame') {
+            if (this.isNewGame) {
+                this.currentAction = this.actions[0];
+                cb(this.actions[0]);
+                this.isNewGame = false;
             }
+
             return;
+            //return;
+            // this.nextGame = Object.assign({}, defaultGame, { players: this.nextGame.players })
         }
 
-        cb(this.msg);
+        for (var i = 0; i < this.actions.length; i++) {
+            if (this.actions[i].type == type) {
+                this.currentAction = this.actions[i];
+                cb(this.currentAction);
+            }
+
+        }
+
     }
 
     setGame(game) {
@@ -66,11 +95,18 @@ class FSG {
     }
 
     submit() {
-        if (this.nextGame.next) {
-            this.nextGame.next.timelimit = this.nextTimeLimit;
-            if (this.markedForDelete)
-                delete this.nextGame.next['timelimit'];
-        }
+        // if (this.nextGame.timer && this.nextTimeLimit > -1) {
+        //     this.nextGame.timer.timelimit = this.nextTimeLimit;
+        //     // if (this.markedForDelete)
+        //     //     delete this.nextGame.next['timelimit'];
+        // }
+
+        //if next info has been updated, we force a new timer
+        // let prevNextUser = JSON.stringify(this.originalGame.next);
+        // let curNextUser = JSON.stringify(this.nextGame.next);
+        // if (prevNextUser != curNextUser && typeof this.nextGame.timer.set == 'undefined') {
+        //     this.setTimelimit()
+        // }
 
         if (this.kickedPlayers.length > 0)
             this.nextGame.kick = this.kickedPlayers;
@@ -94,8 +130,12 @@ class FSG {
         this.kickedPlayers.push(id);
     }
 
+    database() {
+        return globals.database();
+    }
+
     action() {
-        return this.msg;
+        return this.currentAction;
     }
 
     state(key, value) {
@@ -147,8 +187,17 @@ class FSG {
         return this.nextGame.next;
     }
 
-    setTimeLimit(seconds) {
-        this.nextTimeLimit = Math.min(60, Math.max(10, seconds));
+    setTimelimit(seconds) {
+        seconds = seconds || this.defaultSeconds;
+        if (!this.nextGame.timer)
+            this.nextGame.timer = {};
+        this.nextGame.timer.set = Math.min(60, Math.max(10, seconds));
+    }
+
+    reachedTimelimit(action) {
+        if (typeof action.timeleft == 'undefined')
+            return false;
+        return action.timeleft <= 0;
     }
 
     event(name) {

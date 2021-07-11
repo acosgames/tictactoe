@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import fs from 'flatstore';
 
 fs.set('local', {});
-fs.set('timer', {});
 fs.set('state', {});
 fs.set('players', {});
 fs.set('rules', {});
@@ -29,11 +28,11 @@ async function timerLoop(cb) {
 
     setTimeout(() => { timerLoop(cb) }, 100);
 
-    let next = fs.get('next');
-    if (!next)
+    let timer = fs.get('timer');
+    if (!timer)
         return;
 
-    let deadline = next.deadline;
+    let deadline = timer.end;
     if (!deadline)
         return;
 
@@ -64,9 +63,10 @@ export async function attachMessageEvent() {
         if (message.local) {
             fs.set('local', message.local);
         }
-        if (message.state) {
-            fs.set('state', message.state);
+        if (message.timer) {
+            fs.set('timer', message.timer);
         }
+
         if (message.players) {
             fs.set('players', message.players);
         }
@@ -79,6 +79,11 @@ export async function attachMessageEvent() {
         if (message.prev) {
             fs.set('prev', message.prev);
         }
+
+        if (message.state) {
+            fs.set('state', message.state);
+        }
+
         if (message.events) {
             let eventMap = {}
             message.events.forEach(v => { eventMap[v] = true })

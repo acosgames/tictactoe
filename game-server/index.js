@@ -1,12 +1,12 @@
 import fsg from './fsg';
 import tictactoe from './game';
 
-fsg.setTimeLimit(20);
 
-fsg.on('newgame', () => tictactoe.onNewGame());
-fsg.on('skip', () => tictactoe.onSkip());
-fsg.on('join', () => tictactoe.onJoin());
-fsg.on('leave', () => tictactoe.onLeave());
-fsg.on('pick', () => tictactoe.onPick());
+
+fsg.on('newgame', (action) => tictactoe.onNewGame(action));
+fsg.on('skip', (action) => tictactoe.onSkip(action));
+fsg.on('join', (action) => tictactoe.onJoin(action));
+fsg.on('leave', (action) => tictactoe.onLeave(action));
+fsg.on('pick', (action) => tictactoe.onPick(action));
 
 fsg.submit();
