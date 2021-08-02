@@ -19,12 +19,12 @@ module.exports = {
     optimization: {
         usedExports: true,
     },
-    plugins: [
-        new webpack.SourceMapDevToolPlugin({
-            filename: '[file].map',
-            append: `\n//# sourceMappingURL=${OUTPUT_PATH}[url]`,
-            fileContext: 'public'
-        })
+    // plugins: [
+    //     new webpack.SourceMapDevToolPlugin({
+    //         filename: '[file].map',
+    //         append: `\n//# sourceMappingURL=${OUTPUT_PATH}[url]`,
+    //         fileContext: 'public'
+    //     })
 
-    ]
+    // ]
 };
