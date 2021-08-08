@@ -62,7 +62,7 @@ class Tictactoe {
         let otherPlayerId = null;
         if (players[id]) {
             otherPlayerId = this.selectNextPlayer(id);
-            delete players[id];
+            //delete players[id];
         }
 
         if (otherPlayerId) {
