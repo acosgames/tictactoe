@@ -1,10 +1,13 @@
 {
   "name": "tictactoe",
+  "sideEffects": [
+    "*.css"
+  ],
   "version": "0.1.0",
   "dependencies": {
     "axios": "^0.21.1",
     "express": "^4.17.1",
-    "flatstore": "^1.0.2",
+    "flatstore": "^1.0.6",
     "nodemon": "^2.0.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -25,7 +28,6 @@
     "build:server": "./node_modules/.bin/webpack --config builds/webpack/server/prod.config.js"
   },
   "devDependencies": {
-    "fivesecondgames": "file:../fivesecondgames",
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.2",
     "@babel/preset-react": "^7.13.13",
@@ -37,6 +39,7 @@
     "concurrently": "^6.1.0",
     "core-js": "^3.12.1",
     "css-loader": "^5.2.5",
+    "fivesecondgames": "file:../fivesecondgames",
     "form-data": "^4.0.0",
     "sass": "^1.33.0",
     "sass-loader": "^11.1.1",
@@ -45,6 +48,7 @@
     "url-loader": "^4.1.1",
     "wait-on": "^5.3.0",
     "webpack": "^5.37.1",
+    "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.7.0",
     "yargs": "^17.0.1"
   }

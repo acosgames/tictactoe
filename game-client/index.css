@@ -11,7 +11,7 @@ body {
 
 span.nextTag {
     font-size: 1.2em;
-    color: gold;
+    /* color: gold; */
     font-weight: bold;
     display: inline-block;
     width: 30px;

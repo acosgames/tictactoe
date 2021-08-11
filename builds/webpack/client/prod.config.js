@@ -1,12 +1,18 @@
 const webpack = require('webpack');
 const path = require('path');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+
 
 var ENTRY_FILE = './game-client/index.js';
 var OUTPUT_PATH = '../../../builds/client';
 
 module.exports = {
     mode: 'production',
-    devtool: 'inline-source-map',
+    devtool: false,//'inline-source-map',
+    // optimizations: {
+    //     usedExports: true,
+    // },
     entry: { main: ENTRY_FILE },
     output: {
         path: path.resolve(__dirname, OUTPUT_PATH),
@@ -63,6 +69,7 @@ module.exports = {
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 1,
         }),
+        // new BundleAnalyzerPlugin(),
         // new webpack.SourceMapDevToolPlugin({
         //     filename: '[file].map',
         //     append: `\n//# sourceMappingURL=client.bundle`,
