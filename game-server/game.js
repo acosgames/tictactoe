@@ -38,6 +38,9 @@ class Tictactoe {
         if (!action.user.id)
             return;
 
+        let player = fsg.players(action.user.id);
+        player.test = {};
+        player.test._secret = (new Date()).getTime();
         // if (fsg.players(action.user.id).type)
         //     return;
 
