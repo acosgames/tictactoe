@@ -39,8 +39,8 @@ class Tictactoe {
             return;
 
         let player = fsg.players(action.user.id);
-        player.test = {};
-        player.test._secret = (new Date()).getTime();
+        player.rank = 2;
+        player.score = 0;
         // if (fsg.players(action.user.id).type)
         //     return;
 
@@ -77,7 +77,8 @@ class Tictactoe {
     onPick(action) {
         let state = fsg.state();
         let user = fsg.players(action.user.id);
-
+        if (user.test2)
+            delete user.test2;
         //get the picked cell
         let cellid = action.payload.cell;
         let cell = state.cells[cellid];
@@ -210,6 +211,8 @@ class Tictactoe {
         //find user who matches the win type
         let userid = this.findPlayerWithType(type);
         let player = fsg.players(userid);
+        player.rank = 1;
+        player.score = player.score + 1;
         if (!player) {
             player.id = 'unknown player';
         }
