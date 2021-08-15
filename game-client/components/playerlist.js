@@ -55,7 +55,7 @@ class PlayerList extends Component {
             }
             players.push(
                 <li key={id}>
-                    <h3 className={color}><span className="nextTag">{nextTag}</span>{player.name} <span className="ttt-type">{type}</span><Skip id={id}></Skip></h3>
+                    <h3 className={color}><span className="nextTag">{nextTag}</span>{player.name} <span className="ttt-type">{type}</span></h3>
                 </li>
             )
         }

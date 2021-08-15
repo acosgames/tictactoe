@@ -3,7 +3,7 @@ import fsg from './fsg';
 let defaultGame = {
     state: {
         cells: ['', '', '', '', '', '', '', '', ''],
-        startPlayer: ''
+        //startPlayer: ''
     },
     players: {},
     rules: {
@@ -11,7 +11,7 @@ let defaultGame = {
         maxPlayers: 2
     },
     next: {},
-    events: []
+    events: {}
 }
 
 class Tictactoe {
@@ -41,6 +41,11 @@ class Tictactoe {
         let player = fsg.players(action.user.id);
         player.rank = 2;
         player.score = 0;
+
+        fsg.event('join', {
+            id: action.user.id
+        });
+
         // if (fsg.players(action.user.id).type)
         //     return;
 
@@ -98,10 +103,10 @@ class Tictactoe {
         let id = action.user.id;
         state.cells[cellid] = type;
 
-        fsg.event('picked');
-        fsg.prev({
+        fsg.event('picked', {
             cellid, id
-        })
+        });
+        // fsg.prev()
 
         if (this.checkWinner()) {
             return;
@@ -128,6 +133,8 @@ class Tictactoe {
         for (var id in players)
             players[id].type = 'O';
         players[state.startPlayer].type = 'X';
+
+        fsg.event('gamestart', 1);
     }
 
     selectNextPlayer(userid) {
@@ -199,12 +206,11 @@ class Tictactoe {
 
 
     setTie() {
-        fsg.clearEvents();
-        fsg.event('tie')
+        fsg.gameover({ type: 'tie' })
         fsg.next({});
-        fsg.prev({})
+        // fsg.prev({})
 
-        fsg.killGame();
+        // fsg.killGame();
     }
     // set the winner event and data
     setWinner(type, strip) {
@@ -212,20 +218,20 @@ class Tictactoe {
         let userid = this.findPlayerWithType(type);
         let player = fsg.players(userid);
         player.rank = 1;
-        player.score = player.score + 1;
+        player.score = player.score + 100;
         if (!player) {
             player.id = 'unknown player';
         }
-        fsg.clearEvents();
-        fsg.event('winner')
-        fsg.prev({
+
+        fsg.gameover({
+            type: 'winner',
             pick: type,
             strip: strip,
             id: userid
-        })
+        });
+        // fsg.prev()
         fsg.next({});
-
-        fsg.killGame();
+        // fsg.killGame();
     }
 }
 

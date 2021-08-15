@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import fs from 'flatstore';
+import flatstore from 'flatstore';
 
 fs.set('local', {});
 fs.set('state', {});
@@ -28,6 +29,10 @@ async function timerLoop(cb) {
 
     setTimeout(() => { timerLoop(cb) }, 100);
 
+    let events = fs.get('events');
+    if (events.gameover) {
+        return;
+    }
     let timer = fs.get('timer');
     if (!timer)
         return;
@@ -46,6 +51,40 @@ async function timerLoop(cb) {
     fs.set('timeleft', elapsed);
 }
 
+function flatstoreUpdate(message) {
+    if (!message)
+        return;
+
+    if (message.local) {
+        fs.set('local', message.local);
+    }
+    if (message.timer) {
+        fs.set('timer', message.timer);
+    }
+
+    if (message.players) {
+        fs.set('players', message.players);
+    }
+    if (message.rules) {
+        fs.set('rules', message.rules);
+    }
+    if (message.next) {
+        fs.set('next', message.next);
+    }
+    // if (message.prev) {
+    //     fs.set('prev', message.prev);
+    // }
+
+    if (message.state) {
+        fs.set('state', message.state);
+    }
+
+    if (message.events) {
+        fs.set('events', message.events);
+    }
+}
+
+var needsReset = false;
 var hasMessageEvent = false;
 export async function attachMessageEvent() {
     if (hasMessageEvent)
@@ -56,41 +95,30 @@ export async function attachMessageEvent() {
         let message = evt.data;
         let origin = evt.origin;
         let source = evt.source;
-        console.log('Game Updated:', message);
-        if (!message)
+        if (!message || message.length == 0)
             return;
 
-        if (message.local) {
-            fs.set('local', message.local);
-        }
-        if (message.timer) {
-            fs.set('timer', message.timer);
+        console.log('Game Updated:', message);
+
+        if (needsReset) {
+            flatstoreUpdate({
+                local: {},
+                state: {},
+                players: {},
+                events: {},
+                next: {},
+                timer: {},
+                rules: {},
+            })
+            needsReset = false;
         }
 
-        if (message.players) {
-            fs.set('players', message.players);
-        }
-        if (message.rules) {
-            fs.set('rules', message.rules);
-        }
-        if (message.next) {
-            fs.set('next', message.next);
-        }
-        if (message.prev) {
-            fs.set('prev', message.prev);
+        flatstoreUpdate(message);
+
+        if (message && message.events.gameover) {
+            needsReset = true;
         }
 
-        if (message.state) {
-            fs.set('state', message.state);
-        }
-
-        if (message.events) {
-            let eventMap = {}
-            message.events.forEach(v => { eventMap[v] = true })
-            fs.set('events', eventMap);
-        } else {
-            fs.set('events', null);
-        }
     }, false);
 }
 

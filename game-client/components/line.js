@@ -42,9 +42,13 @@ class Line extends Component {
     }
 
     render() {
+        let gameoverEvent = fs.get('events-gameover');
+        if (!gameoverEvent || !gameoverEvent.type || gameoverEvent.type != 'winner') {
+            return <React.Fragment></React.Fragment>
+        }
         let strip = [0, 1, 2];
 
-        strip = this.props['prev-strip'];
+        strip = fs.get('events-gameover-strip');
         if (!strip) {
             return <React.Fragment></React.Fragment>
         }
@@ -52,7 +56,7 @@ class Line extends Component {
         let start = fs.get('cell' + strip[0]);
         let end = fs.get('cell' + strip[2]);
 
-        if (!start || !end || !this.props.events.winner)
+        if (!start || !end || !gameoverEvent.id)
             return (<React.Fragment></React.Fragment>)
 
         let x1 = start.left + (start.offsetWidth / 2);
@@ -68,4 +72,4 @@ class Line extends Component {
     }
 }
 
-export default fs.connect(['prev-strip', 'events'])(Line);
+export default fs.connect(['events-gameover'])(Line);

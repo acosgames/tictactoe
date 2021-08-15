@@ -8,25 +8,51 @@ class AlertPanel extends Component {
     }
 
     eventMessage(name) {
-        let userid = fs.get('prev-id');
-        let players = fs.get('players');
-        let player = players[userid];
 
+        let players = fs.get('players');
         switch (name) {
             case 'picked': {
-                return player.name + ' picked cell ' + fs.get('prev-cellid') + '.';
+
+                let userid = fs.get('events-picked-id');
+
+                let player = players[userid];
+                let cellid = fs.get('events-picked-cellid');
+                if (typeof cellid === 'undefined') {
+                    cellid = unknown;
+                }
+
+                return player.name + ' picked cell ' + cellid + '.';
+
+            }
+            case 'gameover': {
+
+                let type = fs.get('events-gameover-type');
+                // let strip = fs.get('prev-strip');
+
+                if (type == 'winner') {
+                    let winnerid = fs.get('events-gameover-id');
+                    let strip = fs.get('events-gameover-strip');
+                    let player = players[winnerid];
+                    if (strip === 'forfeit')
+                        return player.name + ' wins by forfeit!';
+                    return player.name + ' won the game!'
+                }
+
+                if (type == 'tie') {
+                    return "No one wins. It's a tie!"
+                }
+
                 break;
             }
-            case 'winner': {
-                let strip = fs.get('prev-strip');
-                if (strip === 'forfeit')
-                    return player.name + ' wins by forfeit!';
-                return player.name + ' won the game!'
+            case 'join':
+                let events = fs.get('events');
+                if (events.join && events.join.id) {
+                    let player = players[events.join.id];
+                    return player.name + ' joined the game.';
+                }
                 break;
-            }
-            case 'tie': {
-                return "No one wins. It's a tie!"
-            }
+            default:
+                return "";
         }
     }
 

@@ -18,7 +18,7 @@ class FSG {
         this.currentAction = null;
 
         this.isNewGame = false;
-        this.markedForDelete = false;
+        // this.markedForDelete = false;
         this.defaultSeconds = 15;
         // this.nextTimeLimit = -1;
         this.kickedPlayers = [];
@@ -52,9 +52,7 @@ class FSG {
                 this.nextGame.rules = {};
             }
 
-            //if (!('events' in this.nextGame)) {
-            this.nextGame.events = [];
-            //}
+            this.nextGame.events = {};
         }
 
 
@@ -71,8 +69,6 @@ class FSG {
             }
 
             return;
-            //return;
-            // this.nextGame = Object.assign({}, defaultGame, { players: this.nextGame.players })
         }
 
         for (var i = 0; i < this.actions.length; i++) {
@@ -90,33 +86,18 @@ class FSG {
             let player = this.nextGame.players[id];
             game.players[id] = { name: player.name }
         }
-        //game.players = Object.assign({}, game.players, this.nextGame.players)
         this.nextGame = game;
     }
 
     submit() {
-        // if (this.nextGame.timer && this.nextTimeLimit > -1) {
-        //     this.nextGame.timer.timelimit = this.nextTimeLimit;
-        //     // if (this.markedForDelete)
-        //     //     delete this.nextGame.next['timelimit'];
-        // }
-
-        //if next info has been updated, we force a new timer
-        // let prevNextUser = JSON.stringify(this.originalGame.next);
-        // let curNextUser = JSON.stringify(this.nextGame.next);
-        // if (prevNextUser != curNextUser && typeof this.nextGame.timer.set == 'undefined') {
-        //     this.setTimelimit()
-        // }
-
         if (this.kickedPlayers.length > 0)
             this.nextGame.kick = this.kickedPlayers;
 
         globals.finish(this.nextGame);
     }
 
-    killGame() {
-        this.markedForDelete = true;
-        globals.killGame();
+    gameover(payload) {
+        this.event('gameover', payload);
     }
 
     log(msg) {
@@ -200,18 +181,21 @@ class FSG {
         return action.timeleft <= 0;
     }
 
-    event(name) {
-        this.nextGame.events.push(name);
+    event(name, payload) {
+        if (!payload)
+            return this.nextGame.events[name];
+
+        this.nextGame.events[name] = payload || {};
     }
 
     clearEvents() {
-        this.nextGame.events = [];
+        this.nextGame.events = {};
     }
-    events(name) {
-        if (typeof name === 'undefined')
-            return this.nextGame.events;
-        this.nextGame.events.push(name);
-    }
+    // events(name) {
+    //     if (typeof name === 'undefined')
+    //         return this.nextGame.events;
+    //     this.nextGame.events.push(name);
+    // }
 }
 
 export default new FSG();
