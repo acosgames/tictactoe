@@ -2,7 +2,10 @@ import fsg from './fsg';
 
 let defaultGame = {
     state: {
-        cells: ['', '', '', '', '', '', '', '', ''],
+        cells: {
+            0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: ''
+        },
+        // cells: ['', '', '', '', '', '', '', '', ''],
         //startPlayer: ''
     },
     players: {},
@@ -172,7 +175,11 @@ class Tictactoe {
 
     checkNoneEmpty() {
         let cells = fsg.state().cells;
-        let filtered = cells.filter(v => v == '');
+        let cellslist = [];
+        for (var key in cells) {
+            cellslist.push(cells[key]);
+        }
+        let filtered = cellslist.filter(v => v == '');
 
         if (filtered.length == 0) {
             this.setTie();
@@ -183,10 +190,16 @@ class Tictactoe {
     // checks if a strip has matching types
     check(strip) {
         let cells = fsg.state().cells;
-        let first = cells[strip[0]];
+        let cellslist = [];
+        for (var key in cells) {
+            cellslist.push(cells[key]);
+        }
+
+
+        let first = cellslist[strip[0]];
         if (first == '')
             return false;
-        let filtered = strip.filter(id => cells[id] == first);
+        let filtered = strip.filter(id => cellslist[id] == first);
         if (filtered.length == 3 && filtered.length == strip.length) {
             this.setWinner(first, strip);
             return true;

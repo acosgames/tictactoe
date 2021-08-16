@@ -5,7 +5,9 @@ import React, { Component } from 'react';
 import fs from 'flatstore';
 import { send } from '../fsg';
 
-fs.set('state-cells', ['', '', '', '', '', '', '', '', ''])
+fs.set('state-cells', {
+    0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: ''
+})
 
 class Cell extends Component {
     constructor(props) {
