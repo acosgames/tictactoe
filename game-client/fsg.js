@@ -12,10 +12,10 @@ fs.set('events', {});
 
 export function GameLoader(props) {
 
-    useEffect(() => {
-        attachMessageEvent()
-        timerLoop();
-    });
+    //useEffect(() => {
+    attachMessageEvent()
+    timerLoop();
+    //});
 
 
     let Comp = props.component;
