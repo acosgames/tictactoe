@@ -20,7 +20,7 @@
     "server-dev": "./node_modules/.bin/webpack --config builds/webpack/server/dev.config.js --watch ./game-server",
     "simulator": "nodemon --inspect --enable-source-maps --watch ../fivesecondgames/simulator/*.js -r source-map-support/register ../fivesecondgames/simulator/server.js",
     "simulator-sync": "./node_modules/.bin/wait-on http://localhost:3100/ && browser-sync start --no-ghost-mode --ws --port 3200 --proxy localhost:3100 --files=./game-client/* --files=./builds/client/client.bundle.js --files ../fivesecondgames/simulator/*.html  --ignore=node_modules",
-    "deploy": "npm run dev:client && npm run dev:server && node --inspect ../fivesecondgames/simulator/deploy.js",
+    "deploy": "npm run build:client && npm run build:server && node --inspect ../fivesecondgames/simulator/deploy.js",
     "deploy:client": "npm run build:client && node --inspect ../fivesecondgames/simulator/deploy.js client",
     "deploy:server": "npm run build:server && node --inspect ../fivesecondgames/simulator/deploy.js server",
     "deploy:db": "node --inspect ../fivesecondgames/simulator/deploy.js db",
