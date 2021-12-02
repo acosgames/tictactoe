@@ -26,13 +26,10 @@ module.exports = {
                 use: ['style-loader', 'css-loader', 'sass-loader']
             },
             {
-                test: /\.(png|jpg|gif|svg)$/i,
+                test: /\.(png|jpg|gif|svg|mp3|wav|ogg|webp|tiff|mp4|flac|wma|aac|woff|pfa|ttf|fot|otf|woff2|jfproj|fnt)$/i,
                 use: [
                     {
                         loader: 'url-loader',
-                        options: {
-                            limit: 8192,
-                        },
                     },
                 ],
             },

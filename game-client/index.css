@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+/* @import url('https://fonts.googleapis.com/css?family=Roboto:wght@100;300;400;500;700;900&display=swap'); */
 
 body {
     margin: 0;
@@ -85,6 +85,8 @@ code {
     display: flex;
     flex-wrap: wrap;
     margin-top: 2em;
+    padding:0;
+    /* background-image:url('./images/book.jpg'); */
 }
 
 #wrapper .player-panel {

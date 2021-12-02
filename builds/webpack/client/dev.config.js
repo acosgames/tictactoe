@@ -10,7 +10,7 @@ module.exports = {
     entry: { main: ENTRY_FILE },
     output: {
         path: path.resolve(__dirname, OUTPUT_PATH),
-        filename: 'client.bundle.js',
+        filename: 'client.bundle.dev.js',
     },
     //node: { console: false, fs: 'empty', net: 'empty', tls: 'empty' },
     module: {
@@ -18,17 +18,6 @@ module.exports = {
             {
                 test: /\.(css|scss)$/i,
                 use: ['style-loader', 'css-loader', 'sass-loader']
-            },
-            {
-                test: /\.(png|jpg|gif|svg)$/i,
-                use: [
-                    {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 8192,
-                        },
-                    },
-                ],
             },
             {
                 test: /\.(js|jsx|mjs)$/,
@@ -52,7 +41,15 @@ module.exports = {
                         ]
                     }
                 }
-            }
+            },
+            {
+                test: /\.(png|jpg|gif|svg|mp3|wav|ogg|webp|tiff|mp4|flac|wma|aac|woff|pfa|ttf|fot|otf|woff2|jfproj|fnt)$/i,
+                use: [
+                    {
+                        loader: 'url-loader',
+                    },
+                ],
+            },
         ]
     },
     plugins: [

@@ -41,6 +41,7 @@
     "concurrently": "^6.1.0",
     "core-js": "^3.12.1",
     "css-loader": "^5.2.5",
+    "file-loader": "^6.2.0",
     "fivesecondgames": "file:../fivesecondgames",
     "form-data": "^4.0.0",
     "sass": "^1.33.0",

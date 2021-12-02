@@ -7,6 +7,15 @@ import Cell from './cell';
 import PlayerList from './playerlist';
 import Line from './line';
 
+// import book1 from '../images/book1.jpg';
+// import book2 from '../images/book2.jpg';
+// import book3 from '../images/book3.jpg';
+// import book4 from '../images/book4.jpg';
+// import book5 from '../images/book5.jpg';
+// import book6 from '../images/book6.jpg';
+// import book7 from '../images/book7.jpg';
+// import test from '../images/test.mp3';
+
 class Gamescreen extends Component {
     constructor(props) {
         super(props);
@@ -47,6 +56,18 @@ class Gamescreen extends Component {
 
                 </div>
                 <Line />
+                {/* <audio controls >
+                    <source src={test} />
+                </audio>
+                <img src={book1} />
+                <img src={book2} />
+                <img src={book3} />
+                <img src={book4} />
+                <img src={book5} />
+                <img src={book6} />
+                <img src={book7} /> */}
+
+
             </div>
 
         )
