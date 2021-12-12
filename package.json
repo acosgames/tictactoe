@@ -22,7 +22,11 @@
     "dev:client": "./node_modules/.bin/webpack --config builds/webpack/client/dev.config.js",
     "dev:server": "./node_modules/.bin/webpack --config builds/webpack/server/dev.config.js",
     "build:client": "./node_modules/.bin/webpack --config builds/webpack/client/prod.config.js",
-    "build:server": "./node_modules/.bin/webpack --config builds/webpack/server/prod.config.js"
+    "build:server": "./node_modules/.bin/webpack --config builds/webpack/server/prod.config.js",
+    "deploy": "npm run build:client && npm run build:server && node --inspect ../fivesecondgames/simulator/deploy.js",
+    "deploy:client": "npm run build:client && node --inspect ../fivesecondgames/simulator/deploy.js client",
+    "deploy:server": "npm run build:server && node --inspect ../fivesecondgames/simulator/deploy.js server",
+    "deploy:db": "node --inspect ../fivesecondgames/simulator/deploy.js db"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
