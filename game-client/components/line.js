@@ -67,7 +67,7 @@ class Line extends Component {
         let celltype = fs.get('state-cells-' + strip[0]) || '';
         let color = 'color-' + celltype.toUpperCase();
         return (
-            <svg className="line"><line className={color} id="line1" x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth="6" ></line></svg>
+            <svg className="line"><line className={color} id="line1" x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth="20" ></line></svg>
         )
     }
 }
