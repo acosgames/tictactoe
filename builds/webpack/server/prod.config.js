@@ -6,7 +6,7 @@ var OUTPUT_PATH = path.resolve(__dirname, '../../../builds/server');
 
 
 console.log("webpack entry: " + ENTRY_FILE);
-console.log("webpack output: " + ENTRY_FILE);
+console.log("webpack output: " + OUTPUT_PATH + '/server.bundle.js');
 
 module.exports = {
     entry: ENTRY_FILE,

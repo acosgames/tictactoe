@@ -1,8 +1,12 @@
-/* @import url('https://fonts.googleapis.com/css?family=Roboto:wght@100;300;400;500;700;900&display=swap'); */
+@import url("https://fonts.googleapis.com/css?family=Roboto:wght@100;300;400;500;700;900&display=swap");
 
-body {
+html,
+body,
+#root {
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -23,18 +27,29 @@ span.nextTag {
 span.ttt-type {
   font-size: 1.2em;
 }
-code {
-  /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace; */
+
+.gamewrapper {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  /* margin-top: 2em; */
+  padding: 0;
+  will-change: transform;
+  /* background-image:url('./images/book.jpg'); */
 }
 
 .gamescreen {
-  width: 1000px;
-  height: 1000px;
-  position: relative;
+  flex-grow: 1;
+  display: flex;
+  padding-top: 3%;
+  width: 50%;
+  height: 100%;
 }
 .gamearea {
-  width: 1000px;
-  height: 1000px;
+  width: 90%;
+  height: 90%;
   margin: 0 auto;
   background-color: none;
   color: #333;
@@ -44,51 +59,6 @@ code {
   display: grid;
   grid-template: repeat(3, 1fr) / repeat(3, 1fr);
   z-index: 5;
-}
-
-.color-X {
-  color: #b77701;
-  stroke: #b77701;
-}
-
-.color-O {
-  color: #0459d2;
-  stroke: #0459d2;
-}
-.line {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-}
-
-.alert-panel {
-  position: absolute;
-  bottom: 1em;
-  left: 1em;
-}
-
-.alert-primary {
-  color: #004085;
-  background-color: #cce5ff;
-  border-color: #b8daff;
-}
-.alert {
-  position: relative;
-  padding: 0.75rem 1.25rem;
-  margin-bottom: 1rem;
-  border: 1px solid transparent;
-  border-radius: 0.25rem;
-}
-
-.gamewrapper {
-  display: flex;
-  flex-wrap: wrap;
-  /* margin-top: 2em; */
-  padding: 0;
-  /* background-image:url('./images/book.jpg'); */
 }
 
 #wrapper .player-panel {
@@ -106,10 +76,10 @@ code {
   border-radius: 0px;
   font-family: Helvetica;
   font-weight: bold;
-  font-size: 15em;
+  font-size: 10em;
   display: flex;
   justify-content: center;
-  align-items: left;
+  align-items: center;
 
   cursor: pointer;
 }
@@ -155,4 +125,41 @@ code {
 .gamearea div.ttt-8 {
   border-right: 0;
   border-bottom: 0;
+}
+
+.color-X {
+  color: #b77701;
+  stroke: #b77701;
+}
+
+.color-O {
+  color: #0459d2;
+  stroke: #0459d2;
+}
+.line {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.alert-panel {
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+}
+
+.alert-primary {
+  color: #004085;
+  background-color: #cce5ff;
+  border-color: #b8daff;
+}
+.alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
 }

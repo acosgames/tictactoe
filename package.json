@@ -18,7 +18,7 @@
     "client-dev": "./node_modules/.bin/webpack --config builds/webpack/client/dev.config.js --watch ./game-client",
     "server-dev": "./node_modules/.bin/webpack --config builds/webpack/server/dev.config.js --watch ./game-server",
     "simulator": "./node_modules/.bin/nodemon --inspect --enable-source-maps --watch ../fivesecondgames/simulator ../fivesecondgames/simulator/server.js",
-    "simulator-sync": "./node_modules/.bin/wait-on http://localhost:3100/ && ./node_modules/.bin/browser-sync start --no-ghost-mode --ws --port 3200 --proxy localhost:3100 --files=./game-client/* --files=./builds/client/client.bundle.js --files ../fivesecondgames/simulator/*.html  --ignore=node_modules",
+    "simulator-sync": "./node_modules/.bin/wait-on http://localhost:3100/ && ./node_modules/.bin/browser-sync start --no-ghost-mode --ws --port 3200 --proxy localhost:3100 --files=./game-client/** --files=./builds/client/client.bundle.js --files ../fivesecondgames/simulator/*.html  --ignore=node_modules",
     "dev:client": "./node_modules/.bin/webpack --config builds/webpack/client/dev.config.js",
     "dev:server": "./node_modules/.bin/webpack --config builds/webpack/server/dev.config.js",
     "build:client": "./node_modules/.bin/webpack --config builds/webpack/client/prod.config.js",

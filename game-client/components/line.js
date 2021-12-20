@@ -27,7 +27,7 @@ class Line extends Component {
     //actually set the state to the window dimensions
     getDimensions = () => {
         this.setState({ width: window.innerWidth, height: window.innerHeight });
-        console.log(this.state);
+        // console.log(this.state);
     }
 
     isArrEqual(arr1, arr2) {
