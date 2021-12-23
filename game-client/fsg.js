@@ -10,88 +10,76 @@ fs.set('prev', {});
 fs.set('next', {});
 fs.set('events', {});
 
+var needsReset = false;
+
 export function GameLoader(props) {
 
-    //useEffect(() => {
-    attachMessageEvent()
-    timerLoop();
-    //});
 
+    const timerLoop = (cb) => {
 
-    let Comp = props.component;
-    return (<Comp></Comp>)
-}
+        if (cb)
+            cb();
 
-async function timerLoop(cb) {
+        setTimeout(() => { timerLoop(cb) }, 100);
 
-    if (cb)
-        cb();
+        let events = fs.get('events');
+        if (events.gameover) {
+            return;
+        }
+        let timer = fs.get('timer');
+        if (!timer)
+            return;
 
-    setTimeout(() => { timerLoop(cb) }, 100);
+        let deadline = timer.end;
+        if (!deadline)
+            return;
 
-    let events = fs.get('events');
-    if (events.gameover) {
-        return;
-    }
-    let timer = fs.get('timer');
-    if (!timer)
-        return;
+        let now = (new Date()).getTime();
+        let elapsed = deadline - now;
 
-    let deadline = timer.end;
-    if (!deadline)
-        return;
+        if (elapsed <= 0) {
+            elapsed = 0;
+        }
 
-    let now = (new Date()).getTime();
-    let elapsed = deadline - now;
-
-    if (elapsed <= 0) {
-        elapsed = 0;
+        fs.set('timeleft', elapsed);
     }
 
-    fs.set('timeleft', elapsed);
-}
+    const flatstoreUpdate = (message) => {
+        if (!message)
+            return;
 
-function flatstoreUpdate(message) {
-    if (!message)
-        return;
+        if (message.local) {
+            fs.set('local', message.local);
+        }
+        if (message.timer) {
+            fs.set('timer', message.timer);
+        }
 
-    if (message.local) {
-        fs.set('local', message.local);
-    }
-    if (message.timer) {
-        fs.set('timer', message.timer);
+        if (message.players) {
+            fs.set('players', message.players);
+        }
+        if (message.rules) {
+            fs.set('rules', message.rules);
+        }
+        if (message.next) {
+            fs.set('next', message.next);
+        }
+        // if (message.prev) {
+        //     fs.set('prev', message.prev);
+        // }
+
+        if (message.state) {
+            fs.set('state', message.state);
+        }
+
+        if (message.events) {
+            fs.set('events', message.events);
+        }
     }
 
-    if (message.players) {
-        fs.set('players', message.players);
-    }
-    if (message.rules) {
-        fs.set('rules', message.rules);
-    }
-    if (message.next) {
-        fs.set('next', message.next);
-    }
-    // if (message.prev) {
-    //     fs.set('prev', message.prev);
-    // }
+    const onMessage = (evt) => {
 
-    if (message.state) {
-        fs.set('state', message.state);
-    }
-
-    if (message.events) {
-        fs.set('events', message.events);
-    }
-}
-
-var needsReset = false;
-var hasMessageEvent = false;
-export async function attachMessageEvent() {
-    if (hasMessageEvent)
-        return;
-    hasMessageEvent = true;
-
-    window.addEventListener('message', (evt) => {
+        console.log("MESSAGE EVENT CALLED #1");
         let message = evt.data;
         let origin = evt.origin;
         let source = evt.source;
@@ -119,8 +107,25 @@ export async function attachMessageEvent() {
             needsReset = true;
         }
 
-    }, false);
+    }
+
+
+
+    useEffect(() => {
+        console.log("ATTACHING TO MESSAGE EVENT");
+        window.addEventListener('message', onMessage, false);
+        console.log("CREATING TIMER LOOP");
+        timerLoop();
+
+        send('ready', {});
+    }, []);
+
+
+    let Comp = props.component;
+    return (<Comp></Comp>)
 }
+
+
 
 export async function send(type, payload) {
     window.parent.postMessage({ type, payload }, '*');
