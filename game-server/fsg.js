@@ -23,10 +23,10 @@ class FSG {
         // this.nextTimeLimit = -1;
         this.kickedPlayers = [];
 
-        if (!this.nextGame || Object.keys(this.nextGame.rules).length == 0) {
-            this.isNewGame = true;
-            this.error('Missing Rules');
-        }
+        // if (!this.nextGame || !this.nextGame.rules || Object.keys(this.nextGame.rules).length == 0) {
+        //     this.isNewGame = true;
+        //     this.error('Missing Rules');
+        // }
 
         if (this.nextGame) {
             if (!('timer' in this.nextGame)) {
@@ -61,15 +61,16 @@ class FSG {
 
     on(type, cb) {
 
-        if (type == 'newgame') {
-            if (this.isNewGame) {
-                this.currentAction = this.actions[0];
-                cb(this.actions[0]);
-                this.isNewGame = false;
-            }
+        // if (type == 'newgame') {
+        //     //if (this.isNewGame) {
+        //     this.currentAction = this.actions[0];
+        //     if (this.currentAction.type == '')
+        //         cb(this.actions[0]);
+        //     this.isNewGame = false;
+        //     //}
 
-            return;
-        }
+        //     return;
+        // }
 
         for (var i = 0; i < this.actions.length; i++) {
             if (this.actions[i].type == type) {

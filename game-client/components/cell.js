@@ -17,7 +17,7 @@ class Cell extends Component {
 
     clicked(id) {
         console.log('clicked cellid: ', id);
-        send('pick', { cell: id })
+        send('pick', id)
     }
 
     //set up defaults on page mount

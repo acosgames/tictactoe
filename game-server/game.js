@@ -6,13 +6,9 @@ let defaultGame = {
             0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: ''
         },
         // cells: ['', '', '', '', '', '', '', '', ''],
-        //startPlayer: ''
+        //sx: ''
     },
     players: {},
-    rules: {
-        bestOf: 5,
-        maxPlayers: 2
-    },
     next: {},
     events: {}
 }
@@ -45,21 +41,29 @@ class Tictactoe {
         player.rank = 2;
         player.score = 0;
 
-        fsg.event('join', {
-            id: action.user.id
-        });
+        let playerCount = fsg.playerCount();
+        if (playerCount <= 2) {
+            fsg.event('join', {
+                id: action.user.id
+            });
+            // this.checkNewRound();
+        }
+        else {
+
+        }
+
 
         // if (fsg.players(action.user.id).type)
         //     return;
 
-        this.checkNewRound();
+
     }
 
     checkNewRound() {
         //if player count reached required limit, start the game
-        let maxPlayers = fsg.rules('maxPlayers') || 2;
+        //let maxPlayers = fsg.rules('maxPlayers') || 2;
         let playerCount = fsg.playerCount();
-        if (playerCount >= maxPlayers) {
+        if (playerCount >= 2) {
             this.newRound();
         }
     }
@@ -88,7 +92,7 @@ class Tictactoe {
         if (user.test2)
             delete user.test2;
         //get the picked cell
-        let cellid = action.payload.cell;
+        let cellid = action.payload;
         let cell = state.cells[cellid];
 
         // block picking cells with markings, and send error
@@ -124,18 +128,18 @@ class Tictactoe {
 
         let state = fsg.state();
         //select the starting player
-        if (!state.startPlayer || state.startPlayer.length == 0) {
-            state.startPlayer = this.selectNextPlayer(playerList[Math.floor(Math.random() * playerList.length)]);
+        if (!state.sx || state.sx.length == 0) {
+            state.sx = this.selectNextPlayer(playerList[Math.floor(Math.random() * playerList.length)]);
         }
         else {
-            state.startPlayer = this.selectNextPlayer(state.startPlayer);
+            state.sx = this.selectNextPlayer(state.sx);
         }
 
         //set the starting player, and set type for other player
         let players = fsg.players();
         for (var id in players)
             players[id].type = 'O';
-        players[state.startPlayer].type = 'X';
+        players[state.sx].type = 'X';
 
         fsg.event('gamestart', 1);
     }

@@ -79,14 +79,14 @@ export function GameLoader(props) {
 
     const onMessage = (evt) => {
 
-        console.log("MESSAGE EVENT CALLED #1");
+        // console.log("MESSAGE EVENT CALLED #1");
         let message = evt.data;
         let origin = evt.origin;
         let source = evt.source;
         if (!message || message.length == 0)
             return;
 
-        console.log('Game Updated:', message);
+        // console.log('Game Updated:', message);
 
         if (needsReset) {
             flatstoreUpdate({
@@ -117,7 +117,7 @@ export function GameLoader(props) {
         console.log("CREATING TIMER LOOP");
         timerLoop();
 
-        send('ready', {});
+        send('ready', true);
     }, []);
 
 
