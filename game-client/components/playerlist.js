@@ -38,25 +38,33 @@ class PlayerList extends Component {
         }
 
 
-        players.push(<li key={local.id}>
-            <h2 className={color}><span className="nextTag">{nextTag}</span><span className="ttt-type">{type}</span></h2>
-        </li>)
+        // players.push(<div key={local.id}>
+        //     <h2 className={color}><span className="nextTag">{nextTag}</span><span className="ttt-type">{type}</span></h2>
+        // </div>)
 
         //draw other players
         for (var id in this.props.players) {
-            if (local.id == id)
-                continue;
             let player = this.props.players[id];
-            nextTag = nextUserId == id ? " > " : "";
+            nextTag = nextUserId == id ? " next" : "";
             type = player.type || '';
             let color = "color-" + type;
             if (type.length > 0) {
-                type = 'is ' + type.toUpperCase();
+                type = type.toUpperCase();
             }
             players.push(
-                <li key={id}>
-                    <h3 className={color}><span className="nextTag">{nextTag}</span>{player.name} <span className="ttt-type">{type}</span></h3>
-                </li>
+                <div key={id} className={color + ' nameplate vstack ' + nextTag}>
+
+
+
+                    <div className="vstack" >
+
+                        <span className={"ttt-type "}>{type}</span>
+                        <span className="playerName">{player.name}{local.id == id ? ' (you)' : ''}</span>
+
+                        <Timeleft hide={(nextUserId != id)} />
+
+                    </div>
+                </div>
             )
         }
         return players;
@@ -65,10 +73,10 @@ class PlayerList extends Component {
     render() {
         return (
             <div className="player-panel">
-                <ul className="playerlist">
+                <div className="hstack" style={{ alignItems: "center", justifyContent: "center" }}>
                     {this.renderPlayers()}
-                </ul>
-                <Timeleft></Timeleft>
+                </div>
+
             </div>
         )
     }

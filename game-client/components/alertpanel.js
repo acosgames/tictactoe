@@ -21,7 +21,7 @@ class AlertPanel extends Component {
                     cellid = unknown;
                 }
 
-                return player.name + ' picked cell ' + cellid + '.';
+                return <><span className="eventPlayerName">{player.name}</span> picked cell {cellid}.</>;
 
             }
             case 'gameover': {
@@ -34,8 +34,8 @@ class AlertPanel extends Component {
                     let strip = fs.get('events-gameover-strip');
                     let player = players[winnerid];
                     if (strip === 'forfeit')
-                        return player.name + ' wins by forfeit!';
-                    return player.name + ' won the game!'
+                        return <><span className="eventPlayerName">{player.name}</span> wins by forfeit!</>;
+                    return <><span className="eventPlayerName">{player.name}</span> won the game!</>
                 }
 
                 if (type == 'tie') {
@@ -48,7 +48,7 @@ class AlertPanel extends Component {
                 let events = fs.get('events');
                 if (events.join && events.join.id) {
                     let player = players[events.join.id];
-                    return player.name + ' joined the game.';
+                    return <><span className="eventPlayerName">{player.name}</span> joined the game.</>;
                 }
                 break;
             default:
@@ -59,14 +59,16 @@ class AlertPanel extends Component {
     render() {
 
         let events = fs.get('events');
-        let message = "";
+        let message = [];
 
         if (events) {
             let names = Object.keys(events);
             for (var i = 0; i < names.length; i++) {
                 let name = names[i];
                 if (name in events) {
-                    message += this.eventMessage(name) + ' ';
+                    message.push(
+                        <span className="eventMessage">{this.eventMessage(name)}</span>
+                    )
                 }
             }
         }

@@ -45,17 +45,21 @@ class Cell extends Component {
     render() {
         let id = this.props.id;
         let cellType = this.props.celltype || '';
+        let inactive = (cellType == 'X' || cellType == 'O') ? '' : ' inactive ';
         let color = "color-" + cellType;
         return (
             <div
-                className={"cell ttt-" + id + ' ' + color}
+                className={"cell ttt-" + id + ' ' + color + inactive}
                 onClick={() => this.clicked(id)}
                 ref={el => {
                     if (!el) return;
                     this.ref = el;
-                    setTimeout(this.updatePosition.bind(this), 2000);
+                    this.updatePosition();
+                    // setTimeout(this.updatePosition.bind(this), 100);
                 }}>
-                {cellType}
+                <span className={color + ' foreground'}>{cellType}</span>
+                <span className={color + ' background'}>{cellType}</span>
+
             </div>
         )
     }

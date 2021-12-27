@@ -26,8 +26,8 @@ class Timeleft extends Component {
 
     render() {
         return (
-            <div className="timeleft">
-                {this.getTimeFormatted()}
+            <div className={"timeleft " + (this.props.hide ? 'hide' : '')}>
+                <span style={{ color: '#ccc' }}>Time:</span>&nbsp;&nbsp;<span>{this.getTimeFormatted()}</span>
             </div>
 
         )

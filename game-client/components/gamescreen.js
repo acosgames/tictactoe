@@ -41,22 +41,39 @@ class Gamescreen extends Component {
                 this.ref = el;
                 setTimeout(this.updatePosition.bind(this), 2000);
             }}>
-                <AlertPanel />
+                <div className="vstack">
+                    <div className="vstack" style={{ height: '12vh' }}>
+                        <div className="vstack">
+                            <PlayerList />
 
-                <PlayerList />
-                <div className="gamescreen">
+                        </div>
 
-                    <div className="gamearea">
-
-
-                        <Cell id={0} /><Cell id={1} /><Cell id={2} />
-                        <Cell id={3} /><Cell id={4} /><Cell id={5} />
-                        <Cell id={6} /><Cell id={7} /><Cell id={8} />
+                        <AlertPanel />
                     </div>
+                    <div className="gamescreen" >
+                        <Line className={'foreground'} />
+                        <Line className={'foreground'} />
+                        <Line className={'background'} />
+                        <Line className={'background'} />
+                        <Line className={'background'} />
+                        <div className="gamearea">
+                            <div className="vstack">
+                                <div className="hstack">
+                                    <Cell id={0} /><div className="vertical" /><Cell id={1} /><div className="vertical" /><Cell id={2} />
+                                </div>
+                                <div className="horizontal" />
+                                <div className="hstack">
+                                    <Cell id={3} /><div className="vertical" /><Cell id={4} /><div className="vertical" /><Cell id={5} />
+                                </div>
+                                <div className="horizontal" />
+                                <div className="hstack">
+                                    <Cell id={6} /><div className="vertical" /><Cell id={7} /><div className="vertical" /><Cell id={8} />
+                                </div>
+                            </div>
 
-                </div>
-                <Line />
-                {/* <audio controls >
+                        </div>
+
+                        {/* <audio controls >
                     <source src={test} />
                 </audio>
                 <img src={book1} />
@@ -68,8 +85,9 @@ class Gamescreen extends Component {
                 <img src={book7} /> */}
 
 
+                    </div>
+                </div>
             </div>
-
         )
     }
 

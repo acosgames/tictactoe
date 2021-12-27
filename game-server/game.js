@@ -93,6 +93,9 @@ class Tictactoe {
             delete user.test2;
         //get the picked cell
         let cellid = action.payload;
+        if (typeof cellid !== 'number')
+            return false;
+
         let cell = state.cells[cellid];
 
         // block picking cells with markings, and send error
@@ -102,7 +105,7 @@ class Tictactoe {
                 action: 'pick',
                 error: 'NOT_EMPTY'
             })
-            return;
+            return false;
         }
 
         //mark the selected cell
@@ -142,6 +145,7 @@ class Tictactoe {
         players[state.sx].type = 'X';
 
         fsg.event('gamestart', 1);
+        fsg.setTimelimit(20);
     }
 
     selectNextPlayer(userid) {

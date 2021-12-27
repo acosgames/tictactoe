@@ -75,17 +75,25 @@ class FSG {
         for (var i = 0; i < this.actions.length; i++) {
             if (this.actions[i].type == type) {
                 this.currentAction = this.actions[i];
-                cb(this.currentAction);
+                let result = cb(this.currentAction);
+                if (typeof result == "boolean" && !result) {
+                    this.ignore();
+                    break;
+                }
             }
 
         }
 
     }
 
+    ignore() {
+        globals.ignore();
+    }
+
     setGame(game) {
         for (var id in this.nextGame.players) {
             let player = this.nextGame.players[id];
-            game.players[id] = { name: player.name }
+            game.players[id] = player;
         }
         this.nextGame = game;
     }

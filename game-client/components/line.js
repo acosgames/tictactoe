@@ -41,6 +41,34 @@ class Line extends Component {
         return true;
     }
 
+    renderTest() {
+
+        let start = fs.get('cell0');
+        let end = fs.get('cell8');
+        if (!start || !end)
+            return <></>
+        let x1 = start.left + (start.offsetWidth / 2);
+        let y1 = start.top + (start.offsetHeight / 2);
+        let x2 = end.left + (end.offsetWidth / 2);
+        let y2 = end.top + (end.offsetHeight / 2);
+
+        let color = 'color-X';
+        return (
+            <svg className={"line " + this.props.className + ' ' + color}>
+                <line
+                    id="line1"
+                    x1={x1}
+                    y1={y1}
+                    x2={x2}
+                    y2={y2}
+                    strokeWidth="20"
+                    stroke="#fff"
+                    stroke-linecap="round">
+                </line>
+            </svg>
+        )
+    }
+
     render() {
         let gameoverEvent = fs.get('events-gameover');
         if (!gameoverEvent || !gameoverEvent.type || gameoverEvent.type != 'winner') {
@@ -67,9 +95,21 @@ class Line extends Component {
         let celltype = fs.get('state-cells-' + strip[0]) || '';
         let color = 'color-' + celltype.toUpperCase();
         return (
-            <svg className="line"><line className={color} id="line1" x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth="20" ></line></svg>
+            <svg className={"line " + this.props.className + ' ' + color}>
+                <line
+                    id="line1"
+                    x1={x1}
+                    y1={y1}
+                    x2={x2}
+                    y2={y2}
+                    strokeWidth="20"
+                    stroke="#fff"
+                    stroke-linecap="round">
+                </line>
+            </svg>
         )
     }
 }
 
+// export default fs.connect(['cell8', 'cell0'])(Line);
 export default fs.connect(['events-gameover'])(Line);
