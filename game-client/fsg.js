@@ -11,8 +11,9 @@ fs.set('next', {});
 fs.set('events', {});
 
 var needsReset = false;
-
+var timerHandle = 0;
 export function GameLoader(props) {
+
 
 
     const timerLoop = (cb) => {
@@ -20,12 +21,9 @@ export function GameLoader(props) {
         if (cb)
             cb();
 
-        setTimeout(() => { timerLoop(cb) }, 100);
+        timerHandle = setTimeout(() => { timerLoop(cb) }, 100);
 
-        let events = fs.get('events');
-        if (events.gameover) {
-            return;
-        }
+
         let timer = fs.get('timer');
         if (!timer)
             return;
@@ -42,6 +40,12 @@ export function GameLoader(props) {
         }
 
         fs.set('timeleft', elapsed);
+
+        let events = fs.get('events');
+        if (events.gameover) {
+            clearTimeout(timerHandle);
+            return;
+        }
     }
 
     const flatstoreUpdate = (message) => {

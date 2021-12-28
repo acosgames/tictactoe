@@ -122,7 +122,7 @@ class Tictactoe {
             return;
         }
 
-        fsg.setTimelimit(20);
+        fsg.setTimelimit(10);
         this.selectNextPlayer(null);
     }
 
@@ -145,7 +145,7 @@ class Tictactoe {
         players[state.sx].type = 'X';
 
         fsg.event('gamestart', 1);
-        fsg.setTimelimit(20);
+        fsg.setTimelimit(15);
     }
 
     selectNextPlayer(userid) {

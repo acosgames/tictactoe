@@ -20,14 +20,23 @@ class Timeleft extends Component {
             timeleft = 0;
         }
 
+        if (timeleft > 0 && timeleft < 10) {
+            timeleft = "0" + timeleft;
+        }
+
+        if (!this.props.next) {
+            timeleft = "10";
+        }
 
         return (<span>{timeleft}</span>)
     }
 
     render() {
         return (
-            <div className={"timeleft " + (this.props.hide ? 'hide' : '')}>
-                <span style={{ color: '#ccc' }}>Time:</span>&nbsp;&nbsp;<span>{this.getTimeFormatted()}</span>
+            <div className={"timeleft "}>
+                <span>
+                </span>
+                <span>{this.getTimeFormatted()}</span>
             </div>
 
         )

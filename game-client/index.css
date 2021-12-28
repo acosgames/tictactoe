@@ -1,5 +1,7 @@
 /* @import url("https://fonts.googleapis.com/css?family=Roboto:wght@100;300;400;500;700;900&display=swap"); */
 
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap");
+
 html,
 body,
 #root {
@@ -7,50 +9,11 @@ body,
   padding: 0;
   width: 100%;
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  font-family: "Roboto";
+  font-family: "Roboto", sans-serif;
   color: white;
   background-color: #1a202c;
   /* -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; */
-}
-
-.timeleft {
-  color: white;
-  font-size: 2.3vh;
-  text-align: center;
-  font-weight: bold;
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-span.nextTag {
-  font-size: 1.2em;
-  /* color: gold; */
-  font-weight: bold;
-  display: inline-block;
-  text-align: center;
-  display: block;
-  width: 100%;
-}
-
-span.playerName {
-  display: block;
-  width: 100%;
-  font-size: 2.8vh;
-  text-align: center;
-}
-
-span.ttt-type {
-  display: block;
-  width: 100%;
-  text-align: center;
-  font-weight: bold;
-  font-size: 3vh;
-  padding-top: 1vh;
 }
 
 .gamewrapper {
@@ -86,11 +49,6 @@ span.ttt-type {
   z-index: 5;
 }
 
-#wrapper .player-panel {
-  flex-basis: 20rem;
-  flex-grow: 1;
-}
-
 #wrapper .gamescreen {
   flex-basis: 0;
   flex-grow: 999;
@@ -99,7 +57,6 @@ span.ttt-type {
 .gamearea .cell {
   /* border: 20px solid #2c3e50; */
   border-radius: 0px;
-  font-family: Helvetica;
   font-weight: 100;
   display: flex;
   justify-content: center;
@@ -144,6 +101,11 @@ span.ttt-type {
   height: 100%;
   flex-direction: row;
   gap: 0px;
+}
+
+.spacer {
+  flex: 1 1 0%;
+  place-self: stretch;
 }
 
 .foreground {
@@ -263,7 +225,7 @@ span.ttt-type {
   margin-bottom: 1rem;
   border: 1px solid transparent;
   border-radius: 0.25rem;
-  font-size: 2vh;
+  font-size: 2.6vh;
   text-align: center;
 }
 
@@ -271,11 +233,111 @@ span.ttt-type {
   display: none;
 }
 
-.nameplate {
+.player-panel {
+  flex-grow: 1;
   background-color: #141922;
-  padding: 1rem;
   width: 100%;
   height: 100%;
+}
+
+.nameplate {
+  /* padding: 1rem; */
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  /* background-color: red; */
+  z-index: 2;
+  transition: width 0.1s ease, left 0.1s ease;
+}
+
+.timeleft {
+  color: #333;
+  font-size: 2.6vh;
+  text-align: center;
+  font-weight: bold;
+  flex-grow: 1;
+  display: flex;
+  padding-left: 1vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.nextTag {
+  font-size: 1.2em;
+  /* color: gold; */
+  font-weight: bold;
+  display: inline-block;
+  text-align: center;
+  display: block;
+  width: 100%;
+}
+
+.local .playerName {
+  font-weight: bold;
+}
+.playerName {
+  display: block;
+
+  font-size: 2.8vh;
+  text-align: center;
+}
+
+.localPlayerIndicator {
+  display: block;
+  width: 100%;
+  font-size: 1.8vh;
+  text-align: center;
+}
+
+.ttt-type {
+  display: block;
+  width: 7vh;
+  text-align: center;
+  font-weight: bold;
+  font-size: 5vh;
+  padding-top: 0;
+}
+
+.vs {
+  font-weight: bold;
+  font-size: 3vh;
+}
+
+.next .timeleft {
+  color: #fff;
+}
+
+.next.color-X.ttt-type {
+  color: #ffb7b7;
+}
+
+.next.color-O.ttt-type {
+  color: #b3cfff;
+}
+
+/* .nameplate {
+  border-top: 1vh solid #141922;
+} */
+
+.next.color-O .progress {
+  background-color: #052253;
+}
+
+.next.color-X .progress {
+  background-color: #290202;
+}
+
+.next span.playerName {
+  font-weight: bold;
 }
 
 .eventMessage {

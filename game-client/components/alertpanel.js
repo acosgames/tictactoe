@@ -59,21 +59,21 @@ class AlertPanel extends Component {
     render() {
 
         let events = fs.get('events');
-        let message = [];
+        let message = null;
 
         if (events) {
             let names = Object.keys(events);
             for (var i = 0; i < names.length; i++) {
                 let name = names[i];
                 if (name in events) {
-                    message.push(
+                    message = (
                         <span className="eventMessage">{this.eventMessage(name)}</span>
                     )
                 }
             }
         }
 
-        if (message.length == 0) {
+        if (!message) {
             return (<React.Fragment></React.Fragment>)
         }
         return (
