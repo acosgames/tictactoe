@@ -20,9 +20,9 @@ class Timeleft extends Component {
             timeleft = 0;
         }
 
-        if (timeleft > 0 && timeleft < 10) {
-            timeleft = "0" + timeleft;
-        }
+        // if (timeleft > 0 && timeleft < 10) {
+        //     timeleft = "0" + timeleft;
+        // }
 
         if (!this.props.next) {
             timeleft = "10";
@@ -34,8 +34,6 @@ class Timeleft extends Component {
     render() {
         return (
             <div className={"timeleft "}>
-                <span>
-                </span>
                 <span>{this.getTimeFormatted()}</span>
             </div>
 

@@ -30,18 +30,22 @@ class PlayerList extends Component {
         let nextTag = isNext ? 'next' : '';
 
         return (
-            <div key={'nameplate-' + local.name} className={`color-${type} nameplate ${nextTag} local`}>
-                <TimeBar />
+            <div key={'nameplate-' + local.name} className={`color-${type} nameplate vstack ${nextTag} local`}>
+
                 <div className="hstack" style={{ zIndex: 4, position: 'relative' }}>
                     <div className="spacer"></div>
                     <div className="vstack" >
-                        <span className="playerName">{local.name}</span>
+                        <div className="hstack" style={{ alignContent: 'center', justifyContent: 'center' }}>
+                            <span className="localPlayerIndicator">✦</span>
+                            <span className="playerName">{local.name}</span>
+                        </div>
                         <Timeleft next={isNext} />
                     </div>
                     <div className="ttt-type">
                         {type || '?'}
                     </div>
                 </div>
+                <div className="timebar-panel"><TimeBar /></div>
             </div>
         )
     }
@@ -58,7 +62,7 @@ class PlayerList extends Component {
         let nextTag = isNext ? 'next' : '';
         return (
             <div key={'nameplate-' + player.name} className={`color-${type} nameplate vstack ${nextTag}`}>
-                <TimeBar reverse={true} />
+
                 <div className="hstack" style={{ zIndex: 4, position: 'relative' }}>
 
                     <div className="ttt-type">{type || '?'}</div>
@@ -66,6 +70,9 @@ class PlayerList extends Component {
                         <span className="playerName">{player.name}</span>
                         <Timeleft next={isNext} />
                     </div>
+                </div>
+                <div className="timebar-panel">
+                    <TimeBar reverse={true} />
                 </div>
 
             </div>

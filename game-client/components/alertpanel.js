@@ -73,6 +73,13 @@ class AlertPanel extends Component {
             }
         }
 
+        let localUser = fs.get('local');
+        let next = fs.get('next');
+        if (next?.id == localUser?.id) {
+            message = (
+                <span className="yourTurn">YOUR TURN</span>
+            )
+        }
         if (!message) {
             return (<React.Fragment></React.Fragment>)
         }

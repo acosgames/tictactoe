@@ -95,6 +95,13 @@ body,
   gap: 0px;
 }
 
+.vstack-noh {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0px;
+}
+
 .hstack {
   display: flex;
   width: 100%;
@@ -238,6 +245,7 @@ body,
   background-color: #141922;
   width: 100%;
   height: 100%;
+  padding-top: 2vh;
 }
 
 .nameplate {
@@ -246,6 +254,20 @@ body,
   height: 100%;
   position: relative;
   overflow: hidden;
+  /* padding-top: 1vh;
+  padding-bottom: 1vh; */
+  background-color: #141922;
+}
+
+.timebar-panel {
+  height: 0.5vh;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.yourTurn {
+  font-weight: bold;
 }
 
 .progress {
@@ -266,7 +288,7 @@ body,
   font-weight: bold;
   flex-grow: 1;
   display: flex;
-  padding-left: 1vh;
+  /* padding-left: 1vh; */
   justify-content: center;
   align-items: center;
 }
@@ -289,13 +311,15 @@ body,
 
   font-size: 2.8vh;
   text-align: center;
+  padding-right: 1vh;
 }
 
 .localPlayerIndicator {
   display: block;
-  width: 100%;
-  font-size: 1.8vh;
+  font-size: 4vh;
+  line-height: 4vh;
   text-align: center;
+  color: darkkhaki;
 }
 
 .ttt-type {
@@ -329,11 +353,11 @@ body,
 } */
 
 .next.color-O .progress {
-  background-color: #052253;
+  background-color: #0f56cf;
 }
 
 .next.color-X .progress {
-  background-color: #290202;
+  background-color: #c50e0e;
 }
 
 .next span.playerName {

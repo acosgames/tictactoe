@@ -42,7 +42,7 @@ class Gamescreen extends Component {
                 setTimeout(this.updatePosition.bind(this), 2000);
             }}>
                 <div className="vstack">
-                    <div className="vstack" style={{ height: '12vh' }}>
+                    <div className="vstack-noh" >
                         <div className="vstack">
                             <PlayerList />
 
