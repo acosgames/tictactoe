@@ -25,7 +25,7 @@ class Timeleft extends Component {
         // }
 
         if (!this.props.next) {
-            timeleft = "10";
+            // timeleft = "10";
         }
 
         return (<span>{timeleft}</span>)

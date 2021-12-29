@@ -102,7 +102,7 @@ class Line extends Component {
                     y1={y1}
                     x2={x2}
                     y2={y2}
-                    strokeWidth="20"
+                    strokeWidth="10"
                     stroke="#fff"
                     stroke-linecap="round">
                 </line>

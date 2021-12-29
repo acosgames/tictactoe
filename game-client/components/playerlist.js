@@ -30,7 +30,7 @@ class PlayerList extends Component {
         let nextTag = isNext ? 'next' : '';
 
         return (
-            <div key={'nameplate-' + local.name} className={`color-${type} nameplate vstack ${nextTag} local`}>
+            <div className={`color-${type} nameplate vstack ${nextTag} local`}>
 
                 <div className="hstack" style={{ zIndex: 4, position: 'relative' }}>
                     <div className="spacer"></div>
@@ -61,7 +61,7 @@ class PlayerList extends Component {
         let isNext = nextID == id;
         let nextTag = isNext ? 'next' : '';
         return (
-            <div key={'nameplate-' + player.name} className={`color-${type} nameplate vstack ${nextTag}`}>
+            <div className={`color-${type} nameplate vstack ${nextTag}`}>
 
                 <div className="hstack" style={{ zIndex: 4, position: 'relative' }}>
 

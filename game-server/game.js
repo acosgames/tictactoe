@@ -144,7 +144,7 @@ class Tictactoe {
             players[id].type = 'O';
         players[state.sx].type = 'X';
 
-        fsg.event('gamestart', 1);
+        fsg.event('newround', true);
         fsg.setTimelimit(15);
     }
 

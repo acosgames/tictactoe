@@ -196,12 +196,15 @@ body,
 
 .color-X {
   color: rgb(255, 214, 212);
+  color: #f59793;
   /* color: #b77701;
   stroke: #b77701; */
 }
 
 .color-O {
   color: rgb(220, 226, 255);
+
+  color: #a0aef1;
   /* color: #0459d2;
   stroke: #0459d2; */
 }
@@ -303,7 +306,7 @@ body,
   width: 100%;
 }
 
-.local .playerName {
+.playerName {
   font-weight: bold;
 }
 .playerName {
@@ -325,26 +328,34 @@ body,
 .ttt-type {
   display: block;
   width: 7vh;
-  text-align: center;
+  text-align: left;
   font-weight: bold;
-  font-size: 5vh;
+  font-size: 3vh;
   padding-top: 0;
+  align-self: center;
+  color: white;
+}
+
+.local .ttt-type {
+  text-align: right;
 }
 
 .vs {
-  font-weight: bold;
-  font-size: 3vh;
+  font-weight: normal;
+  font-size: 2vh;
+  width: 8vh;
+  text-align: center;
 }
 
 .next .timeleft {
   color: #fff;
 }
 
-.next.color-X.ttt-type {
+.color-X .ttt-type {
   color: #ffb7b7;
 }
 
-.next.color-O.ttt-type {
+.color-O .ttt-type {
   color: #b3cfff;
 }
 
