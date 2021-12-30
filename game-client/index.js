@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { GameLoader } from './fsg';
+import { GameLoader } from './acosg';
 import './index.css';
 
 import Gamescreen from './components/gamescreen';

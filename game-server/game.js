@@ -1,4 +1,4 @@
-import fsg from './fsg';
+import cup from './acosg';
 
 let defaultGame = {
     state: {
@@ -16,12 +16,12 @@ let defaultGame = {
 class Tictactoe {
 
     onNewGame(action) {
-        fsg.setGame(defaultGame);
+        cup.setGame(defaultGame);
         this.checkNewRound();
     }
 
     onSkip(action) {
-        let next = fsg.next();
+        let next = cup.next();
         if (!next || !next.id)
             return;
         // let id = action.payload.id;
@@ -33,17 +33,17 @@ class Tictactoe {
     }
 
     onJoin(action) {
-        fsg.log(action);
+        cup.log(action);
         if (!action.user.id)
             return;
 
-        let player = fsg.players(action.user.id);
+        let player = cup.players(action.user.id);
         player.rank = 2;
         player.score = 0;
 
-        let playerCount = fsg.playerCount();
+        let playerCount = cup.playerCount();
         if (playerCount <= 2) {
-            fsg.event('join', {
+            cup.event('join', {
                 id: action.user.id
             });
             // this.checkNewRound();
@@ -53,7 +53,7 @@ class Tictactoe {
         }
 
 
-        // if (fsg.players(action.user.id).type)
+        // if (cup.players(action.user.id).type)
         //     return;
 
 
@@ -61,8 +61,8 @@ class Tictactoe {
 
     checkNewRound() {
         //if player count reached required limit, start the game
-        //let maxPlayers = fsg.rules('maxPlayers') || 2;
-        let playerCount = fsg.playerCount();
+        //let maxPlayers = cup.rules('maxPlayers') || 2;
+        let playerCount = cup.playerCount();
         if (playerCount >= 2) {
             this.newRound();
         }
@@ -73,7 +73,7 @@ class Tictactoe {
     }
 
     playerLeave(id) {
-        let players = fsg.players();
+        let players = cup.players();
         let otherPlayerId = null;
         if (players[id]) {
             otherPlayerId = this.selectNextPlayer(id);
@@ -87,8 +87,8 @@ class Tictactoe {
     }
 
     onPick(action) {
-        let state = fsg.state();
-        let user = fsg.players(action.user.id);
+        let state = cup.state();
+        let user = cup.players(action.user.id);
         if (user.test2)
             delete user.test2;
         //get the picked cell
@@ -100,7 +100,7 @@ class Tictactoe {
 
         // block picking cells with markings, and send error
         if (cell.length > 0) {
-            fsg.next({
+            cup.next({
                 id: action.user.id,
                 action: 'pick',
                 error: 'NOT_EMPTY'
@@ -113,23 +113,23 @@ class Tictactoe {
         let id = action.user.id;
         state.cells[cellid] = type;
 
-        fsg.event('picked', {
+        cup.event('picked', {
             cellid, id
         });
-        // fsg.prev()
+        // cup.prev()
 
         if (this.checkWinner()) {
             return;
         }
 
-        fsg.setTimelimit(10);
+        cup.setTimelimit(10);
         this.selectNextPlayer(null);
     }
 
     newRound() {
-        let playerList = fsg.playerList();
+        let playerList = cup.playerList();
 
-        let state = fsg.state();
+        let state = cup.state();
         //select the starting player
         if (!state.sx || state.sx.length == 0) {
             state.sx = this.selectNextPlayer(playerList[Math.floor(Math.random() * playerList.length)]);
@@ -139,22 +139,22 @@ class Tictactoe {
         }
 
         //set the starting player, and set type for other player
-        let players = fsg.players();
+        let players = cup.players();
         for (var id in players)
             players[id].type = 'O';
         players[state.sx].type = 'X';
 
-        fsg.event('newround', true);
-        fsg.setTimelimit(15);
+        cup.event('newround', true);
+        cup.setTimelimit(15);
     }
 
     selectNextPlayer(userid) {
-        let action = fsg.action();
-        let players = fsg.playerList();
+        let action = cup.action();
+        let players = cup.playerList();
         userid = userid || action.user.id;
         //only 2 players so just filter the current player
         let remaining = players.filter(x => x != userid);
-        fsg.next({
+        cup.next({
             id: remaining[0],
             action: 'pick'
         });
@@ -182,7 +182,7 @@ class Tictactoe {
     }
 
     checkNoneEmpty() {
-        let cells = fsg.state().cells;
+        let cells = cup.state().cells;
         let cellslist = [];
         for (var key in cells) {
             cellslist.push(cells[key]);
@@ -197,7 +197,7 @@ class Tictactoe {
 
     // checks if a strip has matching types
     check(strip) {
-        let cells = fsg.state().cells;
+        let cells = cup.state().cells;
         let cellslist = [];
         for (var key in cells) {
             cellslist.push(cells[key]);
@@ -216,7 +216,7 @@ class Tictactoe {
     }
 
     findPlayerWithType(type) {
-        let players = fsg.players();
+        let players = cup.players();
         for (var id in players) {
             let player = players[id];
             if (player.type == type)
@@ -227,32 +227,32 @@ class Tictactoe {
 
 
     setTie() {
-        fsg.gameover({ type: 'tie' })
-        fsg.next({});
-        // fsg.prev({})
+        cup.gameover({ type: 'tie' })
+        cup.next({});
+        // cup.prev({})
 
-        // fsg.killGame();
+        // cup.killGame();
     }
     // set the winner event and data
     setWinner(type, strip) {
         //find user who matches the win type
         let userid = this.findPlayerWithType(type);
-        let player = fsg.players(userid);
+        let player = cup.players(userid);
         player.rank = 1;
         player.score = player.score + 100;
         if (!player) {
             player.id = 'unknown player';
         }
 
-        fsg.gameover({
+        cup.gameover({
             type: 'winner',
             pick: type,
             strip: strip,
             id: userid
         });
-        // fsg.prev()
-        fsg.next({});
-        // fsg.killGame();
+        // cup.prev()
+        cup.next({});
+        // cup.killGame();
     }
 }
 

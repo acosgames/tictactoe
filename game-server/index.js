@@ -1,12 +1,11 @@
-import fsg from './fsg';
+import cup from './acosg';
 import tictactoe from './game';
 
 
+cup.on('gamestart', (action) => tictactoe.onNewGame(action));
+cup.on('skip', (action) => tictactoe.onSkip(action));
+cup.on('join', (action) => tictactoe.onJoin(action));
+cup.on('leave', (action) => tictactoe.onLeave(action));
+cup.on('pick', (action) => tictactoe.onPick(action));
 
-fsg.on('gamestart', (action) => tictactoe.onNewGame(action));
-fsg.on('skip', (action) => tictactoe.onSkip(action));
-fsg.on('join', (action) => tictactoe.onJoin(action));
-fsg.on('leave', (action) => tictactoe.onLeave(action));
-fsg.on('pick', (action) => tictactoe.onPick(action));
-
-fsg.submit();
+cup.submit();
