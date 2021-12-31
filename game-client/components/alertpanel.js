@@ -59,15 +59,15 @@ class AlertPanel extends Component {
     render() {
 
         let events = fs.get('events');
-        let message = null;
+        let message = [];
 
         if (events) {
             let names = Object.keys(events);
             for (var i = 0; i < names.length; i++) {
                 let name = names[i];
                 if (name in events) {
-                    message = (
-                        <span className="eventMessage">{this.eventMessage(name)}</span>
+                    message.push(
+                        <span key={"alert-" + name} className="eventMessage">{this.eventMessage(name)}</span>
                     )
                 }
             }
@@ -76,8 +76,8 @@ class AlertPanel extends Component {
         let localUser = fs.get('local');
         let next = fs.get('next');
         if (next?.id == localUser?.id) {
-            message = (
-                <span className="yourTurn">YOUR TURN</span>
+            message.push(
+                <span key={"alert-yourturn"} className="yourTurn">YOUR TURN</span>
             )
         }
         if (!message) {

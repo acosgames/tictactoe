@@ -90,7 +90,7 @@ export function GameLoader(props) {
         if (!message || message.length == 0)
             return;
 
-        // console.log('Game Updated:', message);
+        console.log('New Game State:', message);
 
         if (needsReset) {
             flatstoreUpdate({
