@@ -57,8 +57,8 @@ class Cell extends Component {
                     this.updatePosition();
                     // setTimeout(this.updatePosition.bind(this), 100);
                 }}>
-                <span className={color + ' foreground'}>{cellType}</span>
-                <span className={color + ' background'}>{cellType}</span>
+                <span onClick={() => this.clicked(id)} className={color + ' foreground'}>{cellType}</span>
+                <span onClick={() => this.clicked(id)} className={color + ' background'}>{cellType}</span>
 
             </div>
         )
