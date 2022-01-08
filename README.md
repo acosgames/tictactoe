@@ -16,7 +16,7 @@ npm start
 
 ## About Client
 
-Client is built using ReactJS.  It will run inside an iframe and communicate with the parent frame which is the simulator's client.  
+Client is built using ReactJS.  It will run inside an iframe and communicate with the parent frame which is the [Simulator's](https://github.com/acosgames/acosgames) client.  
 
 All assets (images, svg, audio) should be packed into a single `client.bundle.js` file.
 
@@ -28,7 +28,7 @@ Server code is built using NodeJS code and bundled into a single `server.bundle.
 
 ## About Simulator
 
-Simulator runs a simple frontend that displays the your `client.bundle.js` inside an iframe.  
+[Simulator](https://github.com/acosgames/acosgames) runs a simple frontend that displays the your `client.bundle.js` inside an iframe.  
 
-Simulator also runs a NodeJS express/socket.io server with a worker that uses vm2 to run your `server.bundle.js` code.
+[Simulator](https://github.com/acosgames/acosgames) also runs a NodeJS express/socket.io server with a worker that uses vm2 to run your `server.bundle.js` code.
 
