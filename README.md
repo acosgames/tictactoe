@@ -28,7 +28,7 @@ Server code is built using NodeJS code and bundled into a single `server.bundle.
 
 ## About Simulator
 
-[Simulator](https://github.com/acosgames/acosgames) runs a simple frontend that displays the your `client.bundle.js` inside an iframe.  
+[Simulator](https://github.com/acosgames/acosgames) runs a simple frontend that displays your `client.bundle.js` inside an iframe.  
 
 [Simulator](https://github.com/acosgames/acosgames) also runs a NodeJS express/socket.io server with a worker that uses vm2 to run your `server.bundle.js` code.
 
