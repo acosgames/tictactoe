@@ -3,6 +3,8 @@ Classic game of X and O on a 9 square grid
 
 ## Getting Started
 
+Requires Node v16+
+
 ### Installation 
 ```bash
 npm install
