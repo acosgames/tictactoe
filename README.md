@@ -13,6 +13,14 @@ npm install
 npm start
 ```
 
+### Playing the game
+
+1. Open 2 tabs at [http://localhost:3200/](http://localhost:3200/)
+2. Enter a username on each tab and click 'Join'
+3. When ready, press "Start Game"
+
+The game was designed to play in Scaled Viewport mode, 4:4 resolution, 1200 width.
+
 
 ## About Client
 
