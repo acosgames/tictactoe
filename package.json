@@ -5,7 +5,7 @@
   ],
   "version": "0.1.0",
   "dependencies": {
-    "acosgames": "^1.0.1",
+    "acosgames": "^1.0.3",
     "axios": "^0.21.1",
     "express": "^4.17.1",
     "flatstore": "^1.0.11",
