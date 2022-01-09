@@ -3,6 +3,8 @@ Classic game of X and O on a 9 square grid
 
 ## Getting Started
 
+Requires Node v16+
+
 ### Installation 
 ```bash
 npm install
@@ -13,10 +15,18 @@ npm install
 npm start
 ```
 
+### Playing the game
+
+1. Open 2 tabs at [http://localhost:3200/](http://localhost:3200/)
+2. Enter a username on each tab and click 'Join'
+3. When ready, press "Start Game"
+
+The game was designed to play in Scaled Resolution mode, 4:4 resolution, 1200 width.
+
 
 ## About Client
 
-Client is built using ReactJS.  It will run inside an iframe and communicate with the parent frame which is the simulator's client.  
+Client is built using ReactJS.  It will run inside an iframe and communicate with the parent frame which is the [Simulator's](https://github.com/acosgames/acosgames) client.  
 
 All assets (images, svg, audio) should be packed into a single `client.bundle.js` file.
 
@@ -28,7 +38,7 @@ Server code is built using NodeJS code and bundled into a single `server.bundle.
 
 ## About Simulator
 
-Simulator runs a simple frontend that displays the your `client.bundle.js` inside an iframe.  
+[Simulator](https://github.com/acosgames/acosgames) runs a simple frontend that displays your `client.bundle.js` inside an iframe.  
 
-Simulator also runs a NodeJS express/socket.io server with a worker that uses vm2 to run your `server.bundle.js` code.
+[Simulator](https://github.com/acosgames/acosgames) also runs a NodeJS express/socket.io server with a worker that uses vm2 to run your `server.bundle.js` code.
 
