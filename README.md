@@ -1,6 +1,10 @@
 # tictactoe
 Classic game of X and O on a 9 square grid
 
+[View Acos Documentation](https://docs.acos.games)
+
+--- 
+
 ## Getting Started
 
 Requires Node v16+
