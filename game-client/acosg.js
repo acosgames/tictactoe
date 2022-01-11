@@ -42,7 +42,7 @@ export function GameLoader(props) {
         fs.set('timeleft', elapsed);
 
         let events = fs.get('events');
-        if (events.gameover) {
+        if (events?.gameover) {
             clearTimeout(timerHandle);
             return;
         }
@@ -107,7 +107,7 @@ export function GameLoader(props) {
 
         flatstoreUpdate(message);
 
-        if (message && message.events.gameover) {
+        if (message && message?.events?.gameover) {
             needsReset = true;
         }
 

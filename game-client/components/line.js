@@ -70,13 +70,18 @@ class Line extends Component {
     }
 
     render() {
-        let gameoverEvent = fs.get('events-gameover');
+
+
+        let events = fs.get('events');
+        let state = fs.get('state');
+
+        let gameoverEvent = events?.gameover;
         if (!gameoverEvent || !gameoverEvent.type || gameoverEvent.type != 'winner') {
             return <React.Fragment></React.Fragment>
         }
         let strip = [0, 1, 2];
 
-        strip = fs.get('events-gameover-strip');
+        strip = events?.gameover?.strip;
         if (!strip) {
             return <React.Fragment></React.Fragment>
         }
@@ -92,8 +97,10 @@ class Line extends Component {
         let x2 = end.left + (end.offsetWidth / 2);
         let y2 = end.top + (end.offsetHeight / 2);
 
-        let celltype = fs.get('state-cells-' + strip[0]) || '';
+        let cells = state?.cells || {};
+        let celltype = cells[strip[0]] || '';
         let color = 'color-' + celltype.toUpperCase();
+        console.log("line: ", x1, y1, x2, y2);
         return (
             <svg className={"line " + this.props.className + ' ' + color}>
                 <line

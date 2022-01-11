@@ -52,9 +52,9 @@ class Gamescreen extends Component {
                     </div>
                     <div className="gamescreen" >
                         <Line className={'foreground'} />
-                        <Line className={'foreground'} />
+                        {/* <Line className={'foreground'} />
                         <Line className={'background'} />
-                        <Line className={'background'} />
+                        <Line className={'background'} /> */}
                         <Line className={'background'} />
                         <div className="gamearea">
                             <div className="vstack">
