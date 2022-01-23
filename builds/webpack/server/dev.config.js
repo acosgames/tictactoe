@@ -15,7 +15,7 @@ module.exports = {
             return "../../" + info.resourcePath
         }
     },
-    devtool: "inline-source-map",
+    devtool: "source-map",
     mode: 'development',
     optimization: {
         usedExports: true,
