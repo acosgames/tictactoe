@@ -1,7 +1,13 @@
-# tictactoe
+# Tic Tac Toe
 Classic game of X and O on a 9 square grid
 
-[View Acos Documentation](https://docs.acos.games)
+
+
+[<img width="100" src="https://user-images.githubusercontent.com/96845776/161881777-c6000699-a9b0-4f9d-9bde-7ab22d05196b.png" />](https://acos.games/g/tictactoe)
+
+[Play Tic Tac Toe on ACOS](https://acos.games/g/tictactoe)
+
+[ACOS Documentation](https://docs.acos.games)
 
 --- 
 
