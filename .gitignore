@@ -11,6 +11,8 @@ pids
 *.seed
 *.pid.lock
 
+builds/client/
+builds/server/
 
 client.bundle.js
 client.bundle.dev.js

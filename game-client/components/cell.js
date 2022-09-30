@@ -44,7 +44,7 @@ class Cell extends Component {
     }
     render() {
         let id = this.props.id;
-        let cellType = this.props.celltype || '';
+        let cellType = this.props?.state?.cells ? this.props?.state?.cells[id] : '';
         let inactive = (cellType == 'X' || cellType == 'O') ? '' : ' inactive ';
         let color = "color-" + cellType;
         return (
@@ -68,12 +68,5 @@ class Cell extends Component {
 
 
 
-let onCustomWatched = ownProps => {
-    return ['state-cells-' + ownProps.id];
-};
-let onCustomProps = (key, value, store, ownProps) => {
-    return {
-        celltype: value
-    };
-};
-export default fs.connect([], onCustomWatched, onCustomProps)(Cell);
+
+export default fs.connect(['state'])(Cell);

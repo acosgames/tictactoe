@@ -1,0 +1,11 @@
+{
+    "minplayers": 1,
+    "maxplayers": 2,
+    "minteams": 0,
+    "maxteams": 0,
+    "teams": [],
+    "screentype": 3,
+    "resow": 4,
+    "resoh": 3,
+    "screenwidth": 800
+}

@@ -41,8 +41,8 @@ export function GameLoader(props) {
 
         fs.set('timeleft', elapsed);
 
-        let events = fs.get('events');
-        if (events?.gameover) {
+        let room = fs.get('room');
+        if (room?.status == 'gameover') {
             clearTimeout(timerHandle);
             return;
         }
@@ -52,15 +52,20 @@ export function GameLoader(props) {
         if (!message)
             return;
 
+        if (message.state) {
+            fs.set('state', message.state);
+        }
+        if (message.players) {
+            fs.set('players', message.players);
+        }
         if (message.local) {
             fs.set('local', message.local);
         }
+        if (message.events) {
+            fs.set('events', message.events);
+        }
         if (message.timer) {
             fs.set('timer', message.timer);
-        }
-
-        if (message.players) {
-            fs.set('players', message.players);
         }
         if (message.rules) {
             fs.set('rules', message.rules);
@@ -68,16 +73,8 @@ export function GameLoader(props) {
         if (message.next) {
             fs.set('next', message.next);
         }
-        // if (message.prev) {
-        //     fs.set('prev', message.prev);
-        // }
-
-        if (message.state) {
-            fs.set('state', message.state);
-        }
-
-        if (message.events) {
-            fs.set('events', message.events);
+        if (message.room) {
+            fs.set('room', message.room);
         }
     }
 
@@ -92,18 +89,18 @@ export function GameLoader(props) {
 
         console.log('New Game State:', message);
 
-        if (needsReset) {
-            flatstoreUpdate({
-                local: {},
-                state: {},
-                players: {},
-                events: {},
-                next: {},
-                timer: {},
-                rules: {},
-            })
-            needsReset = false;
-        }
+        // if (needsReset) {
+        //     flatstoreUpdate({
+        //         local: {},
+        //         state: {},
+        //         players: {},
+        //         events: {},
+        //         next: {},
+        //         timer: {},
+        //         rules: {},
+        //     })
+        //     needsReset = false;
+        // }
 
         flatstoreUpdate(message);
 

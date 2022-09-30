@@ -2,10 +2,10 @@ import cup from './acosg';
 
 let defaultGame = {
     state: {
-        cells: {
-            0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: ''
-        },
-        // cells: ['', '', '', '', '', '', '', '', ''],
+        // cells2: {
+        //     0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: ''
+        // },
+        cells: ['', '', '', '', '', '', '', '', ''],
         //sx: ''
     },
     players: {},
@@ -132,7 +132,7 @@ class Tictactoe {
         let state = cup.state();
         //select the starting player
         if (!state.sx || state.sx.length == 0) {
-            state.sx = this.selectNextPlayer(playerList[Math.floor(Math.random() * playerList.length)]);
+            state.sx = this.selectNextPlayer(playerList[Math.floor(globals.random() * playerList.length)]);
         }
         else {
             state.sx = this.selectNextPlayer(state.sx);
@@ -183,11 +183,11 @@ class Tictactoe {
 
     checkNoneEmpty() {
         let cells = cup.state().cells;
-        let cellslist = [];
-        for (var key in cells) {
-            cellslist.push(cells[key]);
-        }
-        let filtered = cellslist.filter(v => v == '');
+        // let cellslist = [];
+        // for (var key in cells) {
+        //     cellslist.push(cells[key]);
+        // }
+        let filtered = cells.filter(v => v == '');
 
         if (filtered.length == 0) {
             this.setTie();
@@ -198,16 +198,16 @@ class Tictactoe {
     // checks if a strip has matching types
     check(strip) {
         let cells = cup.state().cells;
-        let cellslist = [];
-        for (var key in cells) {
-            cellslist.push(cells[key]);
-        }
+        // let cellslist = [];
+        // for (var key in cells) {
+        //     cellslist.push(cells[key]);
+        // }
 
 
-        let first = cellslist[strip[0]];
+        let first = cells[strip[0]];
         if (first == '')
             return false;
-        let filtered = strip.filter(id => cellslist[id] == first);
+        let filtered = strip.filter(id => cells[id] == first);
         if (filtered.length == 3 && filtered.length == strip.length) {
             this.setWinner(first, strip);
             return true;

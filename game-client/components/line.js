@@ -74,9 +74,10 @@ class Line extends Component {
 
         let events = fs.get('events');
         let state = fs.get('state');
+        let room = fs.get('room');
 
         let gameoverEvent = events?.gameover;
-        if (!gameoverEvent || !gameoverEvent.type || gameoverEvent.type != 'winner') {
+        if (room?.status != 'gameover') {
             return <React.Fragment></React.Fragment>
         }
         let strip = [0, 1, 2];
@@ -111,7 +112,7 @@ class Line extends Component {
                     y2={y2}
                     strokeWidth="10"
                     stroke="#fff"
-                    stroke-linecap="round">
+                    strokeLinecap="round">
                 </line>
             </svg>
         )
@@ -119,4 +120,4 @@ class Line extends Component {
 }
 
 // export default fs.connect(['cell8', 'cell0'])(Line);
-export default fs.connect(['events-gameover'])(Line);
+export default fs.connect(['room-status'])(Line);
