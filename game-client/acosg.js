@@ -61,9 +61,7 @@ export function GameLoader(props) {
         if (message.local) {
             fs.set('local', message.local);
         }
-        if (message.events) {
-            fs.set('events', message.events);
-        }
+
         if (message.timer) {
             fs.set('timer', message.timer);
         }
@@ -72,6 +70,9 @@ export function GameLoader(props) {
         }
         if (message.next) {
             fs.set('next', message.next);
+        }
+        if (message.events) {
+            fs.set('events', message.events);
         }
         if (message.room) {
             fs.set('room', message.room);
