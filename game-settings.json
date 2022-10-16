@@ -1,11 +1,28 @@
 {
-    "minplayers": 2,
-    "maxplayers": 2,
-    "minteams": 0,
-    "maxteams": 0,
-    "teams": [],
-    "screentype": 3,
-    "resow": 4,
-    "resoh": 3,
-    "screenwidth": 800
+  "minplayers": 2,
+  "maxplayers": 2,
+  "minteams": 2,
+  "maxteams": 2,
+  "teams": [
+    {
+      "team_name": "Team O",
+      "team_slug": "team_o",
+      "minplayers": 1,
+      "maxplayers": 1,
+      "team_order": 0,
+      "color": "#ff0000"
+    },
+    {
+      "team_name": "Team X",
+      "team_slug": "team_x",
+      "minplayers": 1,
+      "maxplayers": 1,
+      "team_order": 1,
+      "color": "#001bff"
+    }
+  ],
+  "screentype": 3,
+  "resow": 4,
+  "resoh": 3,
+  "screenwidth": 800
 }

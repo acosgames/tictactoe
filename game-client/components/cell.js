@@ -51,7 +51,7 @@ class Cell extends Component {
             <div
                 className={"cell ttt-" + id + ' ' + color + inactive}
                 onClick={() => this.clicked(id)}
-                onTouchEnd={() => this.clicked(id)}
+                // onTouchEnd={() => this.clicked(id)}
                 ref={el => {
                     if (!el) return;
                     this.ref = el;

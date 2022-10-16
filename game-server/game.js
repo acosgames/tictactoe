@@ -1,22 +1,27 @@
 import cup from './acosg';
 
-let defaultGame = {
-    state: {
-        // cells2: {
-        //     0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: ''
-        // },
-        cells: ['', '', '', '', '', '', '', '', ''],
-        //sx: ''
-    },
-    players: {},
-    next: {},
-    events: {}
-}
+// let defaultGame = {
+//     state: {
+//         // cells2: {
+//         //     0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: ''
+//         // },
+//         cells: ['', '', '', '', '', '', '', '', ''],
+//         //sx: ''
+//     },
+//     players: {},
+//     next: {},
+//     events: {}
+// }
+
+let defaultState = { cells: ['', '', '', '', '', '', '', '', ''], }
 
 class Tictactoe {
 
     onNewGame(action) {
-        cup.setGame(defaultGame);
+
+        let game = cup.game();
+        game.state = defaultState;
+
         this.checkNewRound();
     }
 
@@ -38,8 +43,20 @@ class Tictactoe {
             return;
 
         let player = cup.players(action.user.id);
-        player.rank = 2;
-        player.score = 0;
+        // player.rank = 2;
+        // player.score = 0;
+
+        let teams = cup.teams();
+        if (teams && player.teamid) {
+            teams[player.teamid].rank = 2;
+            teams[player.teamid].score = 0;
+        }
+
+
+        cup.log("TICTACTOE PLAYER INFO:");
+        cup.log(player);
+
+        cup.players(action.user.id, player);
 
         let playerCount = cup.playerCount();
         if (playerCount <= 2) {
@@ -113,16 +130,16 @@ class Tictactoe {
         let id = action.user.id;
         state.cells[cellid] = type;
 
-        cup.event('picked', {
-            cellid, id
-        });
+        // cup.event('picked', {
+        //     cellid, id
+        // });
         // cup.prev()
 
         if (this.checkWinner()) {
             return;
         }
 
-        cup.setTimelimit(10);
+        cup.setTimelimit(10000);
         this.selectNextPlayer(null);
     }
 
@@ -131,12 +148,22 @@ class Tictactoe {
 
         let state = cup.state();
         //select the starting player
-        if (!state.sx || state.sx.length == 0) {
-            state.sx = this.selectNextPlayer(playerList[Math.floor(globals.random() * playerList.length)]);
-        }
-        else {
-            state.sx = this.selectNextPlayer(state.sx);
-        }
+
+        let xteam = cup.teams('team_x');
+        // let xplayer = cup.players(  );
+
+        state.sx = xteam.players[0]
+
+        cup.next({
+            id: state.sx,
+            action: 'pick'
+        });
+        // if (!state.sx || state.sx.length == 0) {
+        //     state.sx = this.selectNextPlayer(playerList[Math.floor(globals.random() * playerList.length)]);
+        // }
+        // else {
+        //     state.sx = this.selectNextPlayer(state.sx);
+        // }
 
         //set the starting player, and set type for other player
         let players = cup.players();
@@ -145,7 +172,7 @@ class Tictactoe {
         players[state.sx].type = 'X';
 
         cup.event('newround', true);
-        cup.setTimelimit(15);
+        cup.setTimelimit(100000);
     }
 
     selectNextPlayer(userid) {
@@ -238,8 +265,14 @@ class Tictactoe {
         //find user who matches the win type
         let userid = this.findPlayerWithType(type);
         let player = cup.players(userid);
-        player.rank = 1;
-        player.score = player.score + 100;
+
+        let teams = cup.teams();
+        if (teams && player.teamid) {
+            teams[player.teamid].rank = 1;
+            teams[player.teamid].score = 100;
+        }
+        // player.rank = 1;
+        // player.score = player.score + 100;
         if (!player) {
             player.id = 'unknown player';
         }

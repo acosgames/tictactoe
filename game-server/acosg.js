@@ -41,16 +41,16 @@ class ACOSG {
             }
 
             //if (!('prev' in this.nextGame)) {
-            this.nextGame.prev = {};
+            // this.nextGame.prev = {};
             //}
 
             if (!('next' in this.nextGame)) {
                 this.nextGame.next = {};
             }
 
-            if (!('rules' in this.nextGame)) {
-                this.nextGame.rules = {};
-            }
+            // if (!('rules' in this.nextGame)) {
+            //     this.nextGame.rules = {};
+            // }
 
             this.nextGame.events = {};
         }
@@ -128,6 +128,10 @@ class ACOSG {
         return this.currentAction;
     }
 
+    game() {
+        return this.nextGame;
+    }
+
     state(key, value) {
 
         if (typeof key === 'undefined')
@@ -152,6 +156,15 @@ class ACOSG {
             return this.nextGame.players[userid];
 
         this.nextGame.players[userid] = value;
+    }
+
+    teams(teamid, value) {
+        if (typeof teamid === 'undefined')
+            return this.nextGame.teams;
+        if (typeof value === 'undefined')
+            return this.nextGame.teams[teamid];
+
+        this.nextGame.teams[teamid] = value;
     }
 
     rules(rule, value) {
@@ -181,7 +194,7 @@ class ACOSG {
         seconds = seconds || this.defaultSeconds;
         if (!this.nextGame.timer)
             this.nextGame.timer = {};
-        this.nextGame.timer.set = Math.min(60, Math.max(10, seconds));
+        this.nextGame.timer.set = seconds;//Math.min(60, Math.max(10, seconds));
     }
 
     reachedTimelimit(action) {

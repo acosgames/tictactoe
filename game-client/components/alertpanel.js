@@ -95,4 +95,4 @@ class AlertPanel extends Component {
 
 }
 
-export default fs.connect(['events'])(AlertPanel);
+export default fs.connect(['events', 'next'])(AlertPanel);
