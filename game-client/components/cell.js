@@ -16,7 +16,7 @@ class Cell extends Component {
     }
 
     clicked(id) {
-        console.log('clicked cellid: ', id);
+        //console.log('clicked cellid: ', id);
         send('pick', id)
     }
 

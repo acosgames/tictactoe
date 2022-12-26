@@ -120,6 +120,16 @@ class ACOSG {
         this.kickedPlayers.push(id);
     }
 
+    random() {
+        return globals.random();
+    }
+
+    randomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(this.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+    }
+
     database() {
         return globals.database();
     }

@@ -58,6 +58,9 @@ export function GameLoader(props) {
         if (message.players) {
             fs.set('players', message.players);
         }
+        if (message.teams) {
+            fs.set('teams', message.teams);
+        }
         if (message.local) {
             fs.set('local', message.local);
         }
@@ -88,7 +91,7 @@ export function GameLoader(props) {
         if (!message || message.length == 0)
             return;
 
-        console.log('New Game State:', message);
+        //console.log('New Game State:', message);
 
         // if (needsReset) {
         //     flatstoreUpdate({

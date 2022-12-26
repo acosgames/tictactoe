@@ -328,7 +328,7 @@ body,
 
 .ttt-type {
   display: block;
-  width: 7vh;
+  /* width: 7vh; */
   text-align: left;
   font-weight: bold;
   font-size: 3vh;

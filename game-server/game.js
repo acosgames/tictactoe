@@ -158,18 +158,16 @@ class Tictactoe {
             id: state.sx,
             action: 'pick'
         });
-        // if (!state.sx || state.sx.length == 0) {
-        //     state.sx = this.selectNextPlayer(playerList[Math.floor(globals.random() * playerList.length)]);
-        // }
-        // else {
-        //     state.sx = this.selectNextPlayer(state.sx);
-        // }
+        let players = cup.players() || {};
+        let playerIds = Object.keys(players);
 
-        //set the starting player, and set type for other player
-        let players = cup.players();
-        for (var id in players)
-            players[id].type = 'O';
-        players[state.sx].type = 'X';
+        let x = cup.randomInt(0, 2);
+        let o = x == 0 ? 1 : 0;
+        let playerX = playerIds[x];
+        let playerO = playerIds[o];
+
+        players[playerX].type = 'X';
+        players[playerO].type = 'O';
 
         cup.event('newround', true);
         cup.setTimelimit(100000);

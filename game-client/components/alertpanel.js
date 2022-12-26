@@ -33,6 +33,8 @@ class AlertPanel extends Component {
                     let winnerid = fs.get('events-gameover-id');
                     let strip = fs.get('events-gameover-strip');
                     let player = players[winnerid];
+                    if (!player)
+                        return <></>
                     if (strip === 'forfeit')
                         return <><span className="eventPlayerName">{player.name}</span> wins by forfeit!</>;
                     return <><span className="eventPlayerName">{player.name}</span> won the game!</>
