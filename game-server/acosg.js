@@ -142,6 +142,16 @@ class ACOSG {
         return this.nextGame;
     }
 
+    room(key, value) {
+
+        if (typeof key === 'undefined')
+            return this.nextGame.room;
+        if (typeof value === 'undefined')
+            return this.nextGame.room[key];
+
+        this.nextGame.room[key] = value;
+    }
+
     state(key, value) {
 
         if (typeof key === 'undefined')

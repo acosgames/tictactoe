@@ -104,6 +104,10 @@ class Tictactoe {
     }
 
     onPick(action) {
+        let room = cup.room();
+        if (room.status != 'gamestart')
+            return false;
+
         let state = cup.state();
         let user = cup.players(action.user.id);
         if (user.test2)
