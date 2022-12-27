@@ -5,7 +5,7 @@
   ],
   "version": "0.1.0",
   "dependencies": {
-    "acosgames": "^1.1.0",
+    "acosgames": "^1.1.2",
     "axios": "^0.21.1",
     "express": "^4.17.1",
     "flatstore": "^1.0.15",
@@ -15,7 +15,7 @@
     "vm2": "^3.9.3"
   },
   "scripts": {
-    "start": "npm run client:dev & npm run server:dev & npx acos dev",
+    "start": "npm run client:dev & npm run server:dev & npx acos",
     "client:dev": "npx webpack --config builds/webpack/client/dev.config.js --watch ./game-client",
     "client:prod": "npx webpack --config builds/webpack/client/prod.config.js",
     "server:dev": "npx webpack --config builds/webpack/server/dev.config.js --watch ./game-server",
