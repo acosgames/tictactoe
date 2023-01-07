@@ -143,7 +143,7 @@ class Tictactoe {
             return;
         }
 
-        cup.setTimelimit(10000);
+        cup.setTimelimit(15);
         this.selectNextPlayer(null);
     }
 
@@ -174,7 +174,7 @@ class Tictactoe {
         players[playerO].type = 'O';
 
         cup.event('newround', true);
-        cup.setTimelimit(100000);
+        cup.setTimelimit(15);
     }
 
     selectNextPlayer(userid) {
