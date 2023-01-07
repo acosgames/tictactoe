@@ -2,10 +2,11 @@ import fs from 'flatstore';
 
 function TimeBar(props) {
 
+    let [timeleft] = fs.useWatch('timeleft');
+
     const processProgress = () => {
         let timer = fs.get('timer') || {};
         let totalSeconds = timer.seconds || {};
-        let timeleft = fs.get('timeleft') || 0;
 
         try {
             if (typeof timeleft != 'number')
@@ -28,10 +29,6 @@ function TimeBar(props) {
     if (!props.reverse) {
         style.width = '100%';
         style.left = (100 - (pct)) + '%';
-        //     style = {
-        //         right: 50 + '%',
-        //         width: 100 + '%'
-        //     };
     }
     return (<
         div className="progress"
@@ -43,4 +40,4 @@ function TimeBar(props) {
 
 }
 
-export default fs.connect(['timeleft'])(TimeBar);
+export default TimeBar;

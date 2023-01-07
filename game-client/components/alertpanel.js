@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import fs from 'flatstore';
 
-class AlertPanel extends Component {
-    constructor(props) {
-        super(props);
+function AlertPanel(props) {
 
-    }
+    let [events] = fs.useWatch('events');
+    let [next] = fs.useWatch('next');
 
-    eventMessage(name) {
+
+    const eventMessage = (name) => {
 
         let players = fs.get('players');
         switch (name) {
@@ -58,43 +58,42 @@ class AlertPanel extends Component {
         }
     }
 
-    render() {
 
-        let events = fs.get('events');
-        let message = [];
+    // let events = fs.get('events');
+    let message = [];
 
-        if (events) {
-            let names = Object.keys(events);
-            for (var i = 0; i < names.length; i++) {
-                let name = names[i];
-                if (name in events) {
-                    message.push(
-                        <span key={"alert-" + name} className="eventMessage">{this.eventMessage(name)}</span>
-                    )
-                }
+    if (events) {
+        let names = Object.keys(events);
+        for (var i = 0; i < names.length; i++) {
+            let name = names[i];
+            if (name in events) {
+                message.push(
+                    <span key={"alert-" + name} className="eventMessage">{eventMessage(name)}</span>
+                )
             }
         }
+    }
 
-        let localUser = fs.get('local');
-        let next = fs.get('next');
-        if (next?.id == localUser?.id) {
-            message.push(
-                <span key={"alert-yourturn"} className="yourTurn">YOUR TURN</span>
-            )
-        }
-        if (!message) {
-            return (<React.Fragment></React.Fragment>)
-        }
-        return (
-            <div className="alert-panel">
-                <div className="alert alert-primary" role="alert">
-                    {message}
-                </div>
-            </div>
-
+    let localUser = fs.get('local');
+    // let next = fs.get('next');
+    if (next?.id == localUser?.id) {
+        message.push(
+            <span key={"alert-yourturn"} className="yourTurn">YOUR TURN</span>
         )
     }
+    if (!message) {
+        return (<React.Fragment></React.Fragment>)
+    }
+    return (
+        <div className="alert-panel">
+            <div className="alert alert-primary" role="alert">
+                {message}
+            </div>
+        </div>
+
+    )
+
 
 }
 
-export default fs.connect(['events', 'next'])(AlertPanel);
+export default AlertPanel;

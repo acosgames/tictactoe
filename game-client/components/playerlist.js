@@ -1,27 +1,28 @@
 
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 
 import fs from 'flatstore';
 import Timeleft from './timeleft';
 import TimeBar from './timebar';
 
-class PlayerList extends Component {
-    constructor(props) {
-        super(props);
+function PlayerList(props) {
 
-        this.state = { percent: 0 }
-    }
 
-    findOtherPlayer(localId) {
-        for (var id in this.props.players) {
-            let player = this.props.players[id];
+    // let [percent, setPercent] = useState(0);
+
+    let [players] = fs.useWatch('players');
+    let [nextId] = fs.useWatch('next-id');
+
+    const findOtherPlayer = (localId) => {
+        for (var id in props.players) {
+            let player = props.players[id];
             if (id != localId)
                 return { id, player };
         }
         return { id: null, player: null };
     }
 
-    renderPlayerO(playerid) {
+    const renderPlayerO = (playerid) => {
         // let local = fs.get('local');
 
         let players = fs.get('players') || {};
@@ -31,11 +32,11 @@ class PlayerList extends Component {
             return <></>
 
         let type = player.type || '';
-        let nextID = fs.get('next-id');
-        if (!Array.isArray(nextID)) {
-            nextID = [nextID];
+        let nid = nextId;
+        if (!Array.isArray(nid)) {
+            nid = [nid];
         }
-        let isNext = nextID.includes(playerid) || nextID.includes(player.teamid);
+        let isNext = nid.includes(playerid) || nid.includes(player.teamid);
         let nextTag = isNext ? 'next' : '';
 
         return (
@@ -59,11 +60,8 @@ class PlayerList extends Component {
         )
     }
 
-    renderPlayerX(playerid) {
-        // let local = fs.get('local');
-        // let { id, player } = this.findOtherPlayer(local.id);
-        // if (!player)
-        //     return <></>
+    const renderPlayerX = (playerid) => {
+
 
         let players = fs.get('players') || {};
         let player = players[playerid];
@@ -72,11 +70,11 @@ class PlayerList extends Component {
             return <></>
 
         let type = player.type || '';
-        let nextID = fs.get('next-id');
-        if (!Array.isArray(nextID)) {
-            nextID = [nextID];
+        let nid = nextId;
+        if (!Array.isArray(nid)) {
+            nid = [nid];
         }
-        let isNext = nextID.includes(playerid) || nextID.includes(player.teamid);
+        let isNext = nid.includes(playerid) || nid.includes(player.teamid);
         let nextTag = isNext ? 'next' : '';
         return (
             <div className={`color-${type} nameplate vstack ${nextTag}`}>
@@ -97,31 +95,30 @@ class PlayerList extends Component {
         )
     }
 
-    render() {
 
-        let teams = fs.get('teams');
-        if (!teams)
-            return <></>
-        let teamo = teams.team_o;
-        let teamx = teams.team_x;
+    let teams = fs.get('teams');
+    if (!teams)
+        return <></>
+    let teamo = teams.team_o;
+    let teamx = teams.team_x;
 
 
-        return (
-            <div className="player-panel">
-                <div className="hstack" style={{ alignItems: "center", justifyContent: "center" }}>
+    return (
+        <div className="player-panel">
+            <div className="hstack" style={{ alignItems: "center", justifyContent: "center" }}>
 
-                    {this.renderPlayerO(teamo.players[0])}
+                {renderPlayerO(teamo.players[0])}
 
-                    <div className="vs">
-                        VS
-                    </div>
-                    {this.renderPlayerX(teamx.players[0])}
+                <div className="vs">
+                    VS
                 </div>
-
+                {renderPlayerX(teamx.players[0])}
             </div>
-        )
-    }
+
+        </div>
+    )
+
 
 }
 
-export default fs.connect(['players', 'next-id'])(PlayerList);;
+export default PlayerList;

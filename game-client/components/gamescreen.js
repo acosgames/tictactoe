@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { Component, useEffect, useRef } from 'react';
 import fs from 'flatstore';
 
 import AlertPanel from './alertpanel';
@@ -16,64 +16,61 @@ import Line from './line';
 // import book7 from '../images/book7.jpg';
 // import test from '../images/test.mp3';
 
-class Gamescreen extends Component {
-    constructor(props) {
-        super(props);
-        this.ref = null;
-    }
+function Gamescreen(props) {
 
-    updatePosition() {
-        if (!this.ref)
+    let ref = useRef();
+
+    const updatePosition = () => {
+        if (!ref)
             return;
 
-        let rect = JSON.stringify(this.ref.getBoundingClientRect());
+        let rect = JSON.stringify(ref.current.getBoundingClientRect());
         rect = JSON.parse(rect);
-        rect.offsetWidth = this.ref.offsetWidth;
-        rect.offsetHeight = this.ref.offsetHeight;
+        rect.offsetWidth = ref.current.offsetWidth;
+        rect.offsetHeight = ref.current.offsetHeight;
 
         fs.set('gamearea', rect);
     }
 
-    render() {
-        return (
-            <div className="gamewrapper" ref={el => {
-                if (!el) return;
-                this.ref = el;
-                setTimeout(this.updatePosition.bind(this), 2000);
-            }}>
-                <div className="vstack">
-                    <div className="vstack-noh" >
-                        <div className="vstack">
-                            <PlayerList />
+    useEffect(() => {
+        setTimeout(updatePosition, 2000);
+    })
 
-                        </div>
+    return (
+        <div className="gamewrapper" ref={ref}>
+            <div className="vstack">
+                <div className="vstack-noh" >
+                    <div className="vstack">
+                        <PlayerList />
 
-                        <AlertPanel />
                     </div>
-                    <div className="gamescreen" >
-                        <Line className={'foreground'} />
-                        {/* <Line className={'foreground'} />
+
+                    <AlertPanel />
+                </div>
+                <div className="gamescreen" >
+                    <Line className={'foreground'} />
+                    {/* <Line className={'foreground'} />
                         <Line className={'background'} />
                         <Line className={'background'} /> */}
-                        <Line className={'background'} />
-                        <div className="gamearea">
-                            <div className="vstack">
-                                <div className="hstack">
-                                    <Cell id={0} /><div className="vertical" /><Cell id={1} /><div className="vertical" /><Cell id={2} />
-                                </div>
-                                <div className="horizontal" />
-                                <div className="hstack">
-                                    <Cell id={3} /><div className="vertical" /><Cell id={4} /><div className="vertical" /><Cell id={5} />
-                                </div>
-                                <div className="horizontal" />
-                                <div className="hstack">
-                                    <Cell id={6} /><div className="vertical" /><Cell id={7} /><div className="vertical" /><Cell id={8} />
-                                </div>
+                    <Line className={'background'} />
+                    <div className="gamearea">
+                        <div className="vstack">
+                            <div className="hstack">
+                                <Cell id={0} /><div className="vertical" /><Cell id={1} /><div className="vertical" /><Cell id={2} />
                             </div>
-
+                            <div className="horizontal" />
+                            <div className="hstack">
+                                <Cell id={3} /><div className="vertical" /><Cell id={4} /><div className="vertical" /><Cell id={5} />
+                            </div>
+                            <div className="horizontal" />
+                            <div className="hstack">
+                                <Cell id={6} /><div className="vertical" /><Cell id={7} /><div className="vertical" /><Cell id={8} />
+                            </div>
                         </div>
 
-                        {/* <audio controls >
+                    </div>
+
+                    {/* <audio controls >
                     <source src={test} />
                 </audio>
                 <img src={book1} />
@@ -85,11 +82,11 @@ class Gamescreen extends Component {
                 <img src={book7} /> */}
 
 
-                    </div>
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
+
 
 }
 
