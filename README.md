@@ -7,7 +7,7 @@ Classic game of X and O on a 9 square grid
 
 [Play Tic Tac Toe on ACOS](https://acos.games/g/tictactoe)
 
-[ACOS Documentation](https://docs.acos.games)
+[ACOS Documentation](https://sdk.acos.games)
 
 --- 
 
