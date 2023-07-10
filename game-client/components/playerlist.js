@@ -11,6 +11,7 @@ function PlayerList(props) {
     // let [percent, setPercent] = useState(0);
 
     let [players] = fs.useWatch('players');
+    let [teams] = fs.useWatch('teams');
     let [nextId] = fs.useWatch('next-id');
 
     const findOtherPlayer = (localId) => {
@@ -95,10 +96,9 @@ function PlayerList(props) {
         )
     }
 
-
-    let teams = fs.get('teams');
     if (!teams)
         return <></>
+
     let teamo = teams.team_o;
     let teamx = teams.team_x;
 

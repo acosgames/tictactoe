@@ -17,12 +17,12 @@ module.exports = {
         rules: [
             {
                 test: /\.(css|scss)$/i,
-                use: ['style-loader', 'css-loader', 'sass-loader']
+                use: [{ loader: 'style-loader' }, { loader: 'css-loader' }, { loader: 'sass-loader' }]
             },
             {
                 test: /\.(js|jsx|mjs)$/,
                 exclude: /node_modules/,
-                use: {
+                use: [{
                     loader: 'babel-loader',
                     options: {
                         "presets": [
@@ -40,7 +40,7 @@ module.exports = {
 
                         ]
                     }
-                }
+                }]
             },
             {
                 test: /\.(png|jpe?g|gif|svg|tiff|webp)$/i,

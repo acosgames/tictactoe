@@ -10,7 +10,7 @@ import cup from './acosg';
 //     },
 //     players: {},
 //     next: {},
-//     events: {}
+//     events: {} 
 // }
 
 let defaultState = { cells: ['', '', '', '', '', '', '', '', ''], }
@@ -165,10 +165,12 @@ class Tictactoe {
         let players = cup.players() || {};
         let playerIds = Object.keys(players);
 
-        let x = cup.randomInt(0, 2);
-        let o = x == 0 ? 1 : 0;
-        let playerX = playerIds[x];
-        let playerO = playerIds[o];
+        let otherIds = playerIds.filter(value => value != state.sx);
+
+        // let x = cup.randomInt(0, 2);
+        // let o = x == 0 ? 1 : 0;
+        let playerX = state.sx;//playerIds[x];
+        let playerO = otherIds[0];//playerIds[o];
 
         players[playerX].type = 'X';
         players[playerO].type = 'O';

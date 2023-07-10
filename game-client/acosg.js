@@ -79,12 +79,18 @@ export function GameLoader(props) {
         }
         if (message.room) {
             fs.set('room', message.room);
+
+            if (message.room.status != 'gameover') {
+                if (timerHandle)
+                    clearTimeout(timerHandle);
+                timerLoop();
+            }
         }
     }
 
     const onMessage = (evt) => {
 
-        // console.log("MESSAGE EVENT CALLED #1");
+        // console.log("MESSAGE EVENT CALLED #1"); 
         let message = evt.data;
         let origin = evt.origin;
         let source = evt.source;
