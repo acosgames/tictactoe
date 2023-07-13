@@ -252,8 +252,10 @@ body,
   flex-grow: 1;
   background-color: #141922;
   width: 100%;
-  height: 100%;
-  padding-top: 2vh;
+  height: 50px;
+  padding-bottom: 12px;
+  padding-top:12px;
+  
 }
 
 .nameplate {

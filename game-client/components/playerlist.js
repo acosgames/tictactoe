@@ -97,7 +97,7 @@ function PlayerList(props) {
     }
 
     if (!teams)
-        return <></>
+        return <div className="player-panel"></div>
 
     let teamo = teams.team_o;
     let teamx = teams.team_x;

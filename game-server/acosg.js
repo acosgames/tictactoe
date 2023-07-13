@@ -1,3 +1,14 @@
+const globals = {
+    log,
+    error,
+    finish,
+    random,
+    game,
+    actions,
+    killGame,
+    database,
+    ignore
+}
 
 class ACOSG {
     constructor() {
@@ -109,11 +120,11 @@ class ACOSG {
         this.event('gameover', payload);
     }
 
-    log(msg) {
-        globals.log(msg);
+    log(...msg) {
+        globals.log(...msg);
     }
-    error(msg) {
-        globals.error(msg);
+    error(...msg) {
+        globals.error(...msg);
     }
 
     kickPlayer(id) {
