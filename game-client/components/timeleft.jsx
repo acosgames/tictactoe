@@ -27,6 +27,9 @@ function Timeleft(props) {
         // </div>
         <div
             style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
                 width: pct + "%",
                 height: "4px",
                 backgroundColor: "white",

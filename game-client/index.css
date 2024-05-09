@@ -72,7 +72,7 @@ body,
 }
 
 .gamearea div.inactive:hover {
-  background-color: #ccc;
+  background-color: #363636;
   cursor: pointer;
 }
 
@@ -225,6 +225,7 @@ body,
 .alert-panel {
   display: block;
   width: 100%;
+  position: relative;
   /* position: relative;
   bottom: 1em;
   left: 1em; */
