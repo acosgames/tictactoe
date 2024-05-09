@@ -107,6 +107,12 @@ function AlertPanel(props) {
                 YOUR TURN
             </span>
         );
+    } else if (!("gameover" in events)) {
+        message.push(
+            <span key={"alert-yourturn"} className="yourTurn">
+                WAITING
+            </span>
+        );
     }
     if (!message) {
         return <React.Fragment></React.Fragment>;

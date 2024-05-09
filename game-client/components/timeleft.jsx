@@ -32,7 +32,7 @@ function Timeleft(props) {
                 left: 0,
                 width: pct + "%",
                 height: "4px",
-                backgroundColor: "white",
+                backgroundColor: "#ccc",
                 transition: "width 0.1s linear",
             }}
         ></div>
