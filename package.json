@@ -1,41 +1,44 @@
 {
-  "name": "tictactoe",
-  "sideEffects": [
-    "*.css"
-  ],
-  "version": "0.1.0",
-  "dependencies": {
-    "acosgames": "^1.1.17",
-    "flatstore": "^1.0.16",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
-  },
-  "scripts": {
-    "start": "npm run client:dev & npm run server:dev & npx acos",
-    "client:dev": "npx webpack --config builds/webpack/client/dev.config.js --watch",
-    "client:prod": "npx webpack --config builds/webpack/client/prod.config.js",
-    "server:dev": "npx webpack --config builds/webpack/server/dev.config.js --watch ./game-server",
-    "server:prod": "npx webpack --config builds/webpack/server/prod.config.js",
-    "deploy": "npm run client:prod && npm run server:prod && npx acos deploy",
-    "kill:win": "taskkill //im node.exe //F"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
-    "@babel/preset-env": "^7.14.2",
-    "@babel/preset-react": "^7.13.13",
-    "babel-loader": "^9.1.3",
-    "babel-preset-es2015": "^6.24.1",
-    "core-js": "^3.12.1",
-    "css-loader": "^6.8.1",
-    "file-loader": "^6.2.0",
-    "sass": "^1.63.6",
-    "sass-loader": "^13.3.2",
-    "source-map-support": "^0.5.19",
-    "style-loader": "^3.3.3",
-    "url-loader": "^4.1.1",
-    "webpack": "^5.88.1",
-    "webpack-bundle-analyzer": "^4.4.2",
-    "webpack-cli": "^5.1.4"
-  }
+    "name": "tictactoe",
+    "sideEffects": [
+        "*.css"
+    ],
+    "version": "0.1.0",
+    "dependencies": {
+        "@vitejs/plugin-react": "^4.2.1",
+        "acosgames": "file:../acosgames",
+        "flatstore": "^1.0.16",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "vite": "^5.2.11"
+    },
+    "scripts": {
+        "start": "npm run vite:dev & npm run server:dev & npx acos dev --type=vite",
+        "vite:build": "vite build",
+        "vite:dev": "vite serve",
+        "client:dev": "npx webpack --config builds/webpack/client/dev.config.js --watch",
+        "client:prod": "npx webpack --config builds/webpack/client/prod.config.js",
+        "server:dev": "npx webpack --config builds/webpack/server/dev.config.js --watch ./game-server",
+        "server:prod": "npx webpack --config builds/webpack/server/prod.config.js",
+        "deploy": "npm run client:prod && npm run server:prod && npx acos deploy",
+        "kill:win": "taskkill //im node.exe //F"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.24.5",
+        "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
+        "@babel/preset-env": "^7.24.5",
+        "@babel/preset-react": "^7.13.13",
+        "babel-loader": "^9.1.3",
+        "core-js": "^3.12.1",
+        "css-loader": "^6.8.1",
+        "file-loader": "^6.2.0",
+        "sass": "^1.63.6",
+        "sass-loader": "^13.3.2",
+        "source-map-support": "^0.5.19",
+        "style-loader": "^3.3.3",
+        "url-loader": "^4.1.1",
+        "webpack": "^5.88.1",
+        "webpack-bundle-analyzer": "^4.4.2",
+        "webpack-cli": "^5.1.4"
+    }
 }

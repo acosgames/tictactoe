@@ -1,101 +1,91 @@
-import React, { useEffect } from 'react';
-import fs from 'flatstore';
-import flatstore from 'flatstore';
+import React, { useEffect } from "react";
+import fs from "flatstore";
+import flatstore from "flatstore";
 
-fs.set('local', {});
-fs.set('state', {});
-fs.set('players', {});
-fs.set('rules', {});
-fs.set('prev', {});
-fs.set('next', {});
-fs.set('events', {});
+fs.set("local", {});
+fs.set("state", {});
+fs.set("players", {});
+fs.set("rules", {});
+fs.set("prev", {});
+fs.set("next", {});
+fs.set("events", {});
 
 var needsReset = false;
 var timerHandle = 0;
 export function GameLoader(props) {
-
-
-
     const timerLoop = (cb) => {
+        if (cb) cb();
 
-        if (cb)
-            cb();
+        timerHandle = setTimeout(() => {
+            timerLoop(cb);
+        }, 100);
 
-        timerHandle = setTimeout(() => { timerLoop(cb) }, 100);
-
-
-        let timer = fs.get('timer');
-        if (!timer)
-            return;
+        let timer = fs.get("timer");
+        if (!timer) return;
 
         let deadline = timer.end;
-        if (!deadline)
-            return;
+        if (!deadline) return;
 
-        let now = (new Date()).getTime();
+        let now = new Date().getTime();
         let elapsed = deadline - now;
 
         if (elapsed <= 0) {
             elapsed = 0;
         }
 
-        fs.set('timeleft', elapsed);
+        fs.set("timeleft", elapsed);
 
-        let room = fs.get('room');
-        if (room?.status == 'gameover') {
+        let room = fs.get("room");
+        if (room?.status == "gameover") {
             clearTimeout(timerHandle);
             return;
         }
-    }
+    };
 
     const flatstoreUpdate = (message) => {
-        if (!message)
-            return;
+        if (!message) return;
 
         if (message.state) {
-            fs.set('state', message.state);
+            fs.set("state", message.state);
         }
         if (message.players) {
-            fs.set('players', message.players);
+            fs.set("players", message.players);
         }
         if (message.teams) {
-            fs.set('teams', message.teams);
+            fs.set("teams", message.teams);
         }
         if (message.local) {
-            fs.set('local', message.local);
+            fs.set("local", message.local);
         }
 
         if (message.timer) {
-            fs.set('timer', message.timer);
+            fs.set("timer", message.timer);
         }
         if (message.rules) {
-            fs.set('rules', message.rules);
+            fs.set("rules", message.rules);
         }
         if (message.next) {
-            fs.set('next', message.next);
+            fs.set("next", message.next);
         }
         if (message.events) {
-            fs.set('events', message.events);
+            fs.set("events", message.events);
         }
         if (message.room) {
-            fs.set('room', message.room);
+            fs.set("room", message.room);
 
-            if (message.room.status != 'gameover') {
-                if (timerHandle)
-                    clearTimeout(timerHandle);
+            if (message.room.status != "gameover") {
+                if (timerHandle) clearTimeout(timerHandle);
                 timerLoop();
             }
         }
-    }
+    };
 
     const onMessage = (evt) => {
-
-        // console.log("MESSAGE EVENT CALLED #1"); 
+        // console.log("MESSAGE EVENT CALLED #1");
         let message = evt.data;
         let origin = evt.origin;
         let source = evt.source;
-        if (!message || message.length == 0)
-            return;
+        if (!message || message.length == 0) return;
 
         //console.log('New Game State:', message);
 
@@ -117,27 +107,21 @@ export function GameLoader(props) {
         if (message && message?.events?.gameover) {
             needsReset = true;
         }
-
-    }
-
-
+    };
 
     useEffect(() => {
         console.log("ATTACHING TO MESSAGE EVENT");
-        window.addEventListener('message', onMessage, false);
+        window.addEventListener("message", onMessage, false);
         console.log("CREATING TIMER LOOP");
         timerLoop();
 
-        send('ready', true);
+        send("ready", true);
     }, []);
 
-
     let Comp = props.component;
-    return (<Comp></Comp>)
+    return <Comp></Comp>;
 }
 
-
-
 export async function send(type, payload) {
-    window.parent.postMessage({ type, payload }, '*');
+    window.parent.postMessage({ type, payload }, "*");
 }
