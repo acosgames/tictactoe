@@ -34,7 +34,7 @@ export default defineConfig({
             },
         },
 
-        outDir: "../builds/client",
+        outDir: "../builds",
     },
 
     resolve: {

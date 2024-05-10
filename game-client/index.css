@@ -11,7 +11,8 @@ body,
   height: 100%;
   font-family: "Roboto", sans-serif;
   color: white;
-  background-color: #0d0d0e;
+  /* background-color: #0d0d0e; */
+  background-color: transparent;
   /* -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; */
 }

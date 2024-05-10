@@ -1,15 +1,13 @@
 import React, { Component, useState } from "react";
 
-import fs from "flatstore";
-import Timeleft from "./timeleft";
-import TimeBar from "./timebar";
+import { useBucketSelector } from "react-bucketjs";
+import { btGame } from "../GameLoader";
 
 function PlayerList(props) {
-    // let [percent, setPercent] = useState(0);
-
-    let [players] = fs.useWatch("players");
-    let [teams] = fs.useWatch("teams");
-    let [nextId] = fs.useWatch("next-id");
+    let players = useBucketSelector(btGame, (g) => g.players);
+    let teams = useBucketSelector(btGame, (g) => g.teams);
+    let next = useBucketSelector(btGame, (g) => g.next);
+    let nextId = next?.id;
 
     const findOtherPlayer = (localId) => {
         for (var id in props.players) {
@@ -20,9 +18,7 @@ function PlayerList(props) {
     };
 
     const renderPlayerO = (playerid) => {
-        // let local = fs.get('local');
-
-        let players = fs.get("players") || {};
+        let players = btGame.get((g) => g.players) || {};
         let player = players[playerid];
 
         if (!player) return <></>;
@@ -73,7 +69,7 @@ function PlayerList(props) {
     };
 
     const renderPlayerX = (playerid) => {
-        let players = fs.get("players") || {};
+        let players = btGame.get((g) => g.players) || {};
         let player = players[playerid];
 
         if (!player) return <></>;
@@ -134,10 +130,10 @@ function PlayerList(props) {
                 className="hstack"
                 style={{ alignItems: "center", justifyContent: "center" }}
             >
-                {renderPlayerO(teamo.players[0])}
+                {renderPlayerO(teamo?.players[0])}
 
                 <div className="vs">VS</div>
-                {renderPlayerX(teamx.players[0])}
+                {renderPlayerX(teamx?.players[0])}
             </div>
         </div>
     );

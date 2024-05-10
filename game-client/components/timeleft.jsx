@@ -1,23 +1,10 @@
 import React, { Component } from "react";
-import fs from "flatstore";
+import { useBucket, useBucketSelector } from "react-bucketjs";
+import { btGame, btTimeleft } from "../GameLoader";
 
 function Timeleft(props) {
-    let [timeleft] = fs.useWatch("timeleft");
-    let timer = fs.get("timer");
-
-    const getTimeFormatted = () => {
-        try {
-            if (typeof timeleft != "number")
-                timeleft = Number.parseInt(timeleft);
-
-            timeleft = Math.ceil(timeleft / 1000);
-        } catch (e) {
-            timeleft = 0;
-        }
-        if (Number.isNaN(timeleft)) timeleft = 0;
-
-        return <span>{timeleft}</span>;
-    };
+    let timeleft = useBucket(btTimeleft);
+    let timer = useBucketSelector(btGame, (g) => g.timer);
 
     let pct = timeleft / (timer?.seconds * 1000);
     pct = Math.max(0, pct) * 100;

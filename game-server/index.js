@@ -1,11 +1,13 @@
-import cup from './acosg';
-import tictactoe from './game';
+import { ACOSServer } from "acosgames";
+// import cup from "./acosg";
+import tictactoe from "./game";
 
+ACOSServer.init();
 
-cup.on('gamestart', (action) => tictactoe.onNewGame(action));
-cup.on('skip', (action) => tictactoe.onSkip(action));
-cup.on('join', (action) => tictactoe.onJoin(action));
-cup.on('leave', (action) => tictactoe.onLeave(action));
-cup.on('pick', (action) => tictactoe.onPick(action));
+ACOSServer.on("gamestart", (action) => tictactoe.onNewGame(action));
+ACOSServer.on("skip", (action) => tictactoe.onSkip(action));
+ACOSServer.on("join", (action) => tictactoe.onJoin(action));
+ACOSServer.on("leave", (action) => tictactoe.onLeave(action));
+ACOSServer.on("pick", (action) => tictactoe.onPick(action));
 
-cup.submit();
+ACOSServer.submit();

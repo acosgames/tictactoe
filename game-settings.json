@@ -9,15 +9,15 @@
             "team_slug": "team_o",
             "minplayers": 1,
             "maxplayers": 1,
-            "team_order": 0,
-            "color": "#1187fd"
+            "team_order": 1,
+            "color": "#1ccb7c"
         },
         {
             "team_name": "Team X",
             "team_slug": "team_x",
             "minplayers": 1,
             "maxplayers": 1,
-            "team_order": 1,
+            "team_order": 0,
             "color": "#dd7575"
         }
     ],

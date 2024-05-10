@@ -1,29 +1,28 @@
+import React, { Component } from "react";
 
-import React, { Component } from 'react';
-import fs from 'flatstore';
-import { send } from '../fsg';
+import { ACOSClient } from "acosgames";
+import { useBucket, useBucketSelector } from "react-bucketjs";
+import { btGame, btTimeleft } from "../GameLoader";
 
 function Skip(props) {
-
-    let [timeleft] = fs.useWatch('timeleft');
-    let [nextId] = fs.useWatch('next-id');
+    let timeleft = useBucket(btTimeleft);
+    let next = useBucketSelector(btGame, (g) => g.next);
+    let nextId = next?.id;
 
     const skipPlayer = () => {
-        let id = this.props['next-id'];
-        send('skip', { id })
-    }
+        let id = this.props["next-id"];
+        ACOSClient.send("skip", { id });
+    };
 
     if (!nextId || nextId != props.id) {
-        return (<React.Fragment></React.Fragment>);
+        return <React.Fragment></React.Fragment>;
     }
 
     if (timeleft <= 0) {
-        return (
-            <button onClick={skipPlayer}>Kick</button>
-        )
+        return <button onClick={skipPlayer}>Kick</button>;
     }
 
-    return (<React.Fragment></React.Fragment>);
+    return <React.Fragment></React.Fragment>;
 }
 
 export default Skip;

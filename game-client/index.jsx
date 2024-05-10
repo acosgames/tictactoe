@@ -1,11 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import { GameLoader } from "./acosg.jsx";
+import { GameLoader } from "./GameLoader.jsx";
 import "./index.css";
 
 import Gamescreen from "./components/gamescreen";
 
-ReactDOM.render(
-    <GameLoader component={Gamescreen} />,
-    document.getElementById("root")
+import { createRoot } from "react-dom/client";
+const container = document.getElementById("root");
+const root = createRoot(container);
+
+root.render(
+    // <React.StrictMode>
+
+    <GameLoader component={Gamescreen} />
 );

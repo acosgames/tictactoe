@@ -1,19 +1,21 @@
 import React, { Component } from "react";
-import fs from "flatstore";
+
 import Timeleft from "./timeleft";
+import { btGame } from "../GameLoader";
+import { useBucket, useBucketSelector } from "react-bucketjs";
 
 function AlertPanel(props) {
-    let [events] = fs.useWatch("events");
-    let [next] = fs.useWatch("next");
+    let events = useBucketSelector(btGame, (bucket) => bucket.events);
+    let next = useBucketSelector(btGame, (bucket) => bucket.next);
 
     const eventMessage = (name) => {
-        let players = fs.get("players");
+        let players = btGame.get((g) => g.players);
         switch (name) {
             case "picked": {
-                let userid = fs.get("events-picked-id");
-
+                let picked = btGame.get((g) => g.events?.picked);
+                let userid = picked.id;
+                let cellid = picked.cellid;
                 let player = players[userid];
-                let cellid = fs.get("events-picked-cellid");
                 if (typeof cellid === "undefined") {
                     cellid = unknown;
                 }
@@ -28,12 +30,13 @@ function AlertPanel(props) {
                 );
             }
             case "gameover": {
-                let type = fs.get("events-gameover-type");
+                let gameover = btGame.get((g) => g.events?.gameover);
+                let type = gameover?.type;
                 // let strip = fs.get('prev-strip');
 
                 if (type == "winner") {
-                    let winnerid = fs.get("events-gameover-id");
-                    let strip = fs.get("events-gameover-strip");
+                    let winnerid = gameover?.id;
+                    let strip = gameover?.strip;
                     let player = players[winnerid];
                     if (!player) return <></>;
                     if (strip === "forfeit")
@@ -64,7 +67,7 @@ function AlertPanel(props) {
                 break;
             }
             case "join":
-                let events = fs.get("events");
+                let events = btGame.get((g) => g.events);
                 if (events.join && events.join.id) {
                     let player = players[events.join.id];
                     return (
@@ -99,7 +102,7 @@ function AlertPanel(props) {
         }
     }
 
-    let localUser = fs.get("local");
+    let localUser = btGame.get((g) => g.local);
     // let next = fs.get('next');
     if (next?.id == localUser?.id) {
         message.push(
