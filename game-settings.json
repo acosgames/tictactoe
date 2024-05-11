@@ -5,20 +5,20 @@
     "maxteams": 2,
     "teams": [
         {
-            "team_name": "Team O",
-            "team_slug": "team_o",
-            "minplayers": 1,
-            "maxplayers": 1,
-            "team_order": 1,
-            "color": "#1ccb7c"
-        },
-        {
             "team_name": "Team X",
             "team_slug": "team_x",
             "minplayers": 1,
             "maxplayers": 1,
-            "team_order": 0,
+            "team_order": 1,
             "color": "#dd7575"
+        },
+        {
+            "team_name": "Team O",
+            "team_slug": "team_o",
+            "minplayers": 1,
+            "maxplayers": 1,
+            "team_order": 0,
+            "color": "#1f51e2"
         }
     ],
     "screentype": 3,

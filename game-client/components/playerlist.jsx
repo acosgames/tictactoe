@@ -20,7 +20,8 @@ function PlayerList(props) {
     const renderPlayerO = (playerid) => {
         let players = btGame.get((g) => g.players) || {};
         let player = players[playerid];
-
+        let room = btGame.get((g) => g.room) || {};
+        let status = room.status;
         if (!player) return <></>;
 
         let type = player.type || "";
@@ -28,7 +29,10 @@ function PlayerList(props) {
         if (!Array.isArray(nid)) {
             nid = [nid];
         }
-        let isNext = nid.includes(playerid) || nid.includes(player.teamid);
+        let isNext =
+            status == "gameover" ||
+            nid.includes(playerid) ||
+            nid.includes(player.teamid);
         let nextTag = isNext ? "next" : "";
 
         return (
@@ -70,6 +74,8 @@ function PlayerList(props) {
 
     const renderPlayerX = (playerid) => {
         let players = btGame.get((g) => g.players) || {};
+        let room = btGame.get((g) => g.room) || {};
+        let status = room.status;
         let player = players[playerid];
 
         if (!player) return <></>;
@@ -79,7 +85,10 @@ function PlayerList(props) {
         if (!Array.isArray(nid)) {
             nid = [nid];
         }
-        let isNext = nid.includes(playerid) || nid.includes(player.teamid);
+        let isNext =
+            status == "gameover" ||
+            nid.includes(playerid) ||
+            nid.includes(player.teamid);
         let nextTag = isNext ? "next" : "";
         return (
             <div className={`color-${type} nameplate vstack ${nextTag}`}>
@@ -128,7 +137,11 @@ function PlayerList(props) {
         <div className="player-panel">
             <div
                 className="hstack"
-                style={{ alignItems: "center", justifyContent: "center" }}
+                style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minHeight: "10vh",
+                }}
             >
                 {renderPlayerO(teamo?.players[0])}
 

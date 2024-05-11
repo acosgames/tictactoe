@@ -39,7 +39,7 @@ class Tictactoe {
     }
 
     onJoin(action) {
-        ACOSServer.output(action);
+        ACOSServer.log(action);
         if (!action.user.id) return;
 
         let player = ACOSServer.players(action.user.id);
@@ -52,8 +52,8 @@ class Tictactoe {
             teams[player.teamid].score = 0;
         }
 
-        ACOSServer.output("TICTACTOE PLAYER INFO:");
-        ACOSServer.output(player);
+        ACOSServer.log("TICTACTOE PLAYER INFO:");
+        ACOSServer.log(player);
 
         ACOSServer.players(action.user.id, player);
 
@@ -112,12 +112,10 @@ class Tictactoe {
 
         // block picking cells with markings, and send error
         if (cell.length > 0) {
-            ACOSServer.next({
-                id: action.user.id,
-                action: "pick",
-                error: "NOT_EMPTY",
-            });
-            return false;
+            user._error = {
+                message: "Square is not empty!",
+            };
+            return true;
         }
 
         //mark the selected cell
@@ -279,4 +277,4 @@ class Tictactoe {
     }
 }
 
-export default new Tictactoe();
+export default Tictactoe;

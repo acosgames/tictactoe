@@ -1,73 +1,39 @@
-// declare var global.gamelog: (...msg: any[]) => void;
-// declare var global.gameerror: (...msg: any[]) => void;
-// declare var global.finish: (gamestate: GameState) => void;
-// declare var global.random: () => number;
-// declare var global.game: () => GameState;
-// declare var global.actions: () => Action[];
-// declare var killGame: () => void;
-// declare var database: () => any;
-// declare var global.ignore: () => void;
+'use strict';
+
 // class ACOSG {
-let userActions;
-let originalState;
-let gameState;
-let currentAction;
-let defaultSeconds;
-let kickedPlayers;
-function init() {
+// let userActions: Action[];
+// let originalState: GameState;
+var gameState;
+var currentAction;
+var kickedPlayers;
+const init = () => {
+    // try {
+    //     userActions = JSON.parse(JSON.stringify(actions()));
+    // } catch (e) {
+    //     error("Failed to load actions");
+    //     return;
+    // }
+    // try {
+    //     originalState = JSON.parse(JSON.stringify(game()));
+    // } catch (e) {
+    //     error("Failed to load originalState");
+    //     return;
+    // }
     try {
-        userActions = JSON.parse(JSON.stringify(global.actions()));
-    }
-    catch (e) {
-        error("Failed to load actions");
-        return;
-    }
-    try {
-        originalState = JSON.parse(JSON.stringify(global.game()));
-    }
-    catch (e) {
-        error("Failed to load originalState");
-        return;
-    }
-    try {
-        gameState = JSON.parse(JSON.stringify(global.game()));
+        gameState = JSON.parse(JSON.stringify(game()));
     }
     catch (e) {
         error("Failed to load gameState");
         return;
     }
     currentAction = null;
+    // isNewGame = false;
     // markedForDelete = false;
-    defaultSeconds = 15;
+    // defaultSeconds = 15;
     // nextTimeLimit = -1;
     kickedPlayers = [];
-    // if (!gameState || !gameState.rules || Object.keys(gameState.rules).length == 0) {
-    //     isNewGame = true;
-    //     error('Missing Rules');
-    // }
-    if (gameState) {
-        // if (!('timer' in gameState)) {
-        //     gameState.timer = {};
-        // }
-        // if (!('state' in gameState)) {
-        //     gameState.state = {};
-        // }
-        // if (!('players' in gameState)) {
-        //     gameState.players = {};
-        // }
-        //if (!('prev' in gameState)) {
-        // gameState.prev = {};
-        //}
-        // if (!('next' in gameState)) {
-        //     gameState.next = {};
-        // }
-        // if (!('rules' in gameState)) {
-        //     gameState.rules = {};
-        // }
-        gameState.events = {};
-    }
-}
-function on(type, cb) {
+};
+const on = (type, cb) => {
     // if (type == 'newgame') {
     //     //if (isNewGame) {
     //     currentAction = actions[0];
@@ -77,98 +43,99 @@ function on(type, cb) {
     //     //}
     //     return;
     // }
+    let userActions = actions();
     for (var i = 0; i < userActions.length; i++) {
         if (userActions[i].type == type) {
             currentAction = userActions[i];
             let result = cb(currentAction);
             if (typeof result == "boolean" && !result) {
-                global.ignore();
+                ignore();
                 break;
             }
         }
     }
-}
+};
 // function ignore(): void {
 //     ignore();
 // }
-function setGame(game) {
+const setGame = (game) => {
     for (var id in gameState.players) {
         let player = gameState.players[id];
         game.players[id] = player;
     }
     gameState = game;
-}
-function submit() {
+};
+const commit = () => {
     // if (kickedPlayers.length > 0)
     //     gameState.kick = kickedPlayers;
-    global.finish(gameState);
-}
-function gameover(payload) {
+    save(gameState);
+};
+const gameover = (payload) => {
     event("gameover", payload);
-}
-function output(...msg) {
-    global.gamelog(...msg);
-}
-function error(...msg) {
-    global.gameerror(...msg);
-}
-function kickPlayer(id) {
+};
+const log = (...msg) => {
+    gamelog(...msg);
+};
+const error = (...msg) => {
+    gameerror(...msg);
+};
+const kickPlayer = (id) => {
     kickedPlayers.push(id);
-}
-// function random():number {
+};
+// const random():number {
 //     return random();
 // }
-function randomInt(min, max) {
+const randomInt = (min, max) => {
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(global.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
-}
-// function database(): any {
+    return Math.floor(random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+};
+// const database(): any {
 //     return database();
 // }
-function action() {
+const action = () => {
     return currentAction;
-}
-function gamestate() {
+};
+const gamestate = () => {
     return gameState;
-}
-function room(key, value) {
+};
+const room = (key, value) => {
     if (typeof key === "undefined")
         return gameState.room;
     if (typeof value === "undefined")
         return gameState.room[key];
     gameState.room[key] = value;
     return value;
-}
-function state(key, value) {
+};
+const state = (key, value) => {
     if (typeof key === "undefined")
         return gameState.state;
     if (typeof value === "undefined")
         return gameState.state[key];
     gameState.state[key] = value;
     return value;
-}
-function playerList() {
+};
+const playerList = () => {
     return Object.keys(gameState.players);
-}
-function playerCount() {
+};
+const playerCount = () => {
     return Object.keys(gameState.players).length;
-}
-function players(userid, value) {
+};
+const players = (userid, value) => {
     if (typeof userid === "undefined")
         return gameState.players;
     if (typeof value === "undefined")
         return gameState.players[userid];
     gameState.players[userid] = value;
     return value;
-}
-function teams(teamid, value) {
+};
+const teams = (teamid, value) => {
     if (typeof teamid === "undefined")
         return gameState.teams;
     if (typeof value === "undefined")
         return gameState.teams[teamid];
     gameState.teams[teamid] = value;
-}
+};
 // rules(rule, value) {
 //     if (typeof rule === 'undefined')
 //         return gameState.rules;
@@ -182,31 +149,31 @@ function teams(teamid, value) {
 //     }
 //     return gameState.prev;
 // }
-function next(obj) {
+const next = (obj) => {
     if (typeof obj === "object") {
         gameState.next = obj;
     }
     return gameState.next;
-}
-function setTimelimit(seconds) {
-    seconds = seconds || defaultSeconds;
+};
+const setTimelimit = (seconds) => {
+    seconds = seconds || 15;
     if (!gameState.timer)
         gameState.timer = {};
     gameState.timer.set = seconds; //Math.min(60, Math.max(10, seconds));
-}
-function reachedTimelimit(action) {
+};
+const reachedTimelimit = (action) => {
     if (typeof action.timeleft == "undefined")
         return false;
     return action.timeleft <= 0;
-}
-function event(name, payload) {
+};
+const event = (name, payload) => {
     if (!payload)
         return gameState.events[name];
     gameState.events[name] = payload || {};
-}
-function clearEvents() {
+};
+const clearEvents = () => {
     gameState.events = {};
-}
+};
 // events(name) {
 //     if (typeof name === 'undefined')
 //         return gameState.events;
@@ -214,28 +181,28 @@ function clearEvents() {
 // }
 // }
 var ACOSServer = {
-    output,
-    error,
-    init,
-    on,
-    setGame,
-    submit,
-    gameover,
-    kickPlayer,
-    randomInt,
-    action,
-    gamestate,
-    room,
-    state,
-    playerList,
-    playerCount,
-    players,
-    teams,
-    next,
-    setTimelimit,
-    reachedTimelimit,
-    event,
-    clearEvents,
+    log: log,
+    error: error,
+    init: init,
+    on: on,
+    setGame: setGame,
+    commit: commit,
+    gameover: gameover,
+    kickPlayer: kickPlayer,
+    randomInt: randomInt,
+    action: action,
+    gamestate: gamestate,
+    room: room,
+    state: state,
+    playerList: playerList,
+    playerCount: playerCount,
+    players: players,
+    teams: teams,
+    next: next,
+    setTimelimit: setTimelimit,
+    reachedTimelimit: reachedTimelimit,
+    event: event,
+    clearEvents: clearEvents,
 };
 // export default new ACOSG();
 
@@ -279,7 +246,7 @@ class Tictactoe {
     }
 
     onJoin(action) {
-        ACOSServer.output(action);
+        ACOSServer.log(action);
         if (!action.user.id) return;
 
         let player = ACOSServer.players(action.user.id);
@@ -292,8 +259,8 @@ class Tictactoe {
             teams[player.teamid].score = 0;
         }
 
-        ACOSServer.output("TICTACTOE PLAYER INFO:");
-        ACOSServer.output(player);
+        ACOSServer.log("TICTACTOE PLAYER INFO:");
+        ACOSServer.log(player);
 
         ACOSServer.players(action.user.id, player);
 
@@ -351,12 +318,10 @@ class Tictactoe {
 
         // block picking cells with markings, and send error
         if (cell.length > 0) {
-            ACOSServer.next({
-                id: action.user.id,
-                action: "pick",
-                error: "NOT_EMPTY",
-            });
-            return false;
+            user._error = {
+                message: "Square is not empty!",
+            };
+            return true;
         }
 
         //mark the selected cell
@@ -518,8 +483,7 @@ class Tictactoe {
     }
 }
 
-var tictactoe = new Tictactoe();
-
+let tictactoe = new Tictactoe();
 ACOSServer.init();
 
 ACOSServer.on("gamestart", (action) => tictactoe.onNewGame(action));
@@ -528,5 +492,5 @@ ACOSServer.on("join", (action) => tictactoe.onJoin(action));
 ACOSServer.on("leave", (action) => tictactoe.onLeave(action));
 ACOSServer.on("pick", (action) => tictactoe.onPick(action));
 
-ACOSServer.submit();
+ACOSServer.commit();
 //# sourceMappingURL=server.bundle.dev.js.map
