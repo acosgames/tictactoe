@@ -24,13 +24,14 @@ function PlayerList(props) {
         let status = room.status;
         if (!player) return <></>;
 
-        let type = player.type || "";
+        let type = player.teamid == "team_o" ? "O" : "X"; // player.type || "";
         let nid = nextId;
         if (!Array.isArray(nid)) {
             nid = [nid];
         }
         let isNext =
             status == "gameover" ||
+            status == "pregame" ||
             nid.includes(playerid) ||
             nid.includes(player.teamid);
         let nextTag = isNext ? "next" : "";
@@ -80,13 +81,14 @@ function PlayerList(props) {
 
         if (!player) return <></>;
 
-        let type = player.type || "";
+        let type = player.teamid == "team_o" ? "O" : "X"; // player.type || "";
         let nid = nextId;
         if (!Array.isArray(nid)) {
             nid = [nid];
         }
         let isNext =
             status == "gameover" ||
+            status == "pregame" ||
             nid.includes(playerid) ||
             nid.includes(player.teamid);
         let nextTag = isNext ? "next" : "";
