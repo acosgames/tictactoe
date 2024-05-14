@@ -1,0 +1,23 @@
+{
+  "game-client/assets/audio/buzzer1.mp3": {
+    "file": "assets/buzzer1-CEuSLvsb.mp3",
+    "src": "game-client/assets/audio/buzzer1.mp3"
+  },
+  "game-client/assets/tictactoe.png": {
+    "file": "assets/tictactoe-CdRxusgf.png",
+    "src": "game-client/assets/tictactoe.png"
+  },
+  "game-client/index.jsx": {
+    "file": "client.bundle.js",
+    "name": "index",
+    "src": "game-client/index.jsx",
+    "isEntry": true,
+    "css": [
+      "assets/index-Ck9xDDDH.css"
+    ],
+    "assets": [
+      "assets/buzzer1-CEuSLvsb.mp3",
+      "assets/tictactoe-CdRxusgf.png"
+    ]
+  }
+}

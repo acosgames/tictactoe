@@ -1,14 +1,18 @@
 import { ACOSServer } from "acosgames";
 // import cup from "./acosg";
-import TicTacToe from "./game";
+import { onJoin, onLeave, onNewGame, onPick, onSkip } from "./game";
 
-let tictactoe = new TicTacToe();
+//prepare gameState for mutation
 ACOSServer.init();
 
-ACOSServer.on("gamestart", (action) => tictactoe.onNewGame(action));
-ACOSServer.on("skip", (action) => tictactoe.onSkip(action));
-ACOSServer.on("join", (action) => tictactoe.onJoin(action));
-ACOSServer.on("leave", (action) => tictactoe.onLeave(action));
-ACOSServer.on("pick", (action) => tictactoe.onPick(action));
+//ACOS events
+ACOSServer.on("gamestart", onNewGame);
+ACOSServer.on("join", onJoin);
+ACOSServer.on("leave", onLeave);
+ACOSServer.on("skip", onSkip);
 
+//Custom events
+ACOSServer.on("pick", onPick);
+
+//Save changes
 ACOSServer.commit();

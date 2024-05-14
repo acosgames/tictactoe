@@ -6,15 +6,13 @@
     "version": "0.1.0",
     "type": "module",
     "scripts": {
-        "start": "npm run vite:dev & npm run server:dev2 & npx acos dev --type=vite",
-        "vite:build": "vite build",
-        "vite:dev": "vite serve",
-        "client:dev": "npx webpack --config builds/webpack/client/dev.config.js --watch",
-        "client:prod": "npx webpack --config builds/webpack/client/prod.config.js",
-        "server:dev2": "npx rollup -c -w",
-        "server:dev": "npx webpack --config builds/webpack/server/dev.config.js --watch ./game-server",
-        "server:prod": "npx webpack --config builds/webpack/server/prod.config.js",
-        "deploy": "npm run client:prod && npm run server:prod && npx acos deploy",
+        "start": "npm run client:dev & npm run server:dev & npx acos dev --type=vite",
+        "client:dev": "vite serve",
+        "server:dev": "npx rollup -c -w",
+        "client:build": "vite build",
+        "server:build": "npx rollup -c --environment NODE_ENV:production",
+        "build": "npm run client:build && npm run server:build",
+        "deploy": "npm run client:build && npm run server:build && npx acos deploy",
         "kill:win": "taskkill //im node.exe //F"
     },
     "dependencies": {
@@ -28,6 +26,7 @@
         "@vitejs/plugin-react": "^4.2.1",
         "sass": "^1.63.6",
         "vite": "^5.2.11",
+        "vite-plugin-css-injected-by-js": "^3.5.1",
         "webpack": "^5.88.1",
         "webpack-cli": "^5.1.4"
     }

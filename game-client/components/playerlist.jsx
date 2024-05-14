@@ -9,14 +9,6 @@ function PlayerList(props) {
     let next = useBucketSelector(btGame, (g) => g.next);
     let nextId = next?.id;
 
-    const findOtherPlayer = (localId) => {
-        for (var id in props.players) {
-            let player = props.players[id];
-            if (id != localId) return { id, player };
-        }
-        return { id: null, player: null };
-    };
-
     const renderPlayerO = (playerid) => {
         let players = btGame.get((g) => g.players) || {};
         let player = players[playerid];
@@ -24,7 +16,7 @@ function PlayerList(props) {
         let status = room.status;
         if (!player) return <></>;
 
-        let type = player.teamid == "team_o" ? "O" : "X"; // player.type || "";
+        let type = player.teamid == "team_o" ? "O" : "X";
         let nid = nextId;
         if (!Array.isArray(nid)) {
             nid = [nid];
@@ -64,11 +56,9 @@ function PlayerList(props) {
                             />
                             <span className="playerName">{player.name}</span>
                         </div>
-                        {/* <Timeleft next={isNext} /> */}
                     </div>
                     <div className="ttt-type">{type || "?"}</div>
                 </div>
-                {/* <div className="timebar-panel"><TimeBar /></div> */}
             </div>
         );
     };
@@ -81,7 +71,7 @@ function PlayerList(props) {
 
         if (!player) return <></>;
 
-        let type = player.teamid == "team_o" ? "O" : "X"; // player.type || "";
+        let type = player.teamid == "team_o" ? "O" : "X";
         let nid = nextId;
         if (!Array.isArray(nid)) {
             nid = [nid];
@@ -120,12 +110,8 @@ function PlayerList(props) {
                             />
                             <span className="playerName">{player.name}</span>
                         </div>
-                        {/* <Timeleft next={isNext} /> */}
                     </div>
                 </div>
-                {/* <div className="timebar-panel">
-                    <TimeBar reverse={true} />             
-                </div> */}
             </div>
         );
     };

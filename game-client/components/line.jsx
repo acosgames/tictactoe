@@ -1,9 +1,9 @@
 import React, { Component, useEffect, useState } from "react";
 
 import { useBucketSelector } from "react-bucketjs";
-import { btGameArea } from "./gamescreen";
+import { btGameArea } from "./GameScreen";
 import { btGame } from "../GameLoader";
-import { btCells } from "./cell";
+import { btCells } from "./Cell";
 
 function Line(props) {
     let [width, setWidth] = useState(0);

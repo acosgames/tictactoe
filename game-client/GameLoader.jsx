@@ -26,7 +26,7 @@ export function GameLoader(props) {
     };
 
     useEffect(() => {
-        console.log("[Game Client] Starting");
+        console.log("[TicTacToe] Starting");
         ACOSClient.listen(onMessage);
         ACOSClient.timerLoop(onTimeLoop);
         ACOSClient.ready();
@@ -35,7 +35,3 @@ export function GameLoader(props) {
     let Comp = props.component;
     return <Comp></Comp>;
 }
-
-// export async function send(type, payload) {
-//     window.parent.postMessage({ type, payload }, "*");
-// }

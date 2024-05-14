@@ -5,7 +5,10 @@ export default {
     output: {
         format: "cjs",
         sourcemap: true,
-        file: "builds/server.bundle.dev.js",
+        file:
+            process.env.NODE_ENV == "production"
+                ? "builds/server.bundle.js"
+                : "builds/server.bundle.dev.js",
         // preserveModules: true,
     },
     plugins: [nodeResolve()],

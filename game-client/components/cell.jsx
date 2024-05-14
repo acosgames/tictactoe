@@ -57,12 +57,10 @@ function Cell(props) {
             onTouchEnd={() => {
                 clicked(id);
             }}
-            // onTouchEnd={() => this.clicked(id)}
             ref={(el) => {
                 if (!el) return;
                 ref = el;
                 updatePosition();
-                // setTimeout(this.updatePosition.bind(this), 100);
             }}
         >
             <span className={color + " foreground"}>{cellType}</span>

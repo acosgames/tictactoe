@@ -41,5 +41,15 @@
             "valueTYPE": 4,
             "order": 1
         }
+    ],
+    "items": [
+        {
+            "item_name": "O Ring",
+            "item_desc": "One ring to rule them all",
+            "item_slug": "o_ring",
+            "max_uses": 0,
+            "expire_days": 0,
+            "order": 0
+        }
     ]
 }
