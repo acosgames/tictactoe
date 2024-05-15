@@ -7,12 +7,12 @@
     "type": "module",
     "scripts": {
         "start": "npm run client:dev & npm run server:dev & npx acos dev --type=vite",
+        "build": "npm run client:build && npm run server:build",
+        "deploy": "npm run build && npx acos deploy",
         "client:dev": "vite serve",
         "server:dev": "npx rollup -c -w",
         "client:build": "vite build",
         "server:build": "npx rollup -c --environment NODE_ENV:production",
-        "build": "npm run client:build && npm run server:build",
-        "deploy": "npm run client:build && npm run server:build && npx acos deploy",
         "kill:win": "taskkill //im node.exe //F"
     },
     "dependencies": {
