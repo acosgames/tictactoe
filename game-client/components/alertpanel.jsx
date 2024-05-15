@@ -4,10 +4,6 @@ import Timeleft from "./Timeleft";
 import { btGame } from "../GameLoader";
 import { useBucket, useBucketSelector } from "react-bucketjs";
 
-import buzzer1 from "../assets/audio/buzzer1.mp3";
-
-let buzzer = new Audio(buzzer1);
-
 function AlertPanel(props) {
     let events = useBucketSelector(btGame, (bucket) => bucket.events);
     let next = useBucketSelector(btGame, (bucket) => bucket.next);
@@ -123,12 +119,7 @@ function AlertPanel(props) {
         return <React.Fragment></React.Fragment>;
     }
     return (
-        <div
-            className="alert-panel"
-            onClick={() => {
-                buzzer.play();
-            }}
-        >
+        <div className="alert-panel">
             <div className="alert alert-primary" role="alert">
                 {message}
             </div>

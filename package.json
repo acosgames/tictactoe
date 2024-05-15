@@ -23,6 +23,7 @@
     },
     "devDependencies": {
         "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-terser": "^0.4.4",
         "@vitejs/plugin-react": "^4.2.1",
         "sass": "^1.63.6",
         "vite": "^5.2.11",

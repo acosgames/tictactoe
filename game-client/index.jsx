@@ -1,6 +1,7 @@
 import React from "react";
 import { GameLoader } from "./GameLoader.jsx";
 import "./index.css";
+import "./game.scss";
 
 import Gamescreen from "./components/GameScreen.jsx";
 

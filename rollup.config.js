@@ -1,4 +1,5 @@
 import { nodeResolve } from "@rollup/plugin-node-resolve";
+import terser from "@rollup/plugin-terser";
 
 export default {
     input: "game-server/index.js",
@@ -11,7 +12,7 @@ export default {
                 : "builds/server.bundle.dev.js",
         // preserveModules: true,
     },
-    plugins: [nodeResolve()],
+    plugins: [nodeResolve(), terser()],
     watch: {
         include: ["./game-server/*"],
         exclude: ["./game-client/*", "./builds"],
