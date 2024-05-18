@@ -13,9 +13,9 @@ function AlertPanel(props) {
         switch (name) {
             case "picked": {
                 let picked = btGame.get((g) => g.events?.picked);
-                let userid = picked.id;
+                let shortid = picked.shortid;
                 let cellid = picked.cellid;
-                let player = players[userid];
+                let player = players[shortid];
                 if (typeof cellid === "undefined") {
                     cellid = unknown;
                 }
@@ -23,7 +23,7 @@ function AlertPanel(props) {
                 return (
                     <>
                         <span className={"eventPlayerName-" + player.type}>
-                            {player.name}
+                            {player.displayname}
                         </span>{" "}
                         picked cell {cellid}.
                     </>
@@ -45,7 +45,7 @@ function AlertPanel(props) {
                                 <span
                                     className={"eventPlayerName-" + player.type}
                                 >
-                                    {player.name}
+                                    {player.displayname}
                                 </span>{" "}
                                 wins by forfeit!
                             </>
@@ -53,7 +53,7 @@ function AlertPanel(props) {
                     return (
                         <>
                             <span className={"eventPlayerName-" + player.type}>
-                                {player.name}
+                                {player.displayname}
                             </span>{" "}
                             won the game!
                         </>
@@ -73,7 +73,7 @@ function AlertPanel(props) {
                     return (
                         <>
                             <span className="eventPlayerName">
-                                {player.name}
+                                {player.displayname}
                             </span>{" "}
                             joined the game.
                         </>
@@ -102,7 +102,7 @@ function AlertPanel(props) {
     }
 
     let localUser = btGame.get((g) => g.local);
-    if (next?.id == localUser?.id) {
+    if (next?.id == localUser?.shortid) {
         message.push(
             <span key={"alert-yourturn"} className="yourTurn">
                 YOUR TURN

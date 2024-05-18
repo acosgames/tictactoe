@@ -58,7 +58,7 @@ function Line(props) {
     let start = btCells.get((c) => c[strip[0]]);
     let end = btCells.get((c) => c[strip[2]]);
 
-    if (!start || !end || !gameoverEvent.id)
+    if (!start || !end || !gameoverEvent.shortid)
         return <React.Fragment></React.Fragment>;
 
     let x1 = start.left + start.offsetWidth / 2;

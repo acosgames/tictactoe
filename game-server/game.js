@@ -30,9 +30,9 @@ export function onSkip(action) {
 
 export function onJoin(action) {
     ACOSServer.log(action);
-    if (!action.user.id) return;
+    if (!action.user.shortid) return;
 
-    let player = ACOSServer.players(action.user.id);
+    let player = ACOSServer.players(action.user.shortid);
     player.rank = 2;
     player.score = 0;
 
@@ -45,18 +45,18 @@ export function onJoin(action) {
     ACOSServer.log("TICTACTOE PLAYER INFO:");
     ACOSServer.log(player);
 
-    ACOSServer.players(action.user.id, player);
+    ACOSServer.players(action.user.shortid, player);
 
     let playerCount = ACOSServer.playerCount();
     if (playerCount <= 2) {
-        ACOSServer.event("join", {
-            id: action.user.id,
+        ACOSServer.events("join", {
+            shortid: action.user.shortid,
         });
     }
 }
 
 export function onLeave(action) {
-    playerLeave(action.user.id);
+    playerLeave(action.user.shortid);
 }
 
 export function onPick(action) {
@@ -64,7 +64,7 @@ export function onPick(action) {
     if (room.status != "gamestart") return false;
 
     let state = ACOSServer.state();
-    let user = ACOSServer.players(action.user.id);
+    let user = ACOSServer.players(action.user.shortid);
 
     //get the picked cell
     let cellid = action.payload;
@@ -98,10 +98,10 @@ function checkNewRound() {
     }
 }
 
-function playerLeave(id) {
+function playerLeave(shortid) {
     let players = ACOSServer.players();
     let otherPlayerId = null;
-    if (players[id]) otherPlayerId = selectNextPlayer(id);
+    if (players[shortid]) otherPlayerId = selectNextPlayer(shortid);
 
     if (otherPlayerId) {
         let otherPlayer = players[otherPlayerId];
@@ -118,10 +118,7 @@ function newRound() {
     let xteam = ACOSServer.teams("team_x");
     state.sx = xteam.players[0];
 
-    ACOSServer.next({
-        id: state.sx,
-        action: "pick",
-    });
+    ACOSServer.next(state.sx, "pick");
     let players = ACOSServer.players() || {};
     let playerIds = Object.keys(players);
 
@@ -133,21 +130,18 @@ function newRound() {
     players[playerX].type = "X";
     players[playerO].type = "O";
 
-    ACOSServer.event("newround", true);
+    ACOSServer.events("newround", true);
     ACOSServer.setTimelimit(15);
 }
 
-function selectNextPlayer(userid) {
+function selectNextPlayer(shortid) {
     let action = ACOSServer.action();
     let players = ACOSServer.playerList();
-    userid = userid || action.user.id;
+    shortid = shortid || action.user.shortid;
 
     //only 2 players so just filter the current player
-    let remaining = players.filter((x) => x != userid);
-    ACOSServer.next({
-        id: remaining[0],
-        action: "pick",
-    });
+    let remaining = players.filter((x) => x != shortid);
+    ACOSServer.next(remaining[0], "pick");
     return remaining[0];
 }
 
@@ -195,23 +189,23 @@ function check(strip) {
 
 function findPlayerWithType(type) {
     let players = ACOSServer.players();
-    for (var id in players) {
-        let player = players[id];
-        if (player.type == type) return id;
+    for (var shortid in players) {
+        let player = players[shortid];
+        if (player.type == type) return shortid;
     }
     return null;
 }
 
 function setTie() {
     ACOSServer.gameover({ type: "tie" });
-    ACOSServer.next({});
+    ACOSServer.next("none");
 }
 
 // set the winner event and data
 function setWinner(type, strip) {
     //find user who matches the win type
-    let userid = findPlayerWithType(type);
-    let player = ACOSServer.players(userid);
+    let shortid = findPlayerWithType(type);
+    let player = ACOSServer.players(shortid);
 
     let teams = ACOSServer.teams();
     if (teams && player.teamid) {
@@ -221,14 +215,14 @@ function setWinner(type, strip) {
     player.rank = 1;
     player.score = player.score + 100;
     if (!player) {
-        player.id = "unknown player";
+        player.shortid = "unknown player";
     }
 
     ACOSServer.gameover({
         type: "winner",
         pick: type,
         strip: strip,
-        id: userid,
+        shortid: shortid,
     });
-    ACOSServer.next({});
+    ACOSServer.next("none");
 }
