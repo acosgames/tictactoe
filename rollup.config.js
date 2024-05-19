@@ -12,7 +12,11 @@ export default {
                 : "builds/server.bundle.dev.js",
         // preserveModules: true,
     },
-    plugins: [nodeResolve(), terser()],
+    plugins: [
+        nodeResolve(),
+        process.env.NODE_ENV == "production" ? terser() : null,
+        // terser()
+    ],
     watch: {
         include: ["./game-server/*"],
         exclude: ["./game-client/*", "./builds"],

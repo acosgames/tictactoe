@@ -1,5 +1,5 @@
 import { ACOSServer } from "acosgames";
-// import cup from "./acosg";
+
 import { onJoin, onLeave, onNewGame, onPick, onSkip } from "./game";
 
 //prepare gameState for mutation
@@ -15,4 +15,4 @@ ACOSServer.on("skip", onSkip);
 ACOSServer.on("pick", onPick);
 
 //Save changes
-ACOSServer.commit();
+ACOSServer.save();

@@ -7,6 +7,7 @@ import { useBucket, useBucketSelector } from "react-bucketjs";
 function AlertPanel(props) {
     let events = useBucketSelector(btGame, (bucket) => bucket.events);
     let next = useBucketSelector(btGame, (bucket) => bucket.next);
+    let room = useBucketSelector(btGame, (bucket) => bucket.room);
 
     const eventMessage = (name) => {
         let players = btGame.get((g) => g.players);
@@ -29,13 +30,20 @@ function AlertPanel(props) {
                     </>
                 );
             }
+            case "gamecancelled": {
+                return "Game Cancelled. Player left early.";
+            }
+            case "gameerror": {
+                let gameerror = btGame.get((g) => g.events?.gameerror);
+                return "Game Error. " + gameerror;
+            }
             case "gameover": {
                 let gameover = btGame.get((g) => g.events?.gameover);
                 let type = gameover?.type;
                 // let strip = fs.get('prev-strip');
 
                 if (type == "winner") {
-                    let winnerid = gameover?.id;
+                    let winnerid = gameover?.shortid;
                     let strip = gameover?.strip;
                     let player = players[winnerid];
                     if (!player) return <></>;
@@ -102,19 +110,22 @@ function AlertPanel(props) {
     }
 
     let localUser = btGame.get((g) => g.local);
-    if (next?.id == localUser?.shortid) {
-        message.push(
-            <span key={"alert-yourturn"} className="yourTurn">
-                YOUR TURN
-            </span>
-        );
-    } else if (!("gameover" in events)) {
-        message.push(
-            <span key={"alert-yourturn"} className="yourTurn">
-                WAITING
-            </span>
-        );
+    if (room?.status == "gamestart") {
+        if (next?.id == localUser?.shortid) {
+            message.push(
+                <span key={"alert-yourturn"} className="yourTurn">
+                    YOUR TURN
+                </span>
+            );
+        } else {
+            message.push(
+                <span key={"alert-yourturn"} className="yourTurn">
+                    WAITING
+                </span>
+            );
+        }
     }
+
     if (!message) {
         return <React.Fragment></React.Fragment>;
     }

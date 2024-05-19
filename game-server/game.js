@@ -1,31 +1,18 @@
-// import ACOSServer from './acosg';
-
 import { ACOSServer } from "acosgames";
 
-// let defaultGame = {
-//     state: {
-//         cells: ['', '', '', '', '', '', '', '', ''],
-//         //sx: ''
-//     },
-//     players: {},
-//     next: {},
-//     events: {}
-// }
-
-const defaultState = { cells: ["", "", "", "", "", "", "", "", ""] };
+const defaultBoard = ["", "", "", "", "", "", "", "", ""];
 
 export function onNewGame(action) {
-    let game = ACOSServer.gamestate();
-    game.state = defaultState;
+    let state = ACOSServer.state();
+    state.cells = defaultBoard;
 
-    checkNewRound();
-}
+    //select the starting player
+    let team = ACOSServer.teams("team_x");
+    let shortid = team.players[0];
 
-export function onSkip(action) {
-    let next = ACOSServer.next();
-    if (!next || !next.id) return;
-
-    playerLeave(next.id);
+    ACOSServer.next(shortid, "pick");
+    ACOSServer.events("newround", true);
+    ACOSServer.setTimer(15);
 }
 
 export function onJoin(action) {
@@ -55,16 +42,20 @@ export function onJoin(action) {
     }
 }
 
+export function onSkip(action) {
+    let next = ACOSServer.next();
+    if (!next || !next.id) return;
+
+    playerLeave(next.id);
+}
+
 export function onLeave(action) {
     playerLeave(action.user.shortid);
 }
 
 export function onPick(action) {
-    let room = ACOSServer.room();
-    if (room.status != "gamestart") return false;
-
     let state = ACOSServer.state();
-    let user = ACOSServer.players(action.user.shortid);
+    let player = ACOSServer.players(action.user.shortid);
 
     //get the picked cell
     let cellid = action.payload;
@@ -73,76 +64,39 @@ export function onPick(action) {
     // block picking cells with markings, and send error
     let cell = state.cells[cellid];
     if (cell.length > 0) {
-        user._error = {
-            message: "Square is not empty!",
-        };
+        user._error = "Square is not empty!";
         return true;
     }
 
     //mark the selected cell
-    let type = user.type;
-    state.cells[cellid] = type;
+    state.cells[cellid] = getTeamType(player.teamid);
 
     if (checkWinner()) return;
 
-    ACOSServer.setTimelimit(15);
-    selectNextPlayer(null);
+    ACOSServer.setTimer(15);
+    selectNextPlayer(action.user.shortid);
 }
 
-function checkNewRound() {
-    //if player count reached required limit, start the game
-    //let maxPlayers = ACOSServer.rules('maxPlayers') || 2;
-    let playerCount = ACOSServer.playerCount();
-    if (playerCount >= 2) {
-        newRound();
-    }
+function getTeamType(teamid) {
+    return teamid == "team_x" ? "X" : "O";
 }
 
 function playerLeave(shortid) {
     let players = ACOSServer.players();
     let otherPlayerId = null;
-    if (players[shortid]) otherPlayerId = selectNextPlayer(shortid);
-
-    if (otherPlayerId) {
+    if (players[shortid]) {
+        otherPlayerId = selectNextPlayer(shortid);
         let otherPlayer = players[otherPlayerId];
-        setWinner(otherPlayer.type, "forfeit");
+        setWinner(otherPlayer.teamid, "forfeit");
     }
 }
 
-function newRound() {
-    let playerList = ACOSServer.playerList();
-
-    let state = ACOSServer.state();
-
-    //select the starting player
-    let xteam = ACOSServer.teams("team_x");
-    state.sx = xteam.players[0];
-
-    ACOSServer.next(state.sx, "pick");
-    let players = ACOSServer.players() || {};
-    let playerIds = Object.keys(players);
-
-    let otherIds = playerIds.filter((value) => value != state.sx);
-
-    let playerX = state.sx;
-    let playerO = otherIds[0];
-
-    players[playerX].type = "X";
-    players[playerO].type = "O";
-
-    ACOSServer.events("newround", true);
-    ACOSServer.setTimelimit(15);
-}
-
 function selectNextPlayer(shortid) {
-    let action = ACOSServer.action();
-    let players = ACOSServer.playerList();
-    shortid = shortid || action.user.shortid;
-
     //only 2 players so just filter the current player
-    let remaining = players.filter((x) => x != shortid);
-    ACOSServer.next(remaining[0], "pick");
-    return remaining[0];
+    let playerList = ACOSServer.playerList();
+    shortid = playerList.filter((x) => x != shortid)[0];
+    ACOSServer.next(shortid, "pick");
+    return shortid;
 }
 
 // Check each strip that makes a win
@@ -160,11 +114,11 @@ function checkWinner() {
     if (check([2, 5, 8])) return true;
     if (check([0, 4, 8])) return true;
     if (check([6, 4, 2])) return true;
-    if (checkNoneEmpty()) return true;
+    if (checkBoardFilled()) return true;
     return false;
 }
 
-function checkNoneEmpty() {
+function checkBoardFilled() {
     let cells = ACOSServer.state().cells;
     let filtered = cells.filter((v) => v == "");
 
@@ -181,19 +135,15 @@ function check(strip) {
     if (first == "") return false;
     let filtered = strip.filter((id) => cells[id] == first);
     if (filtered.length == 3 && filtered.length == strip.length) {
-        setWinner(first, strip);
+        setWinner(first == "X" ? "team_x" : "team_o", strip);
         return true;
     }
     return false;
 }
 
-function findPlayerWithType(type) {
-    let players = ACOSServer.players();
-    for (var shortid in players) {
-        let player = players[shortid];
-        if (player.type == type) return shortid;
-    }
-    return null;
+function findPlayerWithType(teamid) {
+    let team = ACOSServer.teams(teamid);
+    return team.players[0];
 }
 
 function setTie() {
@@ -202,27 +152,25 @@ function setTie() {
 }
 
 // set the winner event and data
-function setWinner(type, strip) {
+function setWinner(teamid, strip) {
     //find user who matches the win type
-    let shortid = findPlayerWithType(type);
+    let shortid = findPlayerWithType(teamid);
     let player = ACOSServer.players(shortid);
 
-    let teams = ACOSServer.teams();
-    if (teams && player.teamid) {
-        teams[player.teamid].rank = 1;
-        teams[player.teamid].score = 100;
+    let team = ACOSServer.teams(player.teamid);
+    if (team) {
+        team.rank = 1;
+        team.score = 100;
     }
     player.rank = 1;
     player.score = player.score + 100;
-    if (!player) {
-        player.shortid = "unknown player";
-    }
 
-    ACOSServer.gameover({
-        type: "winner",
-        pick: type,
-        strip: strip,
-        shortid: shortid,
-    });
-    ACOSServer.next("none");
+    if (strip == "forfeit") ACOSServer.gameerror("Player left early.");
+    else
+        ACOSServer.gameover({
+            type: "winner",
+            pick: teamid,
+            strip: strip,
+            shortid: shortid,
+        });
 }
