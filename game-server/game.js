@@ -53,25 +53,59 @@ export function onLeave(action) {
     playerLeave(action.user.shortid);
 }
 
+let cellToName = [
+    "Top Left",
+    "Top Middle",
+    "Top Right",
+    "Middle Left",
+    "Middle",
+    "Middle Right",
+    "Bottom Left",
+    "Bottom Middle",
+    "Bottom Right",
+];
+
 export function onPick(action) {
     let state = ACOSServer.state();
     let player = ACOSServer.players(action.user.shortid);
 
     //get the picked cell
     let cellid = action.payload;
-    if (typeof cellid !== "number") return false;
+    if (
+        typeof cellid !== "number" ||
+        cellid < 0 ||
+        cellid >= state.cells.length
+    )
+        return false;
 
     // block picking cells with markings, and send error
     let cell = state.cells[cellid];
     if (cell.length > 0) {
-        user._error = "Square is not empty!";
+        player._error = "Square is not empty!";
         return true;
     }
 
     //mark the selected cell
-    state.cells[cellid] = getTeamType(player.teamid);
+    let teamType = getTeamType(player.teamid);
+    if (!state.cells.includes(teamType)) {
+        ACOSServer.stats(action.user.shortid, "FP", cellToName[cellid]);
+    }
+    state.cells[cellid] = teamType;
 
-    if (checkWinner()) return;
+    let timer = ACOSServer.timer();
+
+    ACOSServer.statIncrement(action.user.shortid, "P");
+
+    ACOSServer.statIncrement(action.user.shortid, "F");
+    ACOSServer.statIncrement(action.user.shortid, "A");
+    ACOSServer.statIncrement(action.user.shortid, "T", action.timeleft / 1000);
+
+    if (checkWinner()) {
+        if (state.cells.includes(teamType)) {
+            ACOSServer.stats(action.user.shortid, "WP", cellToName[cellid]);
+        }
+        return;
+    }
 
     ACOSServer.setTimer(15);
     selectNextPlayer(action.user.shortid);

@@ -40,6 +40,35 @@
             "stat_abbreviation": "WP",
             "valueTYPE": 4,
             "order": 1
+        },
+        {
+            "stat_name": "Picked",
+            "stat_desc": "How many picks you've made",
+            "stat_abbreviation": "P",
+            "scoreboard": true,
+            "valueTYPE": 0,
+            "order": 2
+        },
+        {
+            "stat_name": "Float test",
+            "stat_desc": "float test",
+            "stat_abbreviation": "F",
+            "valueTYPE": 1,
+            "order": 3
+        },
+        {
+            "stat_name": "Avg test",
+            "stat_desc": "avg test",
+            "stat_abbreviation": "A",
+            "valueTYPE": 2,
+            "order": 4
+        },
+        {
+            "stat_name": "Time test",
+            "stat_desc": "time test",
+            "stat_abbreviation": "T",
+            "valueTYPE": "3",
+            "order": 5
         }
     ],
     "items": [
