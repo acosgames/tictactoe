@@ -96,7 +96,7 @@ export function onPick(action) {
 
     ACOSServer.statIncrement(action.user.shortid, "P");
 
-    ACOSServer.statIncrement(action.user.shortid, "F");
+    ACOSServer.statIncrement(action.user.shortid, "F", 1.1);
     ACOSServer.statIncrement(action.user.shortid, "A");
     ACOSServer.statIncrement(action.user.shortid, "T", action.timeleft / 1000);
 
